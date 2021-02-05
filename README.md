@@ -122,110 +122,110 @@
 
 * 局部变量应用作用来命名，示例：
 
-	* `String name`
-	
-	* `TextView nameView`
-	
-	* `FrameLayout nameLayout`
-	
-	* 命名规范附带技巧（当布局中同个类型的控件只有一个的时候，可以这样命名）
+    * `String name`
+    
+    * `TextView nameView`
+    
+    * `FrameLayout nameLayout`
+    
+    * 命名规范附带技巧（当布局中同个类型的控件只有一个的时候，可以这样命名）
 
-		* `TextView textView`
-		
-		* `RecyclerView recyclerView`
+        * `TextView textView`
+        
+        * `RecyclerView recyclerView`
 
 * 全局变量必须以小 m 开头，示例：
 
-	* `String mName`
-	
-	* `TextView mNameView`
-	
-	* `FrameLayout mNameLayout`
+    * `String mName`
+    
+    * `TextView mNameView`
+    
+    * `FrameLayout mNameLayout`
 
-	* 命名规范附带技巧（当布局中同个类型的控件只有一个的时候，可以这样命名）
-		
-		* `TextView mTextView`
-		
-		* `RecyclerView mRecyclerView`
-	
+    * 命名规范附带技巧（当布局中同个类型的控件只有一个的时候，可以这样命名）
+        
+        * `TextView mTextView`
+        
+        * `RecyclerView mRecyclerView`
+    
 * 布尔值命名规范，命名不应该以 `is` 开头
 
-	* 错误写法示例：
-	
-		* 全局变量：`private boolean mIsDebug = false;`
-		
-		* 局部变量：`boolean isDebug = false;`
-	
-	* 正确写法示例：
-	
-		* 全局变量：`private boolean mDebug = false;`
-		
-		* 局部变量：`boolean debug = false;`
-		
+    * 错误写法示例：
+    
+        * 全局变量：`private boolean mIsDebug = false;`
+        
+        * 局部变量：`boolean isDebug = false;`
+    
+    * 正确写法示例：
+    
+        * 全局变量：`private boolean mDebug = false;`
+        
+        * 局部变量：`boolean debug = false;`
+        
 * 静态变量则用小 s 开头，示例：
 
-	* `static Handler sHandler`
+    * `static Handler sHandler`
 
 * 常量则需要用大写，并且用下划线代替驼峰，示例：
 
-	* `static final String REQUEST_INSTALL_PACKAGES"`
-	
+    * `static final String REQUEST_INSTALL_PACKAGES"`
+    
 * 有细心的同学可能会发现一个问题，为什么我们最常用的 Glide 和 OkHttp 的源码为什么没有用字母 `m` 来区分局部变量和全局变量？但是谷歌的 SDK 源码和 Support 库就有呢？那究竟是用还是不用呢？这个问题其实很好回答，我们可以先从体量上分析，首先谷歌的开发人员和项目数量肯定是最多的，那么谷歌在这块的探索和研究肯定是多于 Glie 和 OkHttp 的，其次是 Glide 和 OkHttp 的源码都有一个特点，很多类都维持在 1k 行代码左右，而谷歌源码很多类都接近 10k 行代码，例如 Activity 的源码在 API 30 上面有 8.8k 行代码，所以谷歌在这块略胜一筹，如果非要二选一，我选择谷歌的代码风格，并不是说 Glide 和 OkHttp 命名风格不好，是因为或许在未来的某一天，可能会有新的图片请求框架和网络请求框架来代替 Glide 和 OkHttp，但是基本不可能会出现有代替 Android SDK 或者 Support 库的一天
-	
+    
 * 最后让我们静静地欣赏一下 `Activity` 字段的命名
-	
+    
 ```java
 public class Activity {
 
     public static final int RESULT_CANCELED    = 0;
     public static final int RESULT_OK           = -1;
 
-	private Instrumentation mInstrumentation;
+    private Instrumentation mInstrumentation;
 
-	private IBinder mToken;
-	private IBinder mAssistToken;
+    private IBinder mToken;
+    private IBinder mAssistToken;
 
-	private Application mApplication;
+    private Application mApplication;
 
-	/*package*/ Intent mIntent;
+    /*package*/ Intent mIntent;
 
-	/*package*/ String mReferrer;
+    /*package*/ String mReferrer;
 
-	private ComponentName mComponent;
+    private ComponentName mComponent;
 
-	/*package*/ ActivityInfo mActivityInfo;
+    /*package*/ ActivityInfo mActivityInfo;
 
-	/*package*/ ActivityThread mMainThread;
+    /*package*/ ActivityThread mMainThread;
 
-	Activity mParent;
+    Activity mParent;
 
-	boolean mCalled;
+    boolean mCalled;
 
-	/*package*/ boolean mResumed;
+    /*package*/ boolean mResumed;
 
-	/*package*/ boolean mStopped;
+    /*package*/ boolean mStopped;
 
-	boolean mFinished;
-	boolean mStartedActivity;
+    boolean mFinished;
+    boolean mStartedActivity;
 
-	private boolean mDestroyed;
-	private boolean mDoReportFullyDrawn = true;
-	private boolean mRestoredFromBundle;
+    private boolean mDestroyed;
+    private boolean mDoReportFullyDrawn = true;
+    private boolean mRestoredFromBundle;
 
-	private final ArrayList<Application.ActivityLifecycleCallbacks> mActivityLifecycleCallbacks =
-	        new ArrayList<Application.ActivityLifecycleCallbacks>();
-	
-	private Window mWindow;
+    private final ArrayList<Application.ActivityLifecycleCallbacks> mActivityLifecycleCallbacks =
+            new ArrayList<Application.ActivityLifecycleCallbacks>();
+    
+    private Window mWindow;
 
-	private WindowManager mWindowManager;
-	
-	private CharSequence mTitle;
-	private int mTitleColor = 0;
+    private WindowManager mWindowManager;
+    
+    private CharSequence mTitle;
+    private int mTitleColor = 0;
 
 
-	final Handler mHandler = new Handler();
+    final Handler mHandler = new Handler();
 
-	final FragmentController mFragments = FragmentController.createController(new HostCallbacks());
+    final FragmentController mFragments = FragmentController.createController(new HostCallbacks());
 }
 
 ```
@@ -270,22 +270,22 @@ public class Activity {
 
 * 业务模块以 `模块` + `类型` 来命名，例如
 
-	* HomeActivity.java
-	
-	* SettingFragment.java
-	
-	* HomeAdapter.java
-	
-	* AddressDialog.java
+    * HomeActivity.java
+    
+    * SettingFragment.java
+    
+    * HomeAdapter.java
+    
+    * AddressDialog.java
 
 * 技术模块以类的 `作用` 来命名，例如
 
-	* CrashHandler.java
-	
-	* GridSpaceDecoration.java
-	
-	* PickerLayoutManager.java
-	
+    * CrashHandler.java
+    
+    * GridSpaceDecoration.java
+    
+    * PickerLayoutManager.java
+    
 #### 接口文件命名规范
 
 * 如果是监听事件可以参考 View 的写法及命名：
@@ -293,16 +293,16 @@ public class Activity {
 ```java
 public class View {
 
-	private View.OnClickListener mListener;
-	
-	public void setOnClickListener(OnClickListener listener) {
-		mListener = listener;
-	}
-	
-	public interface OnClickListener {
-	
-		void onClick(View v);
-	}
+    private View.OnClickListener mListener;
+    
+    public void setOnClickListener(OnClickListener listener) {
+        mListener = listener;
+    }
+    
+    public interface OnClickListener {
+    
+        void onClick(View v);
+    }
 }
 ```
 
@@ -324,46 +324,46 @@ public class Handler {
 
 * 以 `模块` + `类型` 来命名，例如
 
-	* `home_activity.xml`
-	
-	* `setting_fragment.xml`
-	
-	* `menu_item.xml`
-	
-	* `address_dialog.xml`
-	
+    * `home_activity.xml`
+    
+    * `setting_fragment.xml`
+    
+    * `menu_item.xml`
+    
+    * `address_dialog.xml`
+    
 * 这样写的好处在于，由于 res 文件夹下是没有层级概念的
 
 * 通过前缀的命名可以帮助我们更好定位到同一模块下的资源
 
 * 例如分享对话框中，有对话框 Root 布局和 Item 布局
 
-	* `share_dialog.xml`（Root 布局）
-	
-	* `share_item.xml`（Item 布局）
-	
+    * `share_dialog.xml`（Root 布局）
+    
+    * `share_item.xml`（Item 布局）
+    
 #### 资源文件命名规范
 
 * 如果是业务模块下的资源，以 `模块` + `类型` 来命名，例如分享对话框的资源：
 
-	* `share_link_ic.png`（复制链接）
+    * `share_link_ic.png`（复制链接）
 
-	* `share_moment_ic.png`（分享到朋友圈）
+    * `share_moment_ic.png`（分享到朋友圈）
 
-	* `share_qq_ic.png`（分享到 QQ 好友）
-	
-	* `share_qzone_ic.png`（分享到 QQ 空间）
-	
-	* `share_wechat_ic.png`（分享到微信好友）
-	
+    * `share_qq_ic.png`（分享到 QQ 好友）
+    
+    * `share_qzone_ic.png`（分享到 QQ 空间）
+    
+    * `share_wechat_ic.png`（分享到微信好友）
+    
 * 如果和业务模块不相干的资源，以 `作用` + `类型` 来命名，例如通用的控件样式资源：
 
-	* `button_rect_selector.xml`（通用直角按钮样式）
+    * `button_rect_selector.xml`（通用直角按钮样式）
 
-	* `button_round_selector.xml`（通用圆角按钮样式）
-	
+    * `button_round_selector.xml`（通用圆角按钮样式）
+    
 * 这种资源有一个共同特点，它不属于哪个模块，但是每个模块都有用到，所以不能用模块名作为文件名前缀
-	
+    
 #### 接口实现规范
 
 * 一般情况下，我们会在类中这样实现接口，这样写的好处是，可以减少对象的创建，并且代码也比较美观
@@ -458,7 +458,7 @@ public final class PasswordEditText extends EditText
 
 ```java
 try {
-	xxxxx.xxx();
+    xxxxx.xxx();
 } catch (Exception e) {}
 ```
 * 如需捕获异常，请用以下方式进行捕获
@@ -503,7 +503,7 @@ public class IntentKey {
     /** 其他 */
     public static final String OTHER = "other";
 
-	.....
+    .....
 }
 ```
 
@@ -553,9 +553,8 @@ public final class WebFragment extends Fragment {
 * 集成一些第三方框架或者 SDK，必须注明作用和出处，以便出现问题时能够快速核查和反馈
 
 ```groovy
-// 图片加载框架：https://github.com/bumptech/glide
-implementation 'com.github.bumptech.glide:glide:4.12.0'
-annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
+// 权限请求框架：https://github.com/getActivity/XXPermissions
+implementation 'com.hjq:xxpermissions:9.8'
 ```
 
 * 不能选择功能两套相同的框架，应当引用最合适的一套框架进行开发，由此来降低代码的耦合度
@@ -569,7 +568,7 @@ annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
 * 如果出现问题不能找到开源库的作者，如果需要修改，应当将这些代码抽取到单独的 Module 中
 
 * 能用框架就用成熟框架，尽量不要自己编写或者修改框架，如果有需要，要对这块进行严格测试
-	
+    
 #### 代码注释规范
 
 * 类注释规范：author 是创建者（必填项）、time 是创建时间（必填项）、desc 是类的描述（必填项），doc 是文档地址（非必填），github 是开源地址（如果项目是开源的则必填，否则不填）
@@ -675,7 +674,7 @@ left_out_activity.xml
 bottom_in_dialog.xml
 bottom_out_dialog.xml
 ```
-	
+
 #### View ID 命名规范
 
 * 应该以`控件的缩写` + `模块名` + `作用` 来命名，例如
@@ -859,13 +858,13 @@ bottom_out_dialog.xml
 
 * 应该在某个 Layout 文件根布局中定义 tools:context 属性，以便在布局文件中快速定位到对应的类
 
-	* `tools:context=".ui.activity.HomeActivity"`
-	
-	* `tools:context=".ui.fragment.SettingFragment"`
-	
-	* `tools:context=".ui.adapter.HomeAdapter"`
-	
-	* `tools:context=".ui.dialog.PersonDataDialog"`
+    * `tools:context=".ui.activity.HomeActivity"`
+    
+    * `tools:context=".ui.fragment.SettingFragment"`
+    
+    * `tools:context=".ui.adapter.HomeAdapter"`
+    
+    * `tools:context=".ui.dialog.PersonDataDialog"`
 
 ```xml
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
