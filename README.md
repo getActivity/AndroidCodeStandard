@@ -2,7 +2,7 @@
 
 * 码云地址：[Gitee](https://gitee.com/getActivity/AndroidCodeStandard)
 
-* 开源几年了，被很多人夸过，你的代码写得比较规范，[甚至有人质疑自己代码的写法了](https://github.com/getActivity/AndroidProject/issues/55)，但是迟迟没有出一个代码规范，说来惭愧，只是因为我早几年写的代码还不够规范，规范是后续才慢慢养成的，在这个过程中，我不仅参考了大公司出的代码规范文档，也研究了很多关于谷歌源码的编码规范，同时我也在无时不刻在思考，如何能写出让别人更好理解的代码，自打入行以来，我就在一直在探索。
+* 开源几年了，被很多人夸过，你的代码写得比较规范，[甚至有人质疑自己代码的写法了](https://github.com/getActivity/AndroidProject/issues/55)，但是迟迟没有出一个代码规范，说来惭愧，只是因为我早几年写的代码还不够规范，不敢出来误导大家，而代码规范是后续才慢慢养成的，在这个过程中，我不仅参考了大公司出的代码规范文档，也研究了很多关于谷歌源码的编码规范，同时我也在无时不刻在思考，如何能写出让别人更好理解的代码，自打入行以来，我就在一直在这个问题上面探索。
 
 #### 目录
 
@@ -70,7 +70,7 @@
 
 * 尽量采用 `switch case` 来判断，如果不能实现则再考虑用 `if else`，因为我认为 `switch case` 更加简洁 
 
-* 不用 paddingLeft，而用 `paddingStart`；不用 `paddingRight`，而用 `paddingEnd`
+* 不用 `paddingLeft`，而用 `paddingStart`；不用 `paddingRight`，而用 `paddingEnd`
 
 * 不用 `layout_marginLeft`，而用 `layout_marginStart`；不用 `layout_marginRight`，而用 `layout_marginEnd`
 
@@ -88,7 +88,7 @@
 
 * 应用图标应该放在 `mipmap` 目录下，其他图片资源应当放到 `drawable` 目录下，具体原因可以点击[谷歌官方文档](https://developer.android.google.cn/guide/topics/resources/providing-resources)进行查看
 
-* 不能在项目中创建副本文件，例如创建 `HomeActivity2.java`、`home_activity_v2.xml` 类似的副本文件，因为这样不仅会增加项目的维护难度，同时对编译速度也会造成一定的影响，正确的做法应该是在原有的文件基础上面修改，如果有需求回退的情况，请使用 `Git` 或者 `SVN` 进行版本回退
+* 不能在项目中创建副本文件，例如创建 `HomeActivity2.java`、`home_activity_v2.xml` 类似的副本文件，因为这样不仅会增加项目的维护难度，同时对编译速度也会造成一定的影响，正确的做法应该是在原有的文件基础上面修改，如果出现需求撤销的情况，请使用 `Git` 或者 `SVN` 进行版本回退
 
 * 如果一个类不需要被继承，请直接用 `final` 进行修饰，如果一个字段在类初始化过程中已经赋值并且没有地方进行二次赋值，也应当用 `final` 修饰
 
@@ -102,7 +102,7 @@
 
 * 我们在定义后台返回的 Bean 类时，不应当将一些我们没有使用到的字段添加到代码中，因为这样会消耗性能，因为 Gson 是通过`反射`将后台字段赋值到 Java 字段中，所以我们应当避免一些不必要的字段解析，另外臃余的字段也会给我们排查问题造成一定的阻碍
 
-* 如果后台给定的字段名不符合 Java 代码命名，我们应当使用 `@SerializedName` 注解进行重命名
+* 如果后台给定的字段名不符合 Java 代码命名，我们应当使用 Gson 框架中的 `@SerializedName` 注解进行重命名
 
 * 请求的接口参数和返回字段必须要写上注释，除此之外还应该备注对应的后台接口文档地址，以便我们后续能够更好地进行维护和迭代
 
@@ -168,7 +168,7 @@
     
 * 有细心的同学可能会发现一个问题，为什么我们最常用的 Glide 和 OkHttp 的源码为什么没有用字母 `m` 来区分局部变量和成员变量？但是谷歌的 SDK 源码和 Support 库就有呢？那究竟是用还是不用呢？这个问题其实很好回答，我们可以先从体量上分析，首先谷歌的开发人员和项目数量肯定是最多的，那么谷歌在这块的探索和研究肯定是多于 Glie 和 OkHttp 的，其次是 Glide 和 OkHttp 的源码都有一个特点，很多类都维持在 1k 行代码左右，而谷歌源码很多类都接近 10k 行代码，例如 Activity 的源码在 API 30 上面有 8.8k 行代码，所以谷歌在这块略胜一筹，如果非要二选一，我选择谷歌的代码风格，并不是说 Glide 和 OkHttp 命名风格不好，是因为或许在未来的某一天，可能会有新的图片请求框架和网络请求框架来代替 Glide 和 OkHttp，但是基本不可能会出现有代替 Android SDK 或者 Support 库的一天
     
-* 最后让我们静静地欣赏一下 `Activity` 字段的命名
+* 最后让我们静静地欣赏一下 `Activity` 成员变量的命名
     
 ```java
 public class Activity {
@@ -358,7 +358,7 @@ public class Handler {
 
     * `button_round_selector.xml`（通用圆角按钮样式）
     
-* 这种资源有一个共同特点，它不属于哪个模块，但是每个模块都有用到，所以不能用模块名作为文件名前缀
+* 这种资源有一个共同特点，它不属于哪个模块，但是每个模块都有用到，所以不能用业务的模块名作为文件名前缀
     
 #### 接口实现规范
 
@@ -450,7 +450,7 @@ public final class PasswordEditText extends EditText
 
 #### 异常捕获规范
 
-* 请不要使用此方式捕获异常，因为这种方式会把问题给隐藏掉，会加大问题的排查难度
+* 请不要使用此方式捕获异常，因为这种方式会把问题给隐藏掉，会加大后续排查问题的难度
 
 ```java
 try {
@@ -553,7 +553,7 @@ public final class WebFragment extends Fragment {
 implementation 'com.hjq:xxpermissions:9.8'
 ```
 
-* 不能选择功能两套相同的框架，应当引用最合适的一套框架进行开发，由此来降低代码的耦合度
+* 尽量不要选择功能两套相同的框架，应当引用最合适的一套框架进行开发
 
 * 使用第三方库必须要依赖指定的版本号，而不能使用 + 号来指定依赖库最新的版本号
 
@@ -643,7 +643,7 @@ fragment.setRetainInstance(true);
 
 <!-- 设置界面 -->
 <string name="setting_title">设置</string>
-<string name="setting_language">语言切换</string>
+<string name="setting_language_switchover">语言切换</string>
 <string name="setting_language_simple">简体中文</string>
 <string name="setting_language_complex">繁体中文</string>
 ```
@@ -757,7 +757,7 @@ bottom_out_dialog.xml
 
 * `Color` 和 `Dimens` 允许写死在代码中，但是如果某个色值引用得比较多（例如主题强调色、通用背景色），需要进行抽取和统一
 
-* 对于一些常用并且样式比较统一的控件，例如 `Button`、`EditText` 等，我们对这些控件的样式进行抽取到 `style.xml` 中来
+* 对于一些常用并且样式比较统一的控件，例如 `Button`、`EditText` 等，我们对这些控件的样式进行抽取到 `style.xml` 文件中来
 
 * String 建议不要写死在 Java 和 Xml 代码中，如果项目没有国际化的需求，可以考虑直接写死，如果项目后续可能有国际化的需求，则不能直接写死在布局文件中
 
@@ -781,7 +781,7 @@ bottom_out_dialog.xml
     android:textSize="18sp" />
 ```
 
-* 不能根据设计图给定的宽高把 `TextView` 或者 `Button` 的宽高定死，而是通过 `wrap_content` 的方式和 `padding` 来调整 View 的宽高，因为在不同手机上面字体大小不一致，在字体显示比较小的手机上面会显示正常，但是在字体显示比较大的平板上面文字上半部分极有可能会出现被裁剪的情况，所以我们不能把宽高定死，而是通过 `padding` 来调整到想要的控件大小。
+* 不能根据设计图给定的宽高把 `TextView` 或者 `Button` 的宽高定死，而是通过 `wrap_content` 的方式和 `padding` 来调整 View 的宽高，因为在不同手机上面字体大小不一致，在字体显示比较小的手机上面会显示正常，但是在字体显示比较大的平板上面文字上半部分极有可能会出现被裁剪的情况，所以我们不能把宽高定死，而是通过 `padding` 来调整到控件的大小。不过需要注意的是，[TextView 有自带的文字间距](https://blog.csdn.net/ccpat/article/details/45226951)，我们在拿设计图给定的 padding 值时，需要拿设计图给定的值适当减去这一部分值（大概是在 `2~3 dp`）。
 
 ```xml
 <!-- 错误写法示例 -->
