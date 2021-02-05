@@ -68,7 +68,7 @@
 
 * 不用 `0dp`，而用 `0px`，这样可以避免系统进行换算，提升代码的执行效率
 
-* 尽量采用 `switch case` 来判断，如果不能实现则再考虑用 `if else`
+* 尽量采用 `switch case` 来判断，如果不能实现则再考虑用 `if else`，因为我认为 `switch case` 更加简洁 
 
 * 不用 paddingLeft，而用 `paddingStart`；不用 `paddingRight`，而用 `paddingEnd`
 
@@ -84,7 +84,7 @@
 
 * `ListView` 和 `RecyclerView` 都能实现需求的前提下，优先选用 `RecyclerView`
 
-* `ScrollView` 和 `NestedScrollView` 都能实现需求的前提下，优先选用 `NestedScrollView`
+* `ScrollView` 和 `NestedScrollView` 都能实现需求的前提下，优先选用 `NestedScrollView`，是因为 `NestedScrollView` 和 `RecyclerView` 支持相互嵌套，而 `ScrollView` 是不支持嵌套滚动的
 
 * 应用图标应该放在 `mipmap` 目录下，其他图片资源应当放到 `drawable` 目录下，具体原因可以点击[谷歌官方文档](https://developer.android.google.cn/guide/topics/resources/providing-resources)进行查看
 
@@ -130,7 +130,7 @@
         
         * `RecyclerView recyclerView`
 
-* 全局变量必须以小 m 开头，示例：
+* 成员变量必须以小 m 开头，示例：
 
     * `String mName`
     
@@ -148,13 +148,13 @@
 
     * 错误写法示例：
     
-        * 全局变量：`private boolean mIsDebug = false;`
+        * 成员变量：`private boolean mIsDebug = false;`
         
         * 局部变量：`boolean isDebug = false;`
     
     * 正确写法示例：
     
-        * 全局变量：`private boolean mDebug = false;`
+        * 成员变量：`private boolean mDebug = false;`
         
         * 局部变量：`boolean debug = false;`
         
@@ -166,7 +166,7 @@
 
     * `static final String REQUEST_INSTALL_PACKAGES"`
     
-* 有细心的同学可能会发现一个问题，为什么我们最常用的 Glide 和 OkHttp 的源码为什么没有用字母 `m` 来区分局部变量和全局变量？但是谷歌的 SDK 源码和 Support 库就有呢？那究竟是用还是不用呢？这个问题其实很好回答，我们可以先从体量上分析，首先谷歌的开发人员和项目数量肯定是最多的，那么谷歌在这块的探索和研究肯定是多于 Glie 和 OkHttp 的，其次是 Glide 和 OkHttp 的源码都有一个特点，很多类都维持在 1k 行代码左右，而谷歌源码很多类都接近 10k 行代码，例如 Activity 的源码在 API 30 上面有 8.8k 行代码，所以谷歌在这块略胜一筹，如果非要二选一，我选择谷歌的代码风格，并不是说 Glide 和 OkHttp 命名风格不好，是因为或许在未来的某一天，可能会有新的图片请求框架和网络请求框架来代替 Glide 和 OkHttp，但是基本不可能会出现有代替 Android SDK 或者 Support 库的一天
+* 有细心的同学可能会发现一个问题，为什么我们最常用的 Glide 和 OkHttp 的源码为什么没有用字母 `m` 来区分局部变量和成员变量？但是谷歌的 SDK 源码和 Support 库就有呢？那究竟是用还是不用呢？这个问题其实很好回答，我们可以先从体量上分析，首先谷歌的开发人员和项目数量肯定是最多的，那么谷歌在这块的探索和研究肯定是多于 Glie 和 OkHttp 的，其次是 Glide 和 OkHttp 的源码都有一个特点，很多类都维持在 1k 行代码左右，而谷歌源码很多类都接近 10k 行代码，例如 Activity 的源码在 API 30 上面有 8.8k 行代码，所以谷歌在这块略胜一筹，如果非要二选一，我选择谷歌的代码风格，并不是说 Glide 和 OkHttp 命名风格不好，是因为或许在未来的某一天，可能会有新的图片请求框架和网络请求框架来代替 Glide 和 OkHttp，但是基本不可能会出现有代替 Android SDK 或者 Support 库的一天
     
 * 最后让我们静静地欣赏一下 `Activity` 字段的命名
     
