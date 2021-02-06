@@ -68,7 +68,7 @@
 
 * 不用 `0dp`，而用 `0px`，这样可以避免系统进行换算，提升代码的执行效率
 
-* 尽量采用 `switch case` 来判断，如果不能实现则再考虑用 `if else`，因为我认为 `switch case` 更加简洁 
+* 尽量采用 `switch case` 来判断，如果不能实现则再考虑用 `if else`，因为在多条件判断下 `switch case` 更加简洁 
 
 * 不用 `paddingLeft`，而用 `paddingStart`；不用 `paddingRight`，而用 `paddingEnd`
 
@@ -92,13 +92,13 @@
 
 * 如果一个类不需要被继承，请直接用 `final` 进行修饰，如果一个字段在类初始化过程中已经赋值并且没有地方进行二次赋值，也应当用 `final` 修饰
 
-* 每个小组成员应当安装[阿里巴巴代码约束插件](https://plugins.jetbrains.com/plugin/10046-alibaba-java-coding-guidelines)，并及时地对插件所提示的`代码警告`进行处理
+* 每个小组成员应当安装[阿里巴巴代码约束插件](https://plugins.jetbrains.com/plugin/10046-alibaba-java-coding-guidelines)，并及时地对插件所提示的`代码警告`进行处理或者抑制警告
 
 #### 后台接口规范
 
 * 后台返回的 `id` 值，不要使用 int 或者 long 类型来解析，而应该用 `string` 类型来解析，因为我们不需要对这个 id 值进行计算
 
-* 后台返回的`金额`应该使用 `double` 来解析，而不能用 float 来解析，因为 float 在数值比较大的时候会容易丢失精度
+* 后台返回的`金额`应该使用 `String` 来接收，而不能用浮点数来接收，因为 `float` 或者 `double` 在数值比较大的时候会容易丢失精度，并且还需要自己手动转换出想要保留的小数位，最好的方式是后台返回什么前端就展示什么，而到了运算的时候，则应该用 `BigDecimal` 类来进行转换和计算，当然金额在前端一般展示居多，运算的情况还算是比较少的
 
 * 我们在定义后台返回的 Bean 类时，不应当将一些我们没有使用到的字段添加到代码中，因为这样会消耗性能，因为 Gson 是通过`反射`将后台字段赋值到 Java 字段中，所以我们应当避免一些不必要的字段解析，另外臃余的字段也会给我们排查问题造成一定的阻碍
 
@@ -392,10 +392,14 @@ public final class PasswordEditText extends EditText
     }
 
     @Override
-    public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        ......
+    }
 
     @Override
-    public void afterTextChanged(Editable s) {}
+    public void afterTextChanged(Editable s) {
+        ......
+    }
 }
 ```
 
@@ -441,10 +445,14 @@ public final class PasswordEditText extends EditText
     }
 
     @Override
-    public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        ......
+    }
 
     @Override
-    public void afterTextChanged(Editable s) {}
+    public void afterTextChanged(Editable s) {
+        ......
+    }
 }
 ```
 
@@ -454,9 +462,10 @@ public final class PasswordEditText extends EditText
 
 ```java
 try {
-    xxxxx.xxx();
+    Xxx.xxx();
 } catch (Exception e) {}
 ```
+
 * 如需捕获异常，请用以下方式进行捕获
 
 ```java
@@ -466,7 +475,7 @@ try {
     // 查看源码得知 Google 已经在 Android 8.0 已经修复了此问题
     // 主线程阻塞之后 Toast 也会被阻塞，Toast 因为超时导致 Window Token 失效
     mHandler.handleMessage(msg);
-} catch (WindowManager.BadTokenException | IllegalStateException ignored) {
+} catch (WindowManager.BadTokenException | IllegalStateException e) {
     // android.view.WindowManager$BadTokenException：Unable to add window -- token android.os.BinderProxy is not valid; is your activity running?
     // java.lang.IllegalStateException：View android.widget.TextView has already been added to the window manager.
     e.printStackTrace();
@@ -571,10 +580,10 @@ implementation 'com.hjq:xxpermissions:9.8'
 
 ```java
 /**
- *    author : 黄锦群
+ *    author : Android 轮子哥
  *    github : https://github.com/getActivity/XXPermissions
  *    time   : 2018/06/15
- *    desc   : 权限请求实体类，参考 {@link Manifest.permission}
+ *    desc   : 权限请求实体类
  *    doc    : https://developer.android.google.cn/reference/android/Manifest.permission?hl=zh_cn
  *             https://developer.android.google.cn/guide/topics/permissions/overview?hl=zh-cn#normal-dangerous
  */
@@ -781,7 +790,7 @@ bottom_out_dialog.xml
     android:textSize="18sp" />
 ```
 
-* 不能根据设计图给定的宽高把 `TextView` 或者 `Button` 的宽高定死，而是通过 `wrap_content` 的方式和 `padding` 来调整 View 的宽高，因为在不同手机上面字体大小不一致，在字体显示比较小的手机上面会显示正常，但是在字体显示比较大的平板上面文字上半部分极有可能会出现被裁剪的情况，所以我们不能把宽高定死，而是通过 `padding` 来调整到控件的大小。不过需要注意的是，[TextView 有自带的文字间距](https://blog.csdn.net/ccpat/article/details/45226951)，我们在拿设计图给定的 padding 值时，需要拿设计图给定的值适当减去这一部分值（大概是在 `2~3 dp`）。
+* 不能根据设计图给定的宽高把 `TextView` 或者 `Button` 的宽高定死，而是通过 `wrap_content` 的方式和 `padding` 来调整 View 的宽高，因为在不同手机上面字体大小不一致，在字体显示比较小的手机上面会显示正常，但是在字体显示比较大的平板上面文字上半部分极有可能会出现被裁剪的情况，所以我们不能把宽高定死，而是通过 `padding` 来调整到控件的大小。不过需要注意的是，[TextView 有自带的文字间距](https://blog.csdn.net/ccpat/article/details/45226951)，我们在拿设计图给定的 `padding`值时，需要拿设计图给定的值适当减去这一部分值（一般大概是在 `2~3 dp`）。
 
 ```xml
 <!-- 错误写法示例 -->
