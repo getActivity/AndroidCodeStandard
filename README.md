@@ -2,7 +2,7 @@
 
 * 码云地址：[Gitee](https://gitee.com/getActivity/AndroidCodeStandard)
 
-* 开源几年了，被很多人夸过，你的代码写得比较规范，[甚至有人质疑自己代码的写法了](https://github.com/getActivity/AndroidProject/issues/55)，但是迟迟没有出一个代码规范，说来惭愧，只是因为我早几年写的代码还不够规范，不敢出来误导大家，而代码规范是后续才慢慢养成的，在这个过程中，我不仅参考了大公司出的代码规范文档，也研究了很多关于谷歌源码的编码规范，同时我也在无时不刻在思考，如何能写出让别人更好理解的代码，自打入行以来，我就在一直在这个问题上面探索。
+* 开源几年了，被很多人夸过，你的代码写得比较规范，[甚至有人质疑自己代码的写法](https://github.com/getActivity/AndroidProject/issues/55)，但是迟迟没有出一个代码规范，说来惭愧，只是因为我早几年写的代码还不够规范，不敢出来误导大家，而代码规范是后续才慢慢养成的，在这个过程中，我不仅参考了大公司出的代码规范文档，也研究了很多关于谷歌源码的编码规范，同时我也在无时不刻在思考，如何能写出让别人更好理解的代码，自打入行以来，我就在一直在这个问题上面探索。
 
 #### 目录
 
@@ -62,7 +62,7 @@
 
 * 代码不规范：代码不规范会导致项目可读性变差，具体表现为难分辨难理解，在无形之中加大项目后续维护的成本
 
-* 经验总结：编码不规范，同行两行泪
+* 经验总结：编码不规范，同行泪两行
 
 #### 常规规范
 
@@ -70,13 +70,13 @@
 
 * 尽量采用 `switch case` 来判断，如果不能实现则再考虑用 `if else`，因为在多条件判断下 `switch case` 更加简洁 
 
-* 不用 `paddingLeft`，而用 `paddingStart`；不用 `paddingRight`，而用 `paddingEnd`
+* 不用 `paddingLeft`，而用 `paddingStart`；不用 `paddingRight`，而用 `paddingEnd`，原因有两个，一个是适配 Android 4.4 反方向特性（可在开发者选项中开启），第二个是 XML 布局中使用 `paddingLeft` 和 `paddingRight` 会有代码警告
 
 * 不用 `layout_marginLeft`，而用 `layout_marginStart`；不用 `layout_marginRight`，而用 `layout_marginEnd`
 
 * 如果在 `layout_marginStart` 和 `layout_marginEnd` 相同的情况下，请替换使用 `layout_marginHorizontal`，而 `layout_marginTop` 和 `layout_marginBottom` 也同理，请替换使用 `layout_marginVertical`，`padding` 属性也是同理，这里不再赘述
 
-* `过期` 和 `高版本` 的 API 一定要做对应的兼容（包含 Java 代码和 Xml 属性）
+* `过期` 和 `高版本` 的 API 一定要做对应的兼容（包含 Java 代码和 XML 属性）
 
 * 在能满足需求的情况下，尽量用 `invisible` 来代替 `gone`，因为 `gone` 会触发当前整个 View 树进行重新测量和绘制
 
@@ -96,7 +96,7 @@
 
 #### 后台接口规范
 
-* 后台返回的 `id` 值，不要使用 int 或者 long 类型来解析，而应该用 `string` 类型来解析，因为我们不需要对这个 id 值进行计算
+* 后台返回的 `id` 值，不要使用 `int` 或者 `long` 类型来解析，而应该用 `string` 类型来解析，因为我们不需要对这个 `id` 值进行运算，所以我们不需要关心它是什么类型的
 
 * 后台返回的`金额`应该使用 `String` 来接收，而不能用浮点数来接收，因为 `float` 或者 `double` 在数值比较大的时候会容易丢失精度，并且还需要自己手动转换出想要保留的小数位，最好的方式是后台返回什么前端就展示什么，而到了运算的时候，则应该用 `BigDecimal` 类来进行转换和计算，当然金额在前端一般展示居多，运算的情况还算是比较少的
 
@@ -266,21 +266,21 @@ public class Activity {
 
 * 业务模块以 `模块` + `类型` 来命名，例如
 
-    * HomeActivity.java
+    * `HomeActivity.java`
     
-    * SettingFragment.java
+    * `SettingFragment.java`
     
-    * HomeAdapter.java
+    * `HomeAdapter.java`
     
-    * AddressDialog.java
+    * `AddressDialog.java`
 
 * 技术模块以类的 `作用` 来命名，例如
 
-    * CrashHandler.java
+    * `CrashHandler.java`
     
-    * GridSpaceDecoration.java
+    * `GridSpaceDecoration.java`
     
-    * PickerLayoutManager.java
+    * `PickerLayoutManager.java`
     
 #### 接口文件命名规范
 
@@ -358,7 +358,7 @@ public class Handler {
 
     * `button_round_selector.xml`（通用圆角按钮样式）
     
-* 这种资源有一个共同特点，它不属于哪个模块，但是每个模块都有用到，所以不能用业务的模块名作为文件名前缀
+* 这种资源有一个共同特点，它不属于哪个模块，但是在不同模块都有用到，所以不能用业务的模块名作为文件名前缀
     
 #### 接口实现规范
 
@@ -592,7 +592,7 @@ public final class Permission {
 }
 ```
 
-* 方法注释规范：方法注释可根据实际情况而定，建议尽量用规范的命名来减少不必要的注释
+* 方法注释规范：方法注释可根据实际情况而定
 
 ```java
 /**
@@ -605,7 +605,7 @@ public static XXPermissions with(FragmentActivity activity) {
 }
 ```
 
-* 字段注释规范：根据字段的作用而定，建议尽量用规范的命名来减少不必要的注释
+* 字段注释规范：根据字段的作用而定
 
 ```java
 /** 请求的权限组 */
@@ -621,6 +621,8 @@ private OnPermissionCallback mCallBack;
 // 设置保留实例，不会因为屏幕方向或配置变化而重新创建
 fragment.setRetainInstance(true);
 ```
+
+* 注释什么情况下要写？什么情况下不用写？这个问题我很有感触，代码注释写多了不好，显得太啰嗦，也会增加工作量，写少了也不好，又怕别人看不懂，也害怕给自己后面留坑。我个人的建议是尽量用规范的命名来减少不必要的注释，很多时候我们只需要换位思考一下，忘记这段代码是自己写的，再问一下自己能不能一下子读懂，如果可以的话，注释就可以不用写，否则注释还是要写的。
 
 #### String ID 命名规范
 
@@ -768,11 +770,11 @@ bottom_out_dialog.xml
 
 * 对于一些常用并且样式比较统一的控件，例如 `Button`、`EditText` 等，我们对这些控件的样式进行抽取到 `style.xml` 文件中来
 
-* String 建议不要写死在 Java 和 Xml 代码中，如果项目没有国际化的需求，可以考虑直接写死，如果项目后续可能有国际化的需求，则不能直接写死在布局文件中
+* 关于 String 资源写法建议，如果项目没有国际化的需求，可以考虑直接写死代码中，如果项目后续可能有国际化的需求，则需要抽取到 `string.xml` 中，大家可以根据实际情况来评估，毕竟写在 `string.xml` 会增加工作量
 
 #### XML 编码规范
 
-* 不推荐用 `dp` 作为字体单位，虽然在大部分手机上面 `dp` 和 `sp` 计算是差不多的，但是会有一部分老年用户群，例如咱们的爸爸妈妈爷爷奶奶，他们通常会把手机显示的字体大小调大，这样他们才不需要带眼镜看手机，如果我们用 `dp` 作为字体单位，无论手机怎么调整字体大小，应用的字体大小都不会有任何的变化，所以这种操作显然是非常不人性化的。
+* 不推荐用 `dp` 作为字体单位，虽然在大部分手机上面 `dp` 和 `sp` 计算是差不多的，但是会有一部分老年用户群，例如咱们的长辈，他们通常会把手机显示的字体大小调大，这样他们才不需要带眼镜看手机，如果我们用 `dp` 作为字体单位，无论手机怎么调整字体大小，应用的字体大小都不会有任何的变化，所以这种操作显然是非常不人性化的。
 
 ```xml
 <!-- 错误写法示例 -->
