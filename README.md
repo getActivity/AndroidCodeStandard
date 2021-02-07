@@ -4,6 +4,8 @@
 
 * 开源几年了，被很多人夸过，你的代码写得比较规范，[甚至有人质疑自己代码的写法](https://github.com/getActivity/AndroidProject/issues/55)，但是迟迟没有出一个代码规范，说来惭愧，只是因为我早几年写的代码还不够规范，不敢出来误导大家，而代码规范是后续才慢慢养成的，在这个过程中，我不仅参考了大公司出的代码规范文档，也研究了很多关于谷歌源码的编码规范，同时我也在无时不刻在思考，如何能写出让别人更好理解的代码，自打入行以来，我就在一直在这个问题上面探索。
 
+* 为什么要做成一个开源项目？因为项目会长期更新，大家如果对里面一些规范表示不能理解的或者感觉写得不太对的，又或者有什么想要补充的，随时欢迎你通过 **[issue](https://github.com/getActivity/AndroidCodeStandard/issues/new)** 反馈给我，大家的建议很重要，是我做好这件事的关键，我会认真对待和思考提出的每一个建议。同时我也相信一份好的代码规范经得住大众的反复推敲和不断实践，在这里也欢迎你提出自己的想法或者看法。
+
 #### 目录
 
 * [前言](#前言)
@@ -44,79 +46,82 @@
 
 * [Style 样式命名规范](#style-样式命名规范)
 
-* [资源使用规范](#资源使用规范)
-
 * [XML 编码规范](#xml-编码规范)
 
 * [预览属性约定](#预览属性约定)
+
+* [资源使用约定](#资源使用约定)
 
 * [致谢](#致谢)
 
 #### 前言
 
-* 代码规范是我们每个程序员要做的事，假设我们按照自己的喜好来写代码，那么很可能出现的问题就是我看不懂你的代码或者你看不懂我的代码，这样会给后续维护形成巨大的障碍。这个时候问题来了，如何让代码不分你我，或许只需要一套规则，你和我都认可并且遵守的代码规范守则。
+* 代码规范是我们每个程序员要做的事，假设我们按照自己的喜好来写代码，那么很可能出现的问题就是**我看不懂你的代码**或者**你看不懂我的代码**，这样会给后续维护形成**巨大的障碍**。这个时候问题来了，如何让代码不分你我，或许只需要一套规则，你和我都认可并且遵守的代码规范守则。
 
-* 那么你的疑问可能又来了，怎么样才能算好的代码规范，答案只有一个，真正好的代码规范就是别人的代码你一眼就能看懂，更不需要反复去看。之所以这样并不是因为看的人 Review 代码的能力有多强，而是写代码的人愿意遵守规则，他知道自己想这么写，但是知道你会看不懂，所以换了一种方式来写，这种方式就是代码规范。
+* 那么你的疑问可能又来了，怎么样才能算好的代码规范，答案只有一个，真正好的代码规范就是别人的代码你一眼就能看懂，更不需要反复去看。之所以这样并不是因为看的人 Review 代码的能力有多强，而是写代码的人愿意遵守规则，他知道自己想这么写，但是知道你会看不懂，所以换了一种方式来写，这种方式就是**代码规范**。
 
-* 代码规范：一个好的代码规范可以帮助我们快速了解和熟悉相关的业务，降低后续维护的成本（二次开发和排查问题）
+* 代码规范：一个好的代码规范可以帮助我们快速了解和熟悉相关的业务，降低后续维护的成本（二次开发和排查问题）。
 
-* 代码不规范：代码不规范会导致项目可读性变差，具体表现为难分辨难理解，在无形之中加大项目后续维护的成本
+* 代码不规范：代码不规范会导致项目可读性变差，具体表现为**难分辨和难理解**，在无形之中加大项目后续维护的成本。
 
-* 经验总结：编码不规范，同行泪两行
+* 经验总结：**编码不规范，同行泪两行**
 
 #### 常规规范
 
-* 不用 `0dp`，而用 `0px`，这样可以避免系统进行换算，提升代码的执行效率
+* 不用 **0dp**，而用 **0px**，这样可以避免系统进行换算，提升代码的执行效率。
 
-* 尽量采用 `switch case` 来判断，如果不能实现则再考虑用 `if else`，因为在多条件判断下 `switch case` 更加简洁 
+* 尽量采用 **switch case** 来判断，如果不能实现则再考虑用 **if else**，因为在多条件判断下 **switch case** 更加简洁。
 
-* 不用 `paddingLeft`，而用 `paddingStart`；不用 `paddingRight`，而用 `paddingEnd`，原因有两个，一个是适配 Android 4.4 反方向特性（可在开发者选项中开启），第二个是 XML 布局中使用 `paddingLeft` 和 `paddingRight` 会有代码警告
+* 不推荐用 **layout_marginLeft**，而应该用 **layout_marginStart**；不推荐用 **layout_marginRight**，而应该用 **layout_marginEnd**，原因有两个，一个是适配 Android 4.4 **反方向特性**（可在开发者选项中开启），第二个是 XML 布局中使用 **layout_marginLeft** 和 **layout_marginRight** 会有代码警告，**padding** 属性也是同理，这里不再赘述。
 
-* 不用 `layout_marginLeft`，而用 `layout_marginStart`；不用 `layout_marginRight`，而用 `layout_marginEnd`
+* 如果在 **layout_marginStart** 和 **layout_marginEnd** 的值相同的情况下，请替换使用 **layout_marginHorizontal**，而 **layout_marginTop** 和 **layout_marginBottom** 也同理，请替换使用 **layout_marginVertical**，能用一句代码能做的事不要写两句，**padding** 属性也是同理，这里不再赘述。
 
-* 如果在 `layout_marginStart` 和 `layout_marginEnd` 相同的情况下，请替换使用 `layout_marginHorizontal`，而 `layout_marginTop` 和 `layout_marginBottom` 也同理，请替换使用 `layout_marginVertical`，`padding` 属性也是同理，这里不再赘述
+* **过期** 和 **高版本** 的 API 一定要做对应的兼容（包含 Java 代码和 XML 属性），如果不需要兼容处理的，需要对警告进行抑制。
 
-* `过期` 和 `高版本` 的 API 一定要做对应的兼容（包含 Java 代码和 XML 属性）
+* 在能满足需求的情况下，尽量用 **invisible** 来代替 **gone**，因为 **gone** 会触发当前整个 View 树进行重新测量和绘制。
 
-* 在能满足需求的情况下，尽量用 `invisible` 来代替 `gone`，因为 `gone` 会触发当前整个 View 树进行重新测量和绘制
+* **api** 和 **implementation**，在能满足使用的情况下，优先选用 **implementation**，因为这样可以[减少一些编译时间](https://www.jianshu.com/p/8962d6ba936e)。
 
-* `api` 和 `implementation`，优先选用 `implementation`，因为这样可以[减少一些编译时间](https://www.jianshu.com/p/8962d6ba936e)
+* **ListView** 和 **RecyclerView** 都能实现需求的前提下，优先选用 **RecyclerView**，具体原因不解释，大家应该都懂。
 
-* `ListView` 和 `RecyclerView` 都能实现需求的前提下，优先选用 `RecyclerView`
+* **ScrollView** 和 **NestedScrollView** 都能实现需求的前提下，优先选用 **NestedScrollView**，是因为 **NestedScrollView** 和 **RecyclerView** 支持相互嵌套，而 **ScrollView** 是不支持嵌套滚动的。
 
-* `ScrollView` 和 `NestedScrollView` 都能实现需求的前提下，优先选用 `NestedScrollView`，是因为 `NestedScrollView` 和 `RecyclerView` 支持相互嵌套，而 `ScrollView` 是不支持嵌套滚动的
+* 不能在项目中创建副本文件，例如创建 `HomeActivity2.java`、`home_activity_v2.xml` 类似的副本文件，因为这样不仅会增加项目的维护难度，同时对编译速度也会造成一定的影响，正确的做法应该是在原有的文件基础上面修改，如果出现需求变更的情况，请直接使用 **Git** 或者 **SVN** 进行版本回退
 
-* 应用图标应该放在 `mipmap` 目录下，其他图片资源应当放到 `drawable` 目录下，具体原因可以点击[谷歌官方文档](https://developer.android.google.cn/guide/topics/resources/providing-resources)进行查看
-
-* 不能在项目中创建副本文件，例如创建 `HomeActivity2.java`、`home_activity_v2.xml` 类似的副本文件，因为这样不仅会增加项目的维护难度，同时对编译速度也会造成一定的影响，正确的做法应该是在原有的文件基础上面修改，如果出现需求撤销的情况，请使用 `Git` 或者 `SVN` 进行版本回退
-
-* 如果一个类不需要被继承，请直接用 `final` 进行修饰，如果一个字段在类初始化过程中已经赋值并且没有地方进行二次赋值，也应当用 `final` 修饰
+* 如果一个类不需要被继承，请直接用 **final** 进行修饰，如果一个字段在类初始化过程中已经赋值并且没有地方进行二次赋值，也应当用 **final** 修饰
 
 * 每个小组成员应当安装[阿里巴巴代码约束插件](https://plugins.jetbrains.com/plugin/10046-alibaba-java-coding-guidelines)，并及时地对插件所提示的`代码警告`进行处理或者抑制警告
 
+* 应用图标应该放在 `mipmap` 目录下，其他图片资源应当放到 `drawable` 目录下，具体原因可以查看[谷歌官方文档的介绍](https://developer.android.google.cn/guide/topics/resources/providing-resources)
+
+|    目录        | 资源类型                                                     |
+| :---------- | :----------------------------------------------------------- |
+|  `drawable` | 位图文件（`.png`、`.9.png`、`.jpg`、`.gif`）或编译为以下可绘制对象资源子类型的 XML 文件：位图文件九宫格（可调整大小的位图）状态列表形状动画可绘制对象其他可绘制对象请参阅 [Drawable 资源](https://developer.android.google.cn/guide/topics/resources/drawable-resource)。 |
+|  `mipmap`   | 适用于不同启动器图标密度的可绘制对象文件。如需了解有关使用 `mipmap` 文件夹管理启动器图标的详细信息，请参阅[管理项目概览](https://developer.android.google.cn/tools/projects#mipmap)。 |
+
 #### 后台接口规范
 
-* 后台返回的 `id` 值，不要使用 `int` 或者 `long` 类型来解析，而应该用 `string` 类型来解析，因为我们不需要对这个 `id` 值进行运算，所以我们不需要关心它是什么类型的
+* 后台返回的 **id 值**，不要使用 **int** 或者 **long** 类型来接收，而应该用 **string** 类型来解析，因为我们不需要对这个 **id 值**进行运算，所以我们不需要关心它是什么类型的。
 
-* 后台返回的`金额`应该使用 `String` 来接收，而不能用浮点数来接收，因为 `float` 或者 `double` 在数值比较大的时候会容易丢失精度，并且还需要自己手动转换出想要保留的小数位，最好的方式是后台返回什么前端就展示什么，而到了运算的时候，则应该用 `BigDecimal` 类来进行转换和计算，当然金额在前端一般展示居多，运算的情况还算是比较少的
+* 后台返回的**金额数值**应该使用 **String** 来接收，而不能用**浮点数**来接收，因为 **float** 或者 **double** 在数值比较大的时候会容易丢失精度，并且还需要自己手动转换出想要保留的小数位，最好的方式是后台返回什么前端就展示什么，而到了运算的时候，则应该用 **BigDecimal** 类来进行转换和计算，当然金额在前端一般展示居多，运算的情况还算是比较少的。
 
-* 我们在定义后台返回的 Bean 类时，不应当将一些我们没有使用到的字段添加到代码中，因为这样会消耗性能，因为 Gson 是通过`反射`将后台字段赋值到 Java 字段中，所以我们应当避免一些不必要的字段解析，另外臃余的字段也会给我们排查问题造成一定的阻碍
+* 我们在定义后台返回的 Bean 类时，不应当将一些我们没有使用到的字段添加到代码中，因为这样会消耗性能，因为 Gson 是通过**反射**将后台字段赋值到 Java 字段中，所以我们应当避免一些不必要的字段解析，另外臃余的字段也会给我们排查问题造成一定的阻碍。
 
-* 如果后台给定的字段名不符合 Java 代码命名，我们应当使用 Gson 框架中的 `@SerializedName` 注解进行重命名
+* 如果后台给定的字段名不符合代码命名的时候，例如当遇到 `student_name` 这种命名时，我们应当使用 Gson 框架中的 **@SerializedName** 注解进行重命名。
 
-* 请求的接口参数和返回字段必须要写上注释，除此之外还应该备注对应的后台接口文档地址，以便我们后续能够更好地进行维护和迭代
+* 请求的接口参数和返回字段必须要写上注释，除此之外还应该备注对应的后台接口文档地址，以便我们后续能够更好地进行维护和迭代。
 
-* 后台返回的 Bean 类字段不能直接访问，而应该通过生成 Get 方法，然后使用这个 Get 方法来访问字段
+* 后台返回的 Bean 类字段不能直接访问，而应该通过生成 **Get** 方法，然后使用这个 **Get** 方法来访问字段。
 
-* 接口请求成功的提示可以不显示，但请求失败的提示需要显示给到用户，否则会加大排查问题的难度，也有可能会把问题掩盖掉，从而导致问题遗留到线上去
+* 接口请求成功的提示可以不显示，但请求失败的提示需要显示给到用户，否则会加大排查问题的难度，也极有可能会把问题掩盖掉，从而导致问题遗留到线上去。
 
 #### 变量命名规范
 
-* `严禁使用中文或者中文拼音`进行重命名
+* **严禁使用中文或者中文拼音**进行重命名
 
-* 使用`驼峰式命名风格`（单词最好控制在三个以内）
+* 使用**驼峰式命名风格**（单词最好控制在三个以内）
 
-* 局部变量应用作用来命名，示例：
+* 局部变量应用作用来命名，举个栗子：
 
     * `String name`
     
@@ -124,13 +129,13 @@
     
     * `FrameLayout nameLayout`
     
-    * 命名规范附带技巧（当布局中同个类型的控件只有一个的时候，可以这样命名）
+    * 命名规范附带技巧（当布局中同个类型的控件只有一个的时候，也可以这样命名）
 
         * `TextView textView`
         
         * `RecyclerView recyclerView`
 
-* 成员变量必须以小 m 开头，示例：
+* 成员变量必须以小 **m** 开头，举个栗子：
 
     * `String mName`
     
@@ -138,13 +143,13 @@
     
     * `FrameLayout mNameLayout`
 
-    * 命名规范附带技巧（当布局中同个类型的控件只有一个的时候，可以这样命名）
+    * 命名规范附带技巧（当布局中同个类型的控件只有一个的时候，也可以这样命名）
         
         * `TextView mTextView`
         
         * `RecyclerView mRecyclerView`
     
-* 布尔值命名规范，命名不应该以 `is` 开头
+* 布尔值命名规范，命名不应该以 **is** 开头，举个栗子：
 
     * 错误写法示例：
     
@@ -158,17 +163,17 @@
         
         * 局部变量：`boolean debug = false;`
         
-* 静态变量则用小 s 开头，示例：
+* 静态变量则用小 **s** 开头，举个栗子：
 
     * `static Handler sHandler`
 
-* 常量则需要用大写，并且用下划线代替驼峰，示例：
+* 常量则需要用大写，并且用下划线代替驼峰，举个栗子：
 
     * `static final String REQUEST_INSTALL_PACKAGES"`
     
-* 有细心的同学可能会发现一个问题，为什么我们最常用的 Glide 和 OkHttp 的源码为什么没有用字母 `m` 来区分局部变量和成员变量？但是谷歌的 SDK 源码和 Support 库就有呢？那究竟是用还是不用呢？这个问题其实很好回答，我们可以先从体量上分析，首先谷歌的开发人员和项目数量肯定是最多的，那么谷歌在这块的探索和研究肯定是多于 Glie 和 OkHttp 的，其次是 Glide 和 OkHttp 的源码都有一个特点，很多类都维持在 1k 行代码左右，而谷歌源码很多类都接近 10k 行代码，例如 Activity 的源码在 API 30 上面有 8.8k 行代码，所以谷歌在这块略胜一筹，如果非要二选一，我选择谷歌的代码风格，并不是说 Glide 和 OkHttp 命名风格不好，是因为或许在未来的某一天，可能会有新的图片请求框架和网络请求框架来代替 Glide 和 OkHttp，但是基本不可能会出现有代替 Android SDK 或者 Support 库的一天
+* 有细心的同学可能会发现一个问题，为什么我们最常用的 Glide 和 OkHttp 的源码为什么没有用字母 `m` 来区分局部变量和成员变量？但是谷歌的 SDK 源码和 Support 库就有呢？那究竟是用还是不用呢？这个问题其实很好回答，我们可以先从体量上分析，首先谷歌的开发人员和项目数量肯定是最多的，那么谷歌在这块的探索和研究肯定是多于 Glie 和 OkHttp 的，其次是 Glide 和 OkHttp 的源码都有一个特点，很多类都维持在 1k 行代码左右，而谷歌源码很多类都接近 10k 行代码，例如 Activity 的源码在 API 30 上面有 8.8k 行代码，所以谷歌在这块略胜一筹，如果非要二选一，我选择谷歌的代码风格，并不是说 Glide 和 OkHttp 命名风格不好，是因为或许在未来的某一天，可能会有新的图片请求框架和网络请求框架来代替 Glide 和 OkHttp，但是基本不可能会出现有代替 Android SDK 或者 Support 库的一天。
     
-* 最后让我们静静地欣赏一下 `Activity` 成员变量的命名
+* 最后让我们静静地欣赏一下 **Activity** 成员变量的命名：
     
 ```java
 public class Activity {
@@ -223,48 +228,47 @@ public class Activity {
 
     final FragmentController mFragments = FragmentController.createController(new HostCallbacks());
 }
-
 ```
 
 #### 包名命名规范
 
-* 不允许包名中携带`英文大写`
+* 不允许包名中携带**英文大写**
 
-* 包名应该以`简洁的方式`命名
+* 包名应该以**简洁的方式**命名
 
-* 包名要按照`模块`或者`作用`来划分
+* 包名要按照**模块**或者**作用**来划分
 
-* 不要在某一包名下放置`一些无关的类`
+* 请不要在某一包名下放置**一些无关的类**
 
 #### 方法命名规范
 
-* initXX：初始化相关方法，使用 `init` 为前缀标识，如初始化布局 initView
+* initXX：初始化相关方法，使用 **init** 为前缀标识，如初始化布局 **initView**
 
-* isXX：方法返回值为 boolean 型的请使用 `is` 或 check 为前缀标识
+* isXX：方法返回值为 boolean 型的请使用 **is** 或 **check** 为前缀标识
 
-* getXX：返回某个值的方法，使用 `get` 为前缀标识
+* getXX：返回某个值的方法，使用 **get** 为前缀标识，例如 **getName**
 
-* setXX：设置某个属性值
+* setXX：设置某个属性值，使用 **set** 为前缀标识，例如 **setName**
 
-* handleXX/processXX：对数据进行处理的方法
+* handleXX/processXX：对数据进行处理的方法，例如 **handleMessage**
 
-* displayXX/showXX：弹出提示框和提示信息，使用 display/show 为前缀标识
+* displayXX/showXX：弹出提示框和提示信息，例如 **showDialog**
 
-* updateXX：更新数据
+* updateXX：更新某个东西，例如 **updateData**
 
-* saveXX：保存数据
+* saveXX：保存某个东西，例如 **saveData**
 
-* resetXX：重置数据
+* resetXX：重置某个东西，例如 **resetData**
 
-* clearXX：清除数据
+* clearXX：清除某个东西，例如 **clearData**
 
-* removeXX：移除数据或者视图等，如 removeView
+* removeXX：移除数据或者视图等，例如 **removeView**
 
-* drawXX：绘制数据或效果相关的，使用 `draw` 前缀标识
+* drawXX：绘制数据或效果相关的，使用 **draw** 前缀标识，例如 **drawText**
 
 #### 类文件命名规范
 
-* 业务模块以 `模块` + `类型` 来命名，例如
+* 业务模块请以 **模块 + 类型** 来命名，举个栗子
 
     * `HomeActivity.java`
     
@@ -274,7 +278,7 @@ public class Activity {
     
     * `AddressDialog.java`
 
-* 技术模块以类的 `作用` 来命名，例如
+* 技术模块请以类的 **作用** 来命名，举个栗子
 
     * `CrashHandler.java`
     
@@ -284,7 +288,7 @@ public class Activity {
     
 #### 接口文件命名规范
 
-* 如果是监听事件可以参考 View 的写法及命名：
+* 如果是监听事件可以参考 **View** 的写法及命名：
 
 ```java
 public class View {
@@ -302,7 +306,7 @@ public class View {
 }
 ```
 
-* 如果是回调事件可以参考 Handler 的写法及命名：
+* 如果是回调事件可以参考 **Handler** 的写法及命名：
 
 ```java
 public class Handler {
@@ -314,11 +318,11 @@ public class Handler {
 }
 ```
 
-* 至于接口写在内部还是外部，具体可以视实际情况而定，如果功能比较庞大，就可以考虑抽取成外部的，否则就可以直接写成内部的
+* 至于接口写在内部还是外部，具体可以视实际情况而定，如果功能比较庞大，就可以考虑抽取成外部的，只作用在某个类上的，则就可以直接写成内部的。
 
 #### 布局文件命名规范
 
-* 以 `模块` + `类型` 来命名，例如
+* 以 `模块` + `类型` 来命名，举个栗子：
 
     * `home_activity.xml`
     
@@ -340,7 +344,7 @@ public class Handler {
     
 #### 资源文件命名规范
 
-* 如果是业务模块下的资源，以 `模块` + `类型` 来命名，例如分享对话框的资源：
+* 如果是业务模块下的资源，以 **模块 + 类型** 来命名，例如分享对话框的资源：
 
     * `share_link_ic.png`（复制链接）
 
@@ -352,7 +356,7 @@ public class Handler {
     
     * `share_wechat_ic.png`（分享到微信好友）
     
-* 如果和业务模块不相干的资源，以 `作用` + `类型` 来命名，例如通用的控件样式资源：
+* 如果和业务模块不相干的资源，以 **作用 + 类型** 来命名，例如通用的控件样式资源：
 
     * `button_rect_selector.xml`（通用直角按钮样式）
 
@@ -403,7 +407,7 @@ public final class PasswordEditText extends EditText
 }
 ```
 
-* 但是有一个美中不足的地方，就是在实现的接口过多时，我们很难分辨是哪个方法是哪个接口的，这个时候可以使用注释的方式来解决这个问题，加上 `@link` 还可以帮助我们快速定位接口类在项目中所在的位置
+* 但是有一个美中不足的地方，就是在实现的接口过多时，我们很难分辨是哪个方法是哪个接口的，这个时候可以使用注释的方式来解决这个问题，加上 **@link** 还可以帮助我们快速定位接口类在项目中所在的位置
 
 ```java
 public final class PasswordEditText extends EditText
@@ -473,7 +477,7 @@ try {
 try {
     // 目前发现在 Android 7.1 主线程被阻塞之后弹吐司会导致崩溃，可使用 Thread.sleep(5000) 进行复现
     // 查看源码得知 Google 已经在 Android 8.0 已经修复了此问题
-    // 主线程阻塞之后 Toast 也会被阻塞，Toast 因为超时导致 Window Token 失效
+    // 主线程阻塞之后 Toast 也会被阻塞，Toast 因为显示超时导致 Window Token 失效
     mHandler.handleMessage(msg);
 } catch (WindowManager.BadTokenException | IllegalStateException e) {
     // android.view.WindowManager$BadTokenException：Unable to add window -- token android.os.BinderProxy is not valid; is your activity running?
@@ -482,11 +486,11 @@ try {
 }
 ```
 
-* 必须要在 try 块中说明崩溃的缘由，并注明抛出的异常信息，并在代码中输出对应的日志
+* 必须要在 try 块中说明崩溃的缘由，并注明抛出的异常信息，并在代码中输出对应的日志。
 
 #### Activity 跳转约定
 
-* 应当将 Intent 中的 key 常量保存到一个管理类中，又或者定在目标的 Activity 中
+* 应当将 Intent 中的 key 常量保存到一个管理类中，又或者定义在目标的 Activity 中
 
 ```java
 public class IntentKey {
@@ -512,7 +516,7 @@ public class IntentKey {
 }
 ```
 
-* 如果跳转的 Activity 需要传递参数，应该在目标的 Activity 中定义静态的 `start` 又或者 `newIntent `方法
+* 如果跳转的 Activity 需要传递参数，应该在目标的 Activity 中定义静态的 **start** 又或者 **newIntent** 方法
 
 ```java
 public final class WebActivity extends Activity {
@@ -536,7 +540,7 @@ public final class WebActivity extends Activity {
 }
 ```
 
-* 如果创建的 Fragment 需要传递参数，应该在目标的 Fragment 中定义静态的 newInstance 方法
+* 如果创建的 Fragment 需要传递参数，应该在目标的 Fragment 中定义静态的 **newInstance** 方法
 
 ```java
 public final class WebFragment extends Fragment {
@@ -576,7 +580,7 @@ implementation 'com.hjq:xxpermissions:9.8'
     
 #### 代码注释规范
 
-* 类注释规范：author 是创建者（必填项）、time 是创建时间（必填项）、desc 是类的描述（必填项），doc 是文档地址（非必填），github 是开源地址（如果项目是开源的则必填，否则不填）
+* 类注释规范：**author** 是创建者（必填项）、**time** 是创建时间（必填项）、**desc** 是类的描述（必填项），**doc** 是文档地址（非必填），**github** 是开源地址（如果项目是开源的则必填，否则不填）
 
 ```java
 /**
@@ -622,11 +626,11 @@ private OnPermissionCallback mCallBack;
 fragment.setRetainInstance(true);
 ```
 
-* 注释什么情况下要写？什么情况下不用写？这个问题我很有感触，代码注释写多了不好，显得太啰嗦，也会增加工作量，写少了也不好，又怕别人看不懂，也害怕给自己后面留坑。我个人的建议是尽量用规范的命名来减少不必要的注释，很多时候我们只需要换位思考一下，忘记这段代码是自己写的，再问一下自己能不能一下子读懂，如果可以的话，注释就可以不用写，否则注释还是要写的。
+* 注释什么情况下要写？什么情况下不用写？这个问题我很有感触，代码注释写多了不好，显得太啰嗦，也会增加工作量，写少了也不好，又怕别人看不懂，也害怕给自己后面留坑。我个人的建议是尽量用规范的命名来减少不必要的注释，很多时候我们只需要换位思考一下，忘记这段代码是自己写的，再问一下自己能不能一下子读懂，如果可以的话，注释就可以不用写，否则注释还是要考虑写上。
 
 #### String ID 命名规范
 
-* 以 `模块` + `功能` 来命名，例如
+* 以 **模块 + 功能** 来命名，例如
 
 ```xml
 <!-- 主界面 -->
@@ -661,21 +665,21 @@ fragment.setRetainInstance(true);
 
 #### Anim ID 命名规范
 
-* 应用到某个模块 View
+* 应用到某个模块 **View**，举个栗子
 
 ```xml
 login_left_balloon_view.xml
 login_right_balloon_view.xml
 ```
 
-* 应用到全局 Activity
+* 应用到全局 **Activity**，举个栗子
 
 ```xml
 left_in_activity.xml
 left_out_activity.xml
 ```
 
-* 应用到全局 Dialog
+* 应用到全局 **Dialog**，举个栗子
 
 ```xml
 bottom_in_dialog.xml
@@ -684,7 +688,7 @@ bottom_out_dialog.xml
 
 #### View ID 命名规范
 
-* 应该以`控件的缩写` + `模块名` + `作用` 来命名，例如
+* 应该以 **控件的缩写 + 模块名 + 作用** 来命名，例如
 
 ```xml
 @+id/R.id.rg_login_type
@@ -721,7 +725,7 @@ bottom_out_dialog.xml
 
 #### Style 样式命名规范
 
-* 如果只是主题相关的样式，以 `Theme` 命名结尾，否则以 `Style` 命名结尾，命名要求尽量简洁，并且需要有代码注释，示例如下：
+* 如果只是主题相关的样式，以 **Theme** 命名结尾，否则以 **Style** 命名结尾，命名要求尽量简洁，并且需要有代码注释，示例如下：
 
 ```xml
 <!-- 应用主题样式 -->
@@ -764,17 +768,9 @@ bottom_out_dialog.xml
 </style>
 ```
 
-#### 资源使用规范
-
-* `Color` 和 `Dimens` 允许写死在代码中，但是如果某个色值引用得比较多（例如主题强调色、通用背景色），需要进行抽取和统一
-
-* 对于一些常用并且样式比较统一的控件，例如 `Button`、`EditText` 等，我们对这些控件的样式进行抽取到 `style.xml` 文件中来
-
-* 关于 String 资源写法建议，如果项目没有国际化的需求，可以考虑直接写死代码中，如果项目后续可能有国际化的需求，则需要抽取到 `string.xml` 中，大家可以根据实际情况来评估，毕竟写在 `string.xml` 会增加工作量
-
 #### XML 编码规范
 
-* 不推荐用 `dp` 作为字体单位，虽然在大部分手机上面 `dp` 和 `sp` 计算是差不多的，但是会有一部分老年用户群，例如咱们的长辈，他们通常会把手机显示的字体大小调大，这样他们才不需要带眼镜看手机，如果我们用 `dp` 作为字体单位，无论手机怎么调整字体大小，应用的字体大小都不会有任何的变化，所以这种操作显然是非常不人性化的。
+* 不推荐用 **dp** 作为字体单位，虽然在大部分手机上面 **dp** 和 **sp** 计算是差不多的，但是会有一部分老年用户群，例如咱们的长辈，他们通常会把手机显示的字体大小调大，这样他们才不需要带眼镜看手机，如果我们用 **dp** 作为字体单位，无论手机怎么调整字体大小，应用的字体大小都不会有任何的变化，所以这种操作显然是非常不人性化的。
 
 ```xml
 <!-- 错误写法示例 -->
@@ -792,7 +788,7 @@ bottom_out_dialog.xml
     android:textSize="18sp" />
 ```
 
-* 不能根据设计图给定的宽高把 `TextView` 或者 `Button` 的宽高定死，而是通过 `wrap_content` 的方式和 `padding` 来调整 View 的宽高，因为在不同手机上面字体大小不一致，在字体显示比较小的手机上面会显示正常，但是在字体显示比较大的平板上面文字上半部分极有可能会出现被裁剪的情况，所以我们不能把宽高定死，而是通过 `padding` 来调整到控件的大小。不过需要注意的是，[TextView 有自带的文字间距](https://blog.csdn.net/ccpat/article/details/45226951)，我们在拿设计图给定的 `padding`值时，需要拿设计图给定的值适当减去这一部分值（一般大概是在 `2~3 dp`）。
+* 不能根据设计图给定的宽高把 **TextView** 或者 **Button** 的宽高定死，而是通过 `wrap_content` 和 `padding` 的方式来调整 View 的宽高，因为在不同手机上面字体大小不一致，在字体显示比较小的手机上面会显示正常，但是在字体显示比较大的平板上面文字上半部分极有可能会出现被裁剪的情况，所以我们不能把宽高定死，而是通过 `padding` 来调整到控件的大小。不过需要注意的是，[TextView 有自带的文字间距](https://blog.csdn.net/ccpat/article/details/45226951)，我们在拿设计图给定的 `padding`值时，需要拿设计图给定的值适当减去这一部分值（一般大概是在 **2~3dp**）。
 
 ```xml
 <!-- 错误写法示例 -->
@@ -814,7 +810,7 @@ bottom_out_dialog.xml
     android:text="提交" />
 ```
 
-* `ImageView` 的宽高任一项定义成 `match_parent ` 时，另外一项不能写死大小，而是应该使用 `wrap_content`，否则很可能会导致图片变形，另外还需要使用 `android:adjustViewBounds="true"` 属性，否则 `ImageView` 无法根据图片的宽高来调整自己的宽高。
+* **ImageView** 的宽高任一项定义成 `match_parent` 时，另外一项不能写死大小，而是应该使用 `wrap_content`，否则很可能会因为比例不对导致图片变形，另外还需要使用 `android:adjustViewBounds="true"` 属性，否则 `ImageView` 无法根据图片的宽高来调整自己的宽高。
 
 ```xml
 <!-- 错误写法示例 -->
@@ -863,7 +859,7 @@ bottom_out_dialog.xml
 
 #### 预览属性约定
 
-* 应该在某个 Layout 文件根布局中定义 tools:context 属性，以便在布局文件中快速定位到对应的类
+* 应该在布局文件根布局中定义 `tools:context` 属性，以便在布局文件中快速定位到对应的类
 
     * `tools:context=".ui.activity.HomeActivity"`
     
@@ -885,7 +881,7 @@ bottom_out_dialog.xml
 ```
 
 
-* 此外，tools 属性还有各种各样的用途，例如 RecyclerView 的 tools 属性
+* 此外，tools 属性还有各种各样的用途，例如 RecyclerView 的 **tools** 属性
 
 ```xml
 <androidx.recyclerview.widget.RecyclerView
@@ -916,7 +912,15 @@ bottom_out_dialog.xml
     tools:src="@drawable/bg_home_placeholder" />
 ```
         
-* 如果某个 TextView 显示的字符串是一成不变的，那么可以直接定义在布局文件中，如果是动态变化的，那么应该使用 `tools:text` 预览属性，而不应该使用 `android:text`，其他布局属性也同理
+* 如果某个 TextView 显示的字符串是一成不变的，那么可以直接定义在布局文件中，如果是动态变化的，那么应该使用 `tools:text` 预览属性，而不应该使用 `android:text`，其他布局属性也同理。
+
+#### 资源使用约定
+
+* 设计图中的 **Color** 和 **Dimens** 值允许直接写死在代码中，但是如果某个色值引用得比较多（例如主题强调色、默认背景色等），需要抽取到 `color.xml` 文件中。
+
+* 对于一些常用并且样式比较统一的控件，例如 **Button**、**EditText** 等，我们对这些控件的样式进行抽取到 `style.xml` 文件中来，避免重复定义。
+
+* 关于 String 资源写法建议，如果项目没有国际化的需求，可以考虑直接写死代码中，如果项目后续可能有国际化的需求，则需要抽取到 `string.xml` 文件中，大家可以根据实际情况来评估，毕竟写在 `string.xml` 会增加一些工作量。
 
 #### 致谢
 
@@ -953,6 +957,8 @@ bottom_out_dialog.xml
 #### 如果您觉得我的开源库帮你节省了大量的开发时间，请扫描下方的二维码随意打赏，要是能打赏个 10.24 :monkey_face:就太:thumbsup:了。您的支持将鼓励我继续创作:octocat:
 
 ![](https://raw.githubusercontent.com/getActivity/Donate/master/picture/pay_ali.png) ![](https://raw.githubusercontent.com/getActivity/Donate/master/picture/pay_wechat.png)
+
+#### [点击查看捐赠列表](https://github.com/getActivity/Donate)
 
 ## License
 
