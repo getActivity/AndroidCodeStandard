@@ -8,7 +8,7 @@
 
 #### 更新日志
 
-* 2021 年 2 月 9 日：补充字符串 equals 使用规范
+* 2021 年 2 月 9 日：[补充字符串 equals 使用规范](https://github.com/getActivity/AndroidCodeStandard/commit/78348cc554e89010a5c31b3bc05c8beeb3925b43)
 
 * 2021 年 2 月 7 日：[补充做成开源项目的原因](https://github.com/getActivity/AndroidCodeStandard/commit/578d6e37b640adf9d3687c3eb562ff0ae58a131b)
 
@@ -18,7 +18,7 @@
 
 * 2021 年 2 月 5 日：[新增文本间距的问题阐述](https://github.com/getActivity/AndroidCodeStandard/commit/35ac8b16a6c9066dd1185e733ed12838f7befba5)
 
-* 2021 年 2 月 5 日：[修改全局变量为成员变量] (https://github.com/getActivity/AndroidCodeStandard/commit/f9cd3730e6c08e79be012133e6e4d89b315580aa)
+* 2021 年 2 月 5 日：[修改全局变量为成员变量](https://github.com/getActivity/AndroidCodeStandard/commit/f9cd3730e6c08e79be012133e6e4d89b315580aa)
 
 * 2021 年 2 月 5 日：[优化描述的语言艺术](https://github.com/getActivity/AndroidCodeStandard/commit/2cb35de115327227d37b9efc6477505011d939f5)
 
