@@ -4,7 +4,27 @@
 
 * 开源几年了，被很多人夸过，你的代码写得比较规范，[甚至有人质疑自己代码的写法](https://github.com/getActivity/AndroidProject/issues/55)，但是迟迟没有出一个代码规范，说来惭愧，只是因为我早几年写的代码还不够规范，不敢出来误导大家，而代码规范是后续才慢慢养成的，在这个过程中，我不仅参考了大公司出的代码规范文档，也研究了很多关于谷歌源码的编码规范，同时我也在无时不刻在思考，如何能写出让别人更好理解的代码，自打入行以来，我就在一直在这个问题上面探索。
 
-* 为什么要做成一个开源项目？因为项目会长期更新，大家如果对里面一些规范表示不能理解的或者感觉写得不太对的，又或者有什么想要补充的，随时欢迎你通过 **[issue](https://github.com/getActivity/AndroidCodeStandard/issues/new)** 反馈给我，大家的建议很重要，是我做好这件事的关键，我会认真对待和思考提出的每一个建议。同时我也相信一份好的代码规范经得住大众的反复推敲和不断实践，在这里也欢迎你提出自己的想法或者看法。
+* 为什么要做成一个开源项目？因为项目会长期更新，大家如果对里面一些规范表示不能理解的或者感觉写得不太对的，又或者有什么想要补充的，随时欢迎你通过 **[issue](https://github.com/getActivity/AndroidCodeStandard/issues/new)** 反馈给我，大家的建议很重要，是我做好这件事的关键，我会认真对待和思考提出的每一个建议。同时我也相信一份好的代码规范经得住大众的反复推敲和不断实践，在这里也欢迎你提出自己的想法和建议。
+
+#### 更新日志
+
+* 2021 年 2 月 9 日：补充字符串 equals 使用规范
+
+* 2021 年 2 月 7 日：[补充做成开源项目的原因](https://github.com/getActivity/AndroidCodeStandard/commit/578d6e37b640adf9d3687c3eb562ff0ae58a131b)
+
+* 2021 年 2 月 6 日：[补充注释规范和标准](https://github.com/getActivity/AndroidCodeStandard/commit/db7b469b5fe014d818ecdb14f070c8f58c93113c)
+
+* 2021 年 2 月 6 日：[纠正后台返回金额的处理方式](https://github.com/getActivity/AndroidCodeStandard/commit/1bb107522a7e440d0632690aca798de1bd6d88a3)
+
+* 2021 年 2 月 5 日：[新增文本间距的问题阐述](https://github.com/getActivity/AndroidCodeStandard/commit/35ac8b16a6c9066dd1185e733ed12838f7befba5)
+
+* 2021 年 2 月 5 日：[修改全局变量为成员变量] (https://github.com/getActivity/AndroidCodeStandard/commit/f9cd3730e6c08e79be012133e6e4d89b315580aa)
+
+* 2021 年 2 月 5 日：[优化描述的语言艺术](https://github.com/getActivity/AndroidCodeStandard/commit/2cb35de115327227d37b9efc6477505011d939f5)
+
+* 2021 年 2 月 5 日：[添加码云地址](https://github.com/getActivity/AndroidCodeStandard/commits/master)
+
+* 2021 年 2 月 5日：[第一次提交代码](https://github.com/getActivity/AndroidCodeStandard/commit/490a8d3e3695dd30a952ded71969fda83daaa58c)
 
 #### 目录
 
@@ -68,7 +88,9 @@
 
 #### 常规规范
 
-* 不用 **0dp**，而用 **0px**，这样可以避免系统进行换算，提升代码的执行效率。
+* 不用 **0dp**，而用 **0px**，这样就可以在获取时避免系统进行换算，提升代码的执行效率。
+
+* 字符串比较，应该用 `"xxx".equals(object)`，而不应该用 `object.equals("xxx")`，因为 **object** 对象可能为空，我们应该把不为空的条件放置在表达式的前面。
 
 * 尽量采用 **switch case** 来判断，如果不能实现则再考虑用 **if else**，因为在多条件判断下 **switch case** 更加简洁。
 
@@ -86,13 +108,13 @@
 
 * **ScrollView** 和 **NestedScrollView** 都能实现需求的前提下，优先选用 **NestedScrollView**，是因为 **NestedScrollView** 和 **RecyclerView** 支持相互嵌套，而 **ScrollView** 是不支持嵌套滚动的。
 
-* 不能在项目中创建副本文件，例如创建 `HomeActivity2.java`、`home_activity_v2.xml` 类似的副本文件，因为这样不仅会增加项目的维护难度，同时对编译速度也会造成一定的影响，正确的做法应该是在原有的文件基础上面修改，如果出现需求变更的情况，请直接使用 **Git** 或者 **SVN** 进行版本回退
+* 不能在项目中创建副本文件，例如创建 `HomeActivity2.java`、`home_activity_v2.xml` 类似的副本文件，因为这样不仅会增加项目的维护难度，同时对编译速度也会造成一定的影响，正确的做法应该是在原有的文件基础上面修改，如果出现需求变更的情况，请直接使用 **Git** 或者 **SVN** 进行版本回退。
 
-* 如果一个类不需要被继承，请直接用 **final** 进行修饰，如果一个字段在类初始化过程中已经赋值并且没有地方进行二次赋值，也应当用 **final** 修饰
+* 如果一个类不需要被继承，请直接用 **final** 进行修饰，如果一个字段在类初始化过程中已经赋值并且没有地方进行二次赋值，也应当用 **final** 修饰。
 
-* 每个小组成员应当安装[阿里巴巴代码约束插件](https://plugins.jetbrains.com/plugin/10046-alibaba-java-coding-guidelines)，并及时地对插件所提示的`代码警告`进行处理或者抑制警告
+* 每个小组成员应当安装[阿里巴巴代码约束插件](https://plugins.jetbrains.com/plugin/10046-alibaba-java-coding-guidelines)，并及时地对插件所提示的**代码警告**进行处理或者抑制警告。
 
-* 应用图标应该放在 `mipmap` 目录下，其他图片资源应当放到 `drawable` 目录下，具体原因可以查看[谷歌官方文档的介绍](https://developer.android.google.cn/guide/topics/resources/providing-resources)
+* 应用图标应该放在 **mipmap** 目录下，其他图片资源应当放到 **drawable** 目录下，具体原因可以看[谷歌官方文档的介绍](https://developer.android.google.cn/guide/topics/resources/providing-resources)对这两个文件夹给出的介绍：
 
 |    目录        | 资源类型                                                     |
 | :---------- | :----------------------------------------------------------- |
@@ -101,7 +123,7 @@
 
 #### 后台接口规范
 
-* 后台返回的 **id 值**，不要使用 **int** 或者 **long** 类型来接收，而应该用 **string** 类型来解析，因为我们不需要对这个 **id 值**进行运算，所以我们不需要关心它是什么类型的。
+* 后台返回的 **id 值**，不要使用 **int** 或者 **long** 类型来接收，而应该用 **string** 类型来接收，因为我们不需要对这个 **id 值**进行运算，所以我们不需要关心它是什么类型的。
 
 * 后台返回的**金额数值**应该使用 **String** 来接收，而不能用**浮点数**来接收，因为 **float** 或者 **double** 在数值比较大的时候会容易丢失精度，并且还需要自己手动转换出想要保留的小数位，最好的方式是后台返回什么前端就展示什么，而到了运算的时候，则应该用 **BigDecimal** 类来进行转换和计算，当然金额在前端一般展示居多，运算的情况还算是比较少的。
 
