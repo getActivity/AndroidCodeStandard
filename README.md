@@ -8,6 +8,8 @@
 
 #### 更新日志
 
+* 2021 年 2 月 11 日：[补充异常捕获规范标准](https://github.com/getActivity/AndroidCodeStandard/commit/80688b1dc84ccf752d6c33e5e57291fd67ca2eef)
+
 * 2021 年 2 月 9 日：[补充字符串 equals 使用规范](https://github.com/getActivity/AndroidCodeStandard/commit/78348cc554e89010a5c31b3bc05c8beeb3925b43)
 
 * 2021 年 2 月 7 日：[补充做成开源项目的原因](https://github.com/getActivity/AndroidCodeStandard/commit/578d6e37b640adf9d3687c3eb562ff0ae58a131b)
