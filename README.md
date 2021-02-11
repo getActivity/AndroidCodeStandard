@@ -484,7 +484,7 @@ public final class PasswordEditText extends EditText
 
 #### 异常捕获规范
 
-* 请不要使用此方式捕获异常，因为这种方式会把问题给隐藏掉，会加大后续排查问题的难度
+* 请不要使用此方式捕获异常，因为这种方式会把问题给隐藏掉，从而会加大后续排查问题的难度。
 
 ```java
 try {
@@ -492,7 +492,7 @@ try {
 } catch (Exception e) {}
 ```
 
-* 如需捕获异常，请用以下方式进行捕获
+* 如需捕获异常，请用以下方式进行捕获，列出具体的异常类型，并在代码中输出对应的日志。
 
 ```java
 // 捕获这个异常，避免程序崩溃
@@ -508,7 +508,46 @@ try {
 }
 ```
 
-* 必须要在 try 块中说明崩溃的缘由，并注明抛出的异常信息，并在代码中输出对应的日志。
+* 如果这个异常不是通过方法 throws 关键字抛出，则需要在 try 块中说明崩溃的缘由，并注明抛出的异常信息。
+
+---
+
+* 有异常就一定要 `try catch` ？，这种想法其实是错的，例如我们项目用 Glide 加载图片会抛出以下异常：
+
+```java
+Caused by: java.lang.IllegalArgumentException: You cannot start a load for a destroyed activity
+   at com.bumptech.glide.manager.RequestManagerRetriever.assertNotDestroyed(RequestManagerRetriever.java:348)
+   at com.bumptech.glide.manager.RequestManagerRetriever.get(RequestManagerRetriever.java:148)
+   at com.bumptech.glide.Glide.with(Glide.java:826)
+```
+
+* 这是因为 Activity 的销毁了而去加载图片导致的（场景：异步执行图片加载），大多人的解决方式可能是：
+
+```java
+try {
+    // Activity 销毁后执行加载图片会触发 crash
+    Glide.with(this)
+            .load(url)
+            .into(mImageView);
+} catch (IllegalArgumentException e) {
+    // java.lang.IllegalArgumentException: You cannot start a load for a destroyed activity
+    e.printStackTrace();
+}
+```
+
+* 虽然这种方式可以解决 **crash** 的问题，但是显得**不够严谨**，Glide 抛异常给外层，其实无非就想告诉调用者，调用的时机错了，正确的处理方式不是直接捕获这个异常，而是应该在外层做好逻辑判断，避免会进入出现 **crash** 的代码，正确的处理示例如下：
+
+```java
+if (isFinishing() || isDestroyed()) {
+   // Glide：You cannot start a load for a destroyed activity
+    return;
+}
+Glide.with(this)
+        .load(url)
+        .into(mImageView);
+```
+
+* 所以尽量不要通过 `try catch` 的方式来处理异常，除非外层真的判断不了，否则应该通过一些逻辑判断来避免进入一些会 **crash** 的代码。
 
 #### Activity 跳转约定
 
@@ -747,7 +786,7 @@ bottom_out_dialog.xml
 
 #### Style 样式命名规范
 
-* 如果只是主题相关的样式，以 **Theme** 命名结尾，否则以 **Style** 命名结尾，命名要求尽量简洁，并且需要有代码注释，示例如下：
+* 如果只是主题相关的样式，以 **Theme** 命名结尾，控件样式则以 **Style** 命名结尾，命名要求尽量简洁，并且需要有代码注释，示例如下：
 
 ```xml
 <!-- 应用主题样式 -->
