@@ -26,7 +26,7 @@
 
 * 2021 年 2 月 5 日：[添加码云地址](https://github.com/getActivity/AndroidCodeStandard/commits/master)
 
-* 2021 年 2 月 5日：[第一次提交代码](https://github.com/getActivity/AndroidCodeStandard/commit/490a8d3e3695dd30a952ded71969fda83daaa58c)
+* 2021 年 2 月 5 日：[第一次提交代码](https://github.com/getActivity/AndroidCodeStandard/commit/490a8d3e3695dd30a952ded71969fda83daaa58c)
 
 #### 目录
 
@@ -82,7 +82,7 @@
 
 * 那么你的疑问可能又来了，怎么样才能算好的代码规范，答案只有一个，真正好的代码规范就是别人的代码你一眼就能看懂，更不需要反复去看。之所以这样并不是因为看的人 Review 代码的能力有多强，而是写代码的人愿意遵守规则，他知道自己想这么写，但是知道你会看不懂，所以换了一种方式来写，这种方式就是**代码规范**。
 
-* 代码规范：一个好的代码规范可以帮助我们快速了解和熟悉相关的业务，降低后续维护的成本（二次开发和排查问题）。
+* 代码规范：一个好的代码规范可以帮助我们快速了解和熟悉相关的业务，降低后续维护的成本（二次开发或者排查问题）。
 
 * 代码不规范：代码不规范会导致项目可读性变差，具体表现为**难分辨和难理解**，在无形之中加大项目后续维护的成本。
 
@@ -94,7 +94,7 @@
 
 * 字符串比较，应该用 `"xxx".equals(object)`，而不应该用 `object.equals("xxx")`，因为 **object** 对象可能为空，我们应该把不为空的条件放置在表达式的前面。
 
-* 尽量采用 **switch case** 来判断，如果不能实现则再考虑用 **if else**，因为在多条件判断下 **switch case** 更加简洁。
+* 尽量采用 **switch case** 来判断，如果不能实现则再考虑用 **if else**，因为在多条件下使用 **switch case** 语句判断会更加简洁。
 
 * 不推荐用 **layout_marginLeft**，而应该用 **layout_marginStart**；不推荐用 **layout_marginRight**，而应该用 **layout_marginEnd**，原因有两个，一个是适配 Android 4.4 **反方向特性**（可在开发者选项中开启），第二个是 XML 布局中使用 **layout_marginLeft** 和 **layout_marginRight** 会有代码警告，**padding** 属性也是同理，这里不再赘述。
 
@@ -116,7 +116,7 @@
 
 * 每个小组成员应当安装[阿里巴巴代码约束插件](https://plugins.jetbrains.com/plugin/10046-alibaba-java-coding-guidelines)，并及时地对插件所提示的**代码警告**进行处理或者抑制警告。
 
-* 应用图标应该放在 **mipmap** 目录下，其他图片资源应当放到 **drawable** 目录下，具体原因可以看[谷歌官方文档的介绍](https://developer.android.google.cn/guide/topics/resources/providing-resources)对这两个文件夹给出的介绍：
+* 应用图标应该放在 **mipmap** 目录下，其他图片资源应当放到 **drawable** 目录下，具体原因可以看[谷歌官方文档](https://developer.android.google.cn/guide/topics/resources/providing-resources)对这两个文件夹给出的介绍：
 
 |    目录        | 资源类型                                                     |
 | :---------- | :----------------------------------------------------------- |
@@ -147,53 +147,74 @@
 
 * 局部变量应用作用来命名，举个栗子：
 
-    * `String name`
-    
-    * `TextView nameView`
-    
-    * `FrameLayout nameLayout`
-    
-    * 命名规范附带技巧（当布局中同个类型的控件只有一个的时候，也可以这样命名）
+```java
+String name;
 
-        * `TextView textView`
-        
-        * `RecyclerView recyclerView`
+TextView nameView;
+
+FrameLayout nameLayout;
+```
+
+---
+
+```java
+// 命名规范附带技巧（当布局中同个类型的控件只有一个的时候，也可以这样命名）
+
+TextView textView;
+
+RecyclerView recyclerView;
+```
 
 * 成员变量必须以小 **m** 开头，举个栗子：
 
-    * `String mName`
-    
-    * `TextView mNameView`
-    
-    * `FrameLayout mNameLayout`
+```java
+String mName;
 
-    * 命名规范附带技巧（当布局中同个类型的控件只有一个的时候，也可以这样命名）
-        
-        * `TextView mTextView`
-        
-        * `RecyclerView mRecyclerView`
+TextView mNameView;
+
+FrameLayout mNameLayout;
+```
+
+---
+
+```java
+// 命名规范附带技巧（当布局中同个类型的控件只有一个的时候，也可以这样命名）
+ 
+TextView mTextView;
+
+RecyclerView mRecyclerView;
+```
     
 * 布尔值命名规范，命名不应该以 **is** 开头，举个栗子：
 
-    * 错误写法示例：
-    
-        * 成员变量：`private boolean mIsDebug = false;`
-        
-        * 局部变量：`boolean isDebug = false;`
-    
-    * 正确写法示例：
-    
-        * 成员变量：`private boolean mDebug = false;`
-        
-        * 局部变量：`boolean debug = false;`
+```java
+// 错误写法示例
+
+private boolean mIsDebug = false;
+
+boolean isDebug = false;
+```
+---
+
+```java
+// 正确写法示例
+
+private boolean mDebug = false;
+
+boolean debug = false;
+```
         
 * 静态变量则用小 **s** 开头，举个栗子：
 
-    * `static Handler sHandler`
+```java
+static Handler sHandler;
+```
 
 * 常量则需要用大写，并且用下划线代替驼峰，举个栗子：
 
-    * `static final String REQUEST_INSTALL_PACKAGES"`
+```java
+static final String REQUEST_INSTALL_PACKAGES;
+```
     
 * 有细心的同学可能会发现一个问题，为什么我们最常用的 Glide 和 OkHttp 的源码为什么没有用字母 `m` 来区分局部变量和成员变量？但是谷歌的 SDK 源码和 Support 库就有呢？那究竟是用还是不用呢？这个问题其实很好回答，我们可以先从体量上分析，首先谷歌的开发人员和项目数量肯定是最多的，那么谷歌在这块的探索和研究肯定是多于 Glie 和 OkHttp 的，其次是 Glide 和 OkHttp 的源码都有一个特点，很多类都维持在 1k 行代码左右，而谷歌源码很多类都接近 10k 行代码，例如 Activity 的源码在 API 30 上面有 8.8k 行代码，所以谷歌在这块略胜一筹，如果非要二选一，我选择谷歌的代码风格，并不是说 Glide 和 OkHttp 命名风格不好，是因为或许在未来的某一天，可能会有新的图片请求框架和网络请求框架来代替 Glide 和 OkHttp，但是基本不可能会出现有代替 Android SDK 或者 Support 库的一天。
     
@@ -294,21 +315,25 @@ public class Activity {
 
 * 业务模块请以 **模块 + 类型** 来命名，举个栗子
 
-    * `HomeActivity.java`
+```text
+HomeActivity.java
+
+SettingFragment.java
+
+HomeAdapter.java
     
-    * `SettingFragment.java`
-    
-    * `HomeAdapter.java`
-    
-    * `AddressDialog.java`
+AddressDialog.java
+```
 
 * 技术模块请以类的 **作用** 来命名，举个栗子
 
-    * `CrashHandler.java`
+```text
+CrashHandler.java
     
-    * `GridSpaceDecoration.java`
+GridSpaceDecoration.java
     
-    * `PickerLayoutManager.java`
+PickerLayoutManager.java
+```
     
 #### 接口文件命名规范
 
@@ -348,13 +373,15 @@ public class Handler {
 
 * 以 `模块` + `类型` 来命名，举个栗子：
 
-    * `home_activity.xml`
-    
-    * `setting_fragment.xml`
-    
-    * `menu_item.xml`
-    
-    * `address_dialog.xml`
+```text
+home_activity.xml
+
+setting_fragment.xml
+
+menu_item.xml
+
+address_dialog.xml
+```
     
 * 这样写的好处在于，由于 res 文件夹下是没有层级概念的
 
@@ -362,35 +389,42 @@ public class Handler {
 
 * 例如分享对话框中，有对话框 Root 布局和 Item 布局
 
-    * `share_dialog.xml`（Root 布局）
+```text
+share_dialog.xml（Root 布局）
     
-    * `share_item.xml`（Item 布局）
+share_item.xml（Item 布局）
+```
     
 #### 资源文件命名规范
 
 * 如果是业务模块下的资源，以 **模块 + 类型** 来命名，例如分享对话框的资源：
 
-    * `share_link_ic.png`（复制链接）
+```text
+share_link_ic.png（复制链接）
 
-    * `share_moment_ic.png`（分享到朋友圈）
+share_moment_ic.png（分享到朋友圈）
 
-    * `share_qq_ic.png`（分享到 QQ 好友）
+share_qq_ic.png（分享到 QQ 好友）
     
-    * `share_qzone_ic.png`（分享到 QQ 空间）
+share_qzone_ic.png（分享到 QQ 空间）
     
-    * `share_wechat_ic.png`（分享到微信好友）
+share_wechat_ic.png（分享到微信好友）
+```
     
 * 如果和业务模块不相干的资源，以 **作用 + 类型** 来命名，例如通用的控件样式资源：
 
-    * `button_rect_selector.xml`（通用直角按钮样式）
+```text
+button_rect_selector.xml（通用直角按钮样式）
 
-    * `button_round_selector.xml`（通用圆角按钮样式）
+button_round_selector.xml（通用圆角按钮样式）
+```
+
     
-* 这种资源有一个共同特点，它不属于哪个模块，但是在不同模块都有用到，所以不能用业务的模块名作为文件名前缀
+* 这种资源有一个共同特点，它不属于哪个模块，但是在不同模块都有用到，所以不能用业务的模块名作为文件名前缀。
     
 #### 接口实现规范
 
-* 一般情况下，我们会在类中这样实现接口，这样写的好处是，可以减少对象的创建，并且代码也比较美观
+* 一般情况下，我们会在类中这样实现接口，这样写的好处是，可以减少对象的创建，并且代码也比较美观。
 
 ```java
 public final class PasswordEditText extends EditText
@@ -431,7 +465,7 @@ public final class PasswordEditText extends EditText
 }
 ```
 
-* 但是有一个美中不足的地方，就是在实现的接口过多时，我们很难分辨是哪个方法是哪个接口的，这个时候可以使用注释的方式来解决这个问题，加上 **@link** 还可以帮助我们快速定位接口类在项目中所在的位置
+* 但是有一个美中不足的地方，就是在实现的接口过多时，我们很难分辨是哪个方法是哪个接口的，这个时候可以使用注释的方式来解决这个问题，加上 **@link** 还可以帮助我们快速定位接口类在项目中所在的位置。
 
 ```java
 public final class PasswordEditText extends EditText
@@ -730,21 +764,21 @@ fragment.setRetainInstance(true);
 
 * 应用到某个模块 **View**，举个栗子
 
-```xml
+```text
 login_left_balloon_view.xml
 login_right_balloon_view.xml
 ```
 
 * 应用到全局 **Activity**，举个栗子
 
-```xml
+```text
 left_in_activity.xml
 left_out_activity.xml
 ```
 
 * 应用到全局 **Dialog**，举个栗子
 
-```xml
+```text
 bottom_in_dialog.xml
 bottom_out_dialog.xml
 ```
@@ -753,7 +787,7 @@ bottom_out_dialog.xml
 
 * 应该以 **控件的缩写 + 模块名 + 作用** 来命名，例如
 
-```xml
+```text
 @+id/R.id.rg_login_type
 
 @+id/R.id.et_login_phone
@@ -924,14 +958,6 @@ bottom_out_dialog.xml
 
 * 应该在布局文件根布局中定义 `tools:context` 属性，以便在布局文件中快速定位到对应的类
 
-    * `tools:context=".ui.activity.HomeActivity"`
-    
-    * `tools:context=".ui.fragment.SettingFragment"`
-    
-    * `tools:context=".ui.adapter.HomeAdapter"`
-    
-    * `tools:context=".ui.dialog.PersonDataDialog"`
-
 ```xml
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -943,6 +969,17 @@ bottom_out_dialog.xml
 </FrameLayout>
 ```
 
+---
+
+```text
+tools:context=".ui.activity.HomeActivity"
+
+tools:context=".ui.fragment.SettingFragment"
+
+tools:context=".ui.adapter.HomeAdapter"
+
+tools:context=".ui.dialog.PersonDataDialog"
+```
 
 * 此外，tools 属性还有各种各样的用途，例如 RecyclerView 的 **tools** 属性
 
@@ -1011,11 +1048,11 @@ bottom_out_dialog.xml
 
 * 日志查看框架：[Logcat](https://github.com/getActivity/Logcat)
 
-#### Android技术讨论Q群：78797078
-
 #### 微信公众号：Android轮子哥
 
 ![](https://raw.githubusercontent.com/getActivity/Donate/master/picture/official_ccount.png)
+
+#### Android 技术分享 QQ 群：78797078
 
 #### 如果您觉得我的开源库帮你节省了大量的开发时间，请扫描下方的二维码随意打赏，要是能打赏个 10.24 :monkey_face:就太:thumbsup:了。您的支持将鼓励我继续创作:octocat:
 
