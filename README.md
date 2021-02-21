@@ -945,13 +945,61 @@ button_round_selector.xml（通用圆角按钮样式）
 <color name="logcat_level_other_color">#FFFFFFFF</color>
 ```
 
-* 但是实际开发中，我们常常会遇到下面这种命名方式：
+* 另外有一类 Color 被多个模块所引用，需要以 **common + 作用 + color** 来命名，例如：
+
+```xml
+<!-- App 样式中引用的颜色 -->
+<color name="common_primary_color">@color/white</color>
+<color name="common_primary_dark_color">@color/black</color>
+<color name="common_accent_color">#5A8DDF</color>
+<color name="common_window_background_color">#F4F4F4</color>
+<color name="common_text_color">#333333</color>
+<color name="common_text_hint_color">@color/panda</color>
+
+<!-- 按钮按压时的颜色 -->
+<color name="common_button_pressed_color">#AA5A8DDF</color>
+<!-- 按钮禁用时的颜色 -->
+<color name="common_button_disable_color">#BBBBBB</color>
+<!-- 分割线的颜色 -->
+<color name="common_line_color">#ECECEC</color>
+```
+
+* 还有一类 Color 是行业通用的色值，需要以 **简单直接的方式** 来命名，例如：
+
+```xml
+<!-- 透明色 -->
+<color name="transparent">#00000000</color>
+<!-- 白色 -->
+<color name="white">#FFFFFFFF</color>
+<!-- 黑色 -->
+<color name="black">#FF000000</color>
+<!-- 灰色 -->
+<color name="gray">#FF808080</color>
+<!-- 红色 -->
+<color name="red">#FFFF0000</color>
+<!-- 金色 -->
+<color name="gold">#FFFFD700</color>
+<!-- 黄色 -->
+<color name="yellow">#FFFFFF00</color>
+<!-- 绿色 -->
+<color name="green">#FF008000</color>
+<!-- 蓝色 -->
+<color name="blue">#FF0000FF</color>
+<!-- 紫色 -->
+<color name="purple">#FF800080</color>
+<!-- 粉色 -->
+<color name="pink">#FFFFC0CB</color>
+<!-- 橙色 -->
+<color name="orange">#FFFFA500</color>
+```
+
+* 在实际开发中，我们常常会遇到下面这种命名方式：
 
 ```xml
 <name="color_FF35BF30">#color_FF35BF30</color>
 ```
 
-* 但其实这种命名方式是不规范的，因为它对 **Color ID** 的名称定义比较模糊，会容易给别人造成误导；举个例子：假设项目中有 **200** 个地方引用了这个 `color_FF35BF30` 色值，其中有 **150** 地方是你自己引用的，另外 **50** 个地方是别人引用的，但是别人不知道你那个色值是干什么的，看到你有写就直接引用了，突然有一天产品经理心情不好要改这个色值，那么你要从 **200** 地方区分 **150** 个需要修改的地方和 **50** 个不需要修改的地方。
+* 其实这种命名方式是不规范的，因为它对 **Color ID** 的名称定义比较模糊，会容易给别人造成误导；举个例子：假设项目中有 **200** 个地方引用了这个 `color_FF35BF30` 色值，其中有 **150** 地方是你自己引用的，另外 **50** 个地方是别人引用的，但是别人不知道你那个色值是干什么的，看到你有写就直接引用了，突然有一天产品经理心情不好要改这个色值，那么你要从 **200** 地方区分 **150** 个需要修改的地方和 **50** 个不需要修改的地方。
 
 #### Anim ID 命名规范
 
