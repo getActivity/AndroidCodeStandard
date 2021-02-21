@@ -2,9 +2,17 @@
 
 * 码云地址：[Gitee](https://gitee.com/getActivity/AndroidCodeStandard)
 
-* 开源几年了，被很多人夸过，你的代码写得比较规范，[甚至有人质疑自己代码的写法](https://github.com/getActivity/AndroidProject/issues/55)，但是迟迟没有出一个代码规范，说来惭愧，只是因为我早几年写的代码还不够规范，不敢出来误导大家，而代码规范是后续才慢慢养成的，在这个过程中，我不仅参考了大公司出的代码规范文档，也研究了很多关于谷歌源码的编码规范，同时我也在无时不刻在思考，如何能写出让别人更好理解的代码，自打入行以来，我就在一直在这个问题上面探索。
+* 做开源几年了，被很多人夸过，你的代码写得比较规范，[甚至有人质疑自己代码的写法](https://github.com/getActivity/AndroidProject/issues/55)，但是迟迟没有出一个代码规范，说来惭愧，只是因为我早几年写的代码还不够规范，不敢出来误导大家，而代码规范是后续才慢慢养成的，在这个过程中，我不仅参考了大公司出的代码规范文档，也研究了很多关于谷歌源码的编码规范，同时我也在无时不刻在思考，如何能写出让别人更好理解的代码，自打入行以来，我就在一直在这个问题上面探索。
 
 * 为什么要做成一个开源项目？因为项目会长期更新，大家如果对里面一些规范表示不能理解的或者感觉写得不太对的，又或者有什么想要补充的，随时欢迎你通过 **[issue](https://github.com/getActivity/AndroidCodeStandard/issues/new)** 反馈给我，大家的建议很重要，是我做好这件事的关键，我会认真对待和思考提出的每一个建议。同时我也相信一份好的代码规范经得住大众的反复推敲和不断实践，在这里也欢迎你提出自己的想法和建议。
+
+* 这份代码规范文档开始编写的时间是 2020 年 7 月，中间不断地修改和补充，于 2021 年 1 月发布定稿，同年 2 月，纠正和补充了一些代码规范，从 0 到 1，从不成熟到成熟，整个过程耗时 200 多天。原因是我积累了很多开发的好习惯，但是一直没有任何记录，在短时间将这些东西全部输出几乎不可能，所以我前面花了很多时间回忆和总结，这段时间内我做的最多的一件事是，代码写着写着就去写代码规范文档，直到后面发布初稿时，我又投入了大把的时间和精力来做这件事。大家心中可能都有一个疑问，我为什么不用网上写的，直接照抄照搬，又或者直接采用阿里的，这样不是简单轻松多了？关于这个问题，可以跟大家谈谈我的想法，我看过很多关于 Android 代码规范文档，但是我感觉存在一些问题，可以跟大家分享一下：
+
+    1. 没有说服力：是很多代码规范文档只告诉你应该这样写，但是基本没有人提及这样写的好处，那样写不好的地方。他们只会告诉你规则，但是从不告诉你前因后果，这样难以服众。
+
+    2. 不够全面：例如后台接口规范、接口实现规范、异常捕获规范、第三方框架使用规范、代码硬编码规范、资源硬编码规范、多模块规范；这些是我们开发中所避不开的东西，但是现在网上的代码规范文档却很少有人提及。
+
+    3. 细节瑕疵：我举个最简单的，很多代码规范文档都会说 **String ID** 以 **模块 + 作用** 来命名，但是没有人提及过在其他情况下的处理，例如：`确定取消` 这种字符串，虽然在很多模块中使用到了，但是它却不属于任何模块的，这个时候该怎么命名？这个虽然是小细节，但足以看出文档在细节处理上不够完美和严谨。
 
 #### 更新日志
 
@@ -46,10 +54,6 @@
 
 * [接口文件命名规范](#接口文件命名规范)
 
-* [布局文件命名规范](#布局文件命名规范)
-
-* [资源文件命名规范](#资源文件命名规范)
-
 * [接口实现规范](#接口实现规范)
 
 * [异常捕获规范](#异常捕获规范)
@@ -58,21 +62,31 @@
 
 * [第三方框架使用规范](#第三方框架使用规范)
 
+* [多模块规范](#多模块规范)
+
 * [代码注释规范](#代码注释规范)
 
+* [代码硬编码规范](#代码硬编码规范)
+
+* [布局文件命名规范](#布局文件命名规范)
+
+* [资源文件命名规范](#资源文件命名规范)
+
 * [String ID 命名规范](#string-id-命名规范)
+
+* [Color ID 命名规范](#color-id-命名规范)
 
 * [Anim ID 命名规范](#anim-id-命名规范)
 
 * [View ID 命名规范](#view-id-命名规范)
 
-* [Style 样式命名规范](#style-样式命名规范)
+* [Style 命名规范](#style-命名规范)
 
 * [XML 编码规范](#xml-编码规范)
 
 * [预览属性约定](#预览属性约定)
 
-* [资源使用约定](#资源使用约定)
+* [资源硬编码规范](#资源硬编码规范)
 
 * [致谢](#致谢)
 
@@ -90,7 +104,7 @@
 
 #### 常规规范
 
-* 不用 **0dp**，而用 **0px**，这样就可以在获取时避免系统进行换算，提升代码的执行效率。
+* 使用 **0px** 代替 **0dp**，这样就可以在获取时避免系统进行换算，提升代码的执行效率。
 
 * 字符串比较，应该用 `"xxx".equals(object)`，而不应该用 `object.equals("xxx")`，因为 **object** 对象可能为空，我们应该把不为空的条件放置在表达式的前面。
 
@@ -112,7 +126,7 @@
 
 * 不能在项目中创建副本文件，例如创建 `HomeActivity2.java`、`home_activity_v2.xml` 类似的副本文件，因为这样不仅会增加项目的维护难度，同时对编译速度也会造成一定的影响，正确的做法应该是在原有的文件基础上面修改，如果出现需求变更的情况，请直接使用 **Git** 或者 **SVN** 进行版本回退。
 
-* 如果一个类不需要被继承，请直接用 **final** 进行修饰，如果一个字段在类初始化过程中已经赋值并且没有地方进行二次赋值，也应当用 **final** 修饰。
+* 如果一个类不需要被继承，请直接用 **final** 进行修饰，如果一个字段在类初始化过程中已经赋值并且没有地方进行二次赋值，也应当用 **final** 修饰，如果一个字段不需要被外部访问，那么需要用 **private** 进行修饰。
 
 * 每个小组成员应当安装[阿里巴巴代码约束插件](https://plugins.jetbrains.com/plugin/10046-alibaba-java-coding-guidelines)，并及时地对插件所提示的**代码警告**进行处理或者抑制警告。
 
@@ -145,81 +159,64 @@
 
 * 使用**驼峰式命名风格**（单词最好控制在三个以内）
 
-* 局部变量应用作用来命名，举个栗子：
+* 局部变量或者公开的成员变量应该以作用来命名，例如：
 
 ```java
-String name;
-
-TextView nameView;
-
-FrameLayout nameLayout;
+public String name;
+public TextView nameView;
+public FrameLayout nameLayout;
 ```
-
----
 
 ```java
 // 命名规范附带技巧（当布局中同个类型的控件只有一个的时候，也可以这样命名）
-
-TextView textView;
-
-RecyclerView recyclerView;
+public TextView textView;
+public RecyclerView recyclerView;
 ```
 
-* 成员变量必须以小 **m** 开头，举个栗子：
+* 非公开的成员变量必须以小 **m** 开头，例如：
 
 ```java
-String mName;
-
-TextView mNameView;
-
-FrameLayout mNameLayout;
+private String mName;
+private TextView mNameView;
+private FrameLayout mNameLayout;
 ```
-
----
 
 ```java
 // 命名规范附带技巧（当布局中同个类型的控件只有一个的时候，也可以这样命名）
- 
-TextView mTextView;
-
-RecyclerView mRecyclerView;
+private TextView mTextView;
+private RecyclerView mRecyclerView;
 ```
-    
-* 布尔值命名规范，命名不应该以 **is** 开头，举个栗子：
+
+* 布尔值命名规范，无论是局部变量还是成员变量，都不应该携带 **is**，例如：
 
 ```java
-// 错误写法示例
-
-private boolean mIsDebug = false;
-
-boolean isDebug = false;
+// 不规范写法示例
+private boolean mIsDebug;
+boolean isDebug;
 ```
----
 
 ```java
-// 正确写法示例
-
-private boolean mDebug = false;
-
-boolean debug = false;
+// 规范写法示例
+private boolean mDebug;
+boolean debug;
 ```
         
-* 静态变量则用小 **s** 开头，举个栗子：
+* 静态变量则用小 **s** 开头，例如：
 
 ```java
 static Handler sHandler;
 ```
 
-* 常量则需要用大写，并且用下划线代替驼峰，举个栗子：
+* 常量则需要用大写，并且用下划线代替驼峰，例如：
 
 ```java
 static final String REQUEST_INSTALL_PACKAGES;
 ```
-    
-* 有细心的同学可能会发现一个问题，为什么我们最常用的 Glide 和 OkHttp 的源码为什么没有用字母 `m` 来区分局部变量和成员变量？但是谷歌的 SDK 源码和 Support 库就有呢？那究竟是用还是不用呢？这个问题其实很好回答，我们可以先从体量上分析，首先谷歌的开发人员和项目数量肯定是最多的，那么谷歌在这块的探索和研究肯定是多于 Glie 和 OkHttp 的，其次是 Glide 和 OkHttp 的源码都有一个特点，很多类都维持在 1k 行代码左右，而谷歌源码很多类都接近 10k 行代码，例如 Activity 的源码在 API 30 上面有 8.8k 行代码，所以谷歌在这块略胜一筹，如果非要二选一，我选择谷歌的代码风格，并不是说 Glide 和 OkHttp 命名风格不好，是因为或许在未来的某一天，可能会有新的图片请求框架和网络请求框架来代替 Glide 和 OkHttp，但是基本不可能会出现有代替 Android SDK 或者 Support 库的一天。
-    
-* 最后让我们静静地欣赏一下 **Activity** 成员变量的命名：
-    
+
+* 有细心的同学可能会发现一个问题，为什么我们最常用的 Glide 和 OkHttp 的源码中，非公开的成员变量为什么没有用小 `m` 开头？但是谷歌的 SDK 源码和 Support 库就有呢？那究竟是用还是不用呢？这个问题其实很好回答，我们可以先从体量上分析，首先谷歌的开发人员和项目数量肯定是最多的，那么谷歌在这块的探索和研究肯定是多于 Glie 和 OkHttp 的，其次是 Glide 和 OkHttp 的源码都有一个特点，很多类都维持在 1k 行代码左右，而谷歌源码很多类都接近 10k 行代码，例如 Activity 的源码在 API 30 上面有 8.8k 行代码，所以谷歌在这块略胜一筹，如果非要二选一，我选择谷歌的代码风格，并不是说 Glide 和 OkHttp 命名风格不好，是因为或许在未来的某一天，可能会有新的图片请求框架和网络请求框架来代替 Glide 和 OkHttp，但是基本不可能会出现有代替 Android SDK 或者 Support 库的一天。
+
+* 最后让我们静静地欣赏一下 **Activity** 类中成员变量的命名：
+
 ```java
 public class Activity {
 
@@ -260,11 +257,11 @@ public class Activity {
 
     private final ArrayList<Application.ActivityLifecycleCallbacks> mActivityLifecycleCallbacks =
             new ArrayList<Application.ActivityLifecycleCallbacks>();
-    
+
     private Window mWindow;
 
     private WindowManager mWindowManager;
-    
+
     private CharSequence mTitle;
     private int mTitleColor = 0;
 
@@ -313,7 +310,7 @@ public class Activity {
 
 #### 类文件命名规范
 
-* 业务模块请以 **模块 + 类型** 来命名，举个栗子
+* 业务模块：请以 **模块 + 类型** 来命名，例如：
 
 ```text
 HomeActivity.java
@@ -321,20 +318,20 @@ HomeActivity.java
 SettingFragment.java
 
 HomeAdapter.java
-    
+
 AddressDialog.java
 ```
 
-* 技术模块请以类的 **作用** 来命名，举个栗子
+* 技术模块：请以类的 **作用** 来命名，例如：例如
 
 ```text
 CrashHandler.java
-    
+
 GridSpaceDecoration.java
-    
+
 PickerLayoutManager.java
 ```
-    
+
 #### 接口文件命名规范
 
 * 如果是监听事件可以参考 **View** 的写法及命名：
@@ -343,13 +340,13 @@ PickerLayoutManager.java
 public class View {
 
     private View.OnClickListener mListener;
-    
+
     public void setOnClickListener(OnClickListener listener) {
         mListener = listener;
     }
-    
+
     public interface OnClickListener {
-    
+
         void onClick(View v);
     }
 }
@@ -369,67 +366,12 @@ public class Handler {
 
 * 至于接口写在内部还是外部，具体可以视实际情况而定，如果功能比较庞大，就可以考虑抽取成外部的，只作用在某个类上的，则就可以直接写成内部的。
 
-#### 布局文件命名规范
-
-* 以 `模块` + `类型` 来命名，举个栗子：
-
-```text
-home_activity.xml
-
-setting_fragment.xml
-
-menu_item.xml
-
-address_dialog.xml
-```
-    
-* 这样写的好处在于，由于 res 文件夹下是没有层级概念的
-
-* 通过前缀的命名可以帮助我们更好定位到同一模块下的资源
-
-* 例如分享对话框中，有对话框 Root 布局和 Item 布局
-
-```text
-share_dialog.xml（Root 布局）
-    
-share_item.xml（Item 布局）
-```
-    
-#### 资源文件命名规范
-
-* 如果是业务模块下的资源，以 **模块 + 类型** 来命名，例如分享对话框的资源：
-
-```text
-share_link_ic.png（复制链接）
-
-share_moment_ic.png（分享到朋友圈）
-
-share_qq_ic.png（分享到 QQ 好友）
-    
-share_qzone_ic.png（分享到 QQ 空间）
-    
-share_wechat_ic.png（分享到微信好友）
-```
-    
-* 如果和业务模块不相干的资源，以 **作用 + 类型** 来命名，例如通用的控件样式资源：
-
-```text
-button_rect_selector.xml（通用直角按钮样式）
-
-button_round_selector.xml（通用圆角按钮样式）
-```
-
-    
-* 这种资源有一个共同特点，它不属于哪个模块，但是在不同模块都有用到，所以不能用业务的模块名作为文件名前缀。
-    
 #### 接口实现规范
 
 * 一般情况下，我们会在类中这样实现接口，这样写的好处是，可以减少对象的创建，并且代码也比较美观。
 
 ```java
-public final class PasswordEditText extends EditText
-        implements View.OnTouchListener,
-        View.OnFocusChangeListener, TextWatcher {
+public final class PasswordEditText extends EditText implements View.OnTouchListener, View.OnFocusChangeListener, TextWatcher {
 
     public PasswordEditText(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
@@ -465,7 +407,7 @@ public final class PasswordEditText extends EditText
 }
 ```
 
-* 但是有一个美中不足的地方，就是在实现的接口过多时，我们很难分辨是哪个方法是哪个接口的，这个时候可以使用注释的方式来解决这个问题，加上 **@link** 还可以帮助我们快速定位接口类在项目中所在的位置。
+* 但是有几个美中不足的地方，就是在实现的接口过多时，我们很难分辨是哪个方法是哪个接口的，这个时候可以使用注释的方式来解决这个问题，加上 **@link** 还可以帮助我们快速定位接口类在项目中所在的位置；另外一个是 `implements` 修饰符换行的问题，合理的换行会使代码更加简单直观。
 
 ```java
 public final class PasswordEditText extends EditText
@@ -478,7 +420,7 @@ public final class PasswordEditText extends EditText
         setOnFocusChangeListener(this);
         addTextChangedListener(this);
     }
-    
+
     /**
      * {@link OnFocusChangeListener}
      */
@@ -546,9 +488,7 @@ try {
 
 * 如果这个异常不是通过方法 throws 关键字抛出，则需要在 try 块中说明崩溃的缘由，并注明抛出的异常信息。
 
----
-
-* 有异常就一定要 `try catch` ？，这种想法其实是错的，例如我们项目用 Glide 加载图片会抛出以下异常：
+* 还有一个问题，有异常就一定要 `try catch` ？，这种想法其实是错的，例如我们项目用 Glide 加载图片会抛出以下异常：
 
 ```java
 Caused by: java.lang.IllegalArgumentException: You cannot start a load for a destroyed activity
@@ -656,25 +596,126 @@ public final class WebFragment extends Fragment {
 
 #### 第三方框架使用规范
 
-* 集成一些第三方框架或者 SDK，必须注明作用和出处，以便出现问题时能够快速核查和反馈
+* 集成一些第三方框架或者 SDK，必须注明作用和出处，以便出现问题时能够快速核查和反馈。
 
 ```groovy
 // 权限请求框架：https://github.com/getActivity/XXPermissions
 implementation 'com.hjq:xxpermissions:9.8'
 ```
 
-* 尽量不要选择功能两套相同的框架，应当引用最合适的一套框架进行开发
+* 尽量不要选择功能两套相同的框架，应当引用最合适的一套框架进行开发。
 
-* 使用第三方库必须要依赖指定的版本号，而不能使用 + 号来指定依赖库最新的版本号
+* 使用第三方库必须要依赖指定的版本号，而不能使用 + 号来指定依赖库最新的版本号。
 
-* 使用第三方开源库出现问题或者 Bug 时应及时通知到开源库的作者，如果没有及时回复就根据实际情况对问题进行修复
+* 使用第三方开源库出现问题或者 Bug 时应及时通知到开源库的作者，如果没有及时回复就根据实际情况对问题进行修复。
 
-* 尽量避免 Copy 第三方库的技术代码到项目中，特别是在放置到项目业务模块中，因为这样会增加项目的复杂度，从而降低可维护性
+* 尽量避免 Copy 第三方库的技术代码到项目中，特别是在放置到项目业务模块中，因为这样会增加项目的复杂度，从而降低可维护性。
 
-* 如果出现问题不能找到开源库的作者，如果需要修改，应当将这些代码抽取到单独的 Module 中
+* 如果出现问题不能找到开源库的作者，如果需要修改，应当将这些代码抽取到单独的 Module 中。
 
-* 能用框架就用成熟框架，尽量不要自己编写或者修改框架，如果有需要，要对这块进行严格测试
-    
+* 能用框架就用成熟框架，尽量不要自己编写或者修改框架，如果有需要，要对这块进行严格测试。
+
+#### 多模块规范
+
+* 模块命名规范：应该以简单明了的方式来命名
+
+```text
+app
+base
+widget
+umeng
+course
+socket
+live
+shop
+```
+
+* 模块混淆配置：请不要使用 `proguardFiles` 语句，而是应该使用 `consumerProguardFiles` 语句，因为 `consumerProguardFiles` 语句会将混淆规则和资源代码一同合并到 **aar** 包中，这样做的好处在于：在项目编译时会将 aar 包中的混淆规则合并到主模块中。
+
+```groovy
+android {
+
+    defaultConfig {
+        // 模块混淆配置
+        consumerProguardFiles 'proguard-xxx.pro'
+    }
+}
+```
+
+* 资源前缀限制：我们应该在模块中加入此限制，这样我们在模块中添加资源时，编译器如果发现资源名称前缀不符合规范，则会出现代码警告。这样做的好处在于，以某一名称作为前缀，可以有效避免在编译时引发的一些资源合并冲突。
+
+```groovy
+android {
+    // 资源前缀限制
+    resourcePrefix "xxx_"
+}
+```
+
+* 框架版本管理：我们应该统一抽取框架的版本到 `config.gradle` 文件中：
+
+```groovy
+ext {
+
+    android = [compileSdkVersion       : 28,
+               minSdkVersion           : 19,
+               targetSdkVersion        : 28,
+               versionCode             : 40102,
+               versionName             : "4.1.2",
+    ]
+    dependencies = [
+            "appcompat"                    : "androidx.appcompat:appcompat:1.2.0",
+            "material"                     : "com.google.android.material:material:1.2.0",
+    ]
+}
+```
+
+* 然后在每个模块下这样定义，这样做的好处是可以做到版本号的统一管理。
+
+```groovy
+apply from : '../config.gradle'
+
+android {
+    compileSdkVersion rootProject.ext.android["compileSdkVersion"]
+
+    defaultConfig {
+        minSdkVersion rootProject.ext.android["minSdkVersion"]
+        targetSdkVersion rootProject.ext.android["targetSdkVersion"]
+    }
+}
+dependencies {
+    implementation rootProject.ext.dependencies["appcompat"]
+    implementation rootProject.ext.dependencies["material"]
+}
+```
+
+* 除此之外还有另外一种写法，我们可以把 `config.gradle` 修改成这样：
+
+```groovy
+android {
+    compileSdkVersion 28
+
+    defaultConfig {
+        minSdkVersion 19
+        targetSdkVersion 28
+        versionName '4.1.2'
+        versionCode 40102
+    }
+}
+
+dependencies {
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'com.google.android.material:material:1.2.1'
+}
+```
+
+* 然后在每个模块上添加一句引用即可，相比上一种写方法，这种方式更强大，因为它不仅可以配置版本号，还支持统一其他的配置项。
+
+```groovy
+apply from : '../config.gradle'
+```
+
+* 具体要用哪一种，可以根据实际情况而定，如果项目采用的是组件化，则可以考虑使用第一种方式，如果项目采用的是模块化，则可以考虑使用第二种方式。
+
 #### 代码注释规范
 
 * 类注释规范：**author** 是创建者（必填项）、**time** 是创建时间（必填项）、**desc** 是类的描述（必填项），**doc** 是文档地址（非必填），**github** 是开源地址（如果项目是开源的则必填，否则不填）
@@ -725,9 +766,121 @@ fragment.setRetainInstance(true);
 
 * 注释什么情况下要写？什么情况下不用写？这个问题我很有感触，代码注释写多了不好，显得太啰嗦，也会增加工作量，写少了也不好，又怕别人看不懂，也害怕给自己后面留坑。我个人的建议是尽量用规范的命名来减少不必要的注释，很多时候我们只需要换位思考一下，忘记这段代码是自己写的，再问一下自己能不能一下子读懂，如果可以的话，注释就可以不用写，否则注释还是要考虑写上。
 
+#### 代码硬编码规范
+
+* 请尽量避免使用硬编码，例如系统的一些常量值，不能直接写死，而是应该通过代码引用，例如：
+
+```java
+// 不规范写法示例
+if (view.getVisibility() != 0) {
+    return;
+}
+
+Intent intent = new Intent("android.settings.APPLICATION_DETAILS_SETTINGS");
+startActivity(intent);
+```
+
+```java
+// 规范写法示例
+if (view.getVisibility() != View.VISIBLE) {
+    return;
+}
+
+Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+startActivity(intent);
+```
+
+* 在项目开发中，被多次使用到的数值或者字符串也应该提取成常量来供外部引用，例如：
+
+```java
+public final class UserInfoManager {
+
+    /** 学生 */
+    public static final int TYPE_STUDENT = 0;
+
+    /** 老师 */
+    public static final int TYPE_TEACHER = 1;
+
+    /** 家长 */
+    public static final int TYPE_PATRIARCH = 2;
+}
+```
+
+* 但并不代表所有的数值都需要常量化，有一些数值常量化的意义并不大，例如：
+
+```java
+ValueAnimator animator = ValueAnimator.ofInt(0, 100);
+animator.setDuration(500);
+animator.start();
+```
+
+* 所以衡量一个数值或者字符串是否进行常量化的标准有两点：
+
+	* 这个数值或者字符串是否会被多次使用
+	
+	* 这个数值或者字符串是否具有一定的含义
+
+#### 布局文件命名规范
+
+* 以 **模块 + 类型** 来命名，例如：
+
+```text
+home_activity.xml
+
+setting_fragment.xml
+
+menu_item.xml
+
+address_dialog.xml
+```
+
+* 这样写的好处在于，由于 res 文件夹下是没有层级概念的
+
+* 通过前缀的命名可以帮助我们更好定位到同一模块下的资源
+
+* 例如分享对话框中，有对话框 Root 布局和 Item 布局
+
+```text
+share_dialog.xml（Root 布局）
+
+share_item.xml（Item 布局）
+```
+
+#### 资源文件命名规范
+
+* 如果是业务模块下的资源，以 **模块 + 类型** 来命名，例如分享对话框的资源：
+
+```text
+share_link_ic.png（复制链接）
+
+share_moment_ic.png（分享到朋友圈）
+
+share_qq_ic.png（分享到 QQ 好友）
+
+share_qzone_ic.png（分享到 QQ 空间）
+
+share_wechat_ic.png（分享到微信好友）
+```
+
+* 如果和业务模块不相干的资源，以 **作用 + 类型** 来命名，例如通用的控件样式资源：
+
+```text
+button_rect_selector.xml（通用直角按钮样式）
+
+button_round_selector.xml（通用圆角按钮样式）
+```
+
+* 这种资源有一个共同特点，它不属于哪个模块，但是在不同模块都有用到，所以不能用业务的模块名作为文件名前缀，最后附上常见类型名称对应表：
+
+|   名称  |  类型 |
+| :-----: | :----: |
+|  ic |  图标 |
+|  bg |  背景 |
+|  selector |  选择器 |
+
 #### String ID 命名规范
 
-* 以 **模块 + 功能** 来命名，例如
+* 请以 **模块 + 功能** 来命名，例如：
 
 ```xml
 <!-- 主界面 -->
@@ -760,23 +913,53 @@ fragment.setRetainInstance(true);
 <string name="setting_language_complex">繁体中文</string>
 ```
 
+* 另外有一类 String 被多个模块所引用，需要以 **common + 作用** 来命名，例如：
+
+```xml
+<string name="common_loading">加载中&#8230;</string>
+
+<string name="common_confirm">确定</string>
+<string name="common_cancel">取消</string>
+
+<string name="common_year">年</string>
+<string name="common_month">月</string>
+<string name="common_day">日</string>
+
+<string name="common_hour">时</string>
+<string name="common_minute">分</string>
+<string name="common_second">秒</string>
+```
+
+#### Color ID 命名规范
+
+* 请以 **模块 + 含义 + color** 来命名，例如：
+
+```xml
+<color name="logcat_level_verbose_color">#FFBBBBBB</color>
+<color name="logcat_level_debug_color">#FF33B5E5</color>
+<color name="logcat_level_info_color">#FF99CC00</color>
+<color name="logcat_level_warn_color">#FFFFBB33</color>
+<color name="logcat_level_error_color">#FFFF4444</color>
+<color name="logcat_level_other_color">#FFFFFFFF</color>
+```
+
 #### Anim ID 命名规范
 
-* 应用到某个模块 **View**，举个栗子
+* 应用到某个模块 **View**，例如：
 
 ```text
 login_left_balloon_view.xml
 login_right_balloon_view.xml
 ```
 
-* 应用到全局 **Activity**，举个栗子
+* 应用到全局 **Activity**，例如：
 
 ```text
 left_in_activity.xml
 left_out_activity.xml
 ```
 
-* 应用到全局 **Dialog**，举个栗子
+* 应用到全局 **Dialog**，例如：
 
 ```text
 bottom_in_dialog.xml
@@ -820,7 +1003,7 @@ bottom_out_dialog.xml
 | RelativeLayout | rl |
 | FrameLayout | fl |
 
-#### Style 样式命名规范
+#### Style 命名规范
 
 * 如果只是主题相关的样式，以 **Theme** 命名结尾，控件样式则以 **Style** 命名结尾，命名要求尽量简洁，并且需要有代码注释，示例如下：
 
@@ -841,7 +1024,6 @@ bottom_out_dialog.xml
 </style>
 ```
 
----
 
 ```xml
 <!-- 默认圆角按钮样式 -->
@@ -870,53 +1052,53 @@ bottom_out_dialog.xml
 * 不推荐用 **dp** 作为字体单位，虽然在大部分手机上面 **dp** 和 **sp** 计算是差不多的，但是会有一部分老年用户群，例如咱们的长辈，他们通常会把手机显示的字体大小调大，这样他们才不需要带眼镜看手机，如果我们用 **dp** 作为字体单位，无论手机怎么调整字体大小，应用的字体大小都不会有任何的变化，所以这种操作显然是非常不人性化的。
 
 ```xml
-<!-- 错误写法示例 -->
+<!-- 不规范写法示例 -->
 <TextView
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:text="老铁"
     android:textSize="18dp" />
+```
 
-<!-- 正确写法示例 -->
+```
+<!-- 规范写法示例 -->
 <TextView
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:text="老铁"
     android:textSize="18sp" />
 ```
 
 * 不能根据设计图给定的宽高把 **TextView** 或者 **Button** 的宽高定死，而是通过 `wrap_content` 和 `padding` 的方式来调整 View 的宽高，因为在不同手机上面字体大小不一致，在字体显示比较小的手机上面会显示正常，但是在字体显示比较大的平板上面文字上半部分极有可能会出现被裁剪的情况，所以我们不能把宽高定死，而是通过 `padding` 来调整到控件的大小。不过需要注意的是，[TextView 有自带的文字间距](https://blog.csdn.net/ccpat/article/details/45226951)，我们在拿设计图给定的 `padding`值时，需要拿设计图给定的值适当减去这一部分值（一般大概是在 **2~3dp**）。
 
 ```xml
-<!-- 错误写法示例 -->
+<!-- 不规范写法示例 -->
 <Button
     android:layout_width="180dp"
-    android:layout_height="60dp"
-    android:gravity="center"
-    android:text="提交" />
+    android:layout_height="60dp" />
+```
 
-<!-- 正确写法示例 -->
+```xml
+<!-- 规范写法示例 -->
 <Button
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:gravity="center"
     android:paddingStart="80dp"
     android:paddingTop="20dp"
     android:paddingEnd="80dp"
-    android:paddingBottom="20dp"
-    android:text="提交" />
+    android:paddingBottom="20dp" />
 ```
 
 * **ImageView** 的宽高任一项定义成 `match_parent` 时，另外一项不能写死大小，而是应该使用 `wrap_content`，否则很可能会因为比例不对导致图片变形，另外还需要使用 `android:adjustViewBounds="true"` 属性，否则 `ImageView` 无法根据图片的宽高来调整自己的宽高。
 
 ```xml
-<!-- 错误写法示例 -->
+<!-- 不规范写法示例 -->
 <ImageView
     android:layout_width="match_parent"
     android:layout_height="300dp"
     android:src="@drawable/example_bg" />
+```
 
-<!-- 正确写法示例 -->
+```xml
+<!-- 规范写法示例 -->
 <ImageView
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -927,28 +1109,26 @@ bottom_out_dialog.xml
 * XML 节点编写应该规范，在没有子节点的情况下，应当以 `/>` 节点结尾，如果有则以 `</xxx.xxx.xxx>` 节点结尾
 
 ```xml
-<!-- 错误写法示例 -->
+<!-- 不规范写法示例 -->
 <androidx.recyclerview.widget.RecyclerView
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 </androidx.recyclerview.widget.RecyclerView>
 
-<!-- 正确写法示例 -->
-<androidx.recyclerview.widget.RecyclerView
-    android:layout_width="match_parent"
-    android:layout_height="match_parent" />
-```
-
----
-
-```xml
-<!-- 错误写法示例 -->
+<!-- 不规范写法示例 -->
 <TextView
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 </TextView>
+```
 
-<!-- 正确写法示例 -->
+```xml
+<!-- 规范写法示例 -->
+<androidx.recyclerview.widget.RecyclerView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" />
+
+<!-- 规范写法示例 -->
 <TextView
     android:layout_width="match_parent"
     android:layout_height="match_parent" />
@@ -969,7 +1149,6 @@ bottom_out_dialog.xml
 </FrameLayout>
 ```
 
----
 
 ```text
 tools:context=".ui.activity.HomeActivity"
@@ -981,7 +1160,7 @@ tools:context=".ui.adapter.HomeAdapter"
 tools:context=".ui.dialog.PersonDataDialog"
 ```
 
-* 此外，tools 属性还有各种各样的用途，例如 RecyclerView 的 **tools** 属性
+* 此外，tools 属性还有各种各样的用途，例如 **RecyclerView** 的 **tools** 属性
 
 ```xml
 <androidx.recyclerview.widget.RecyclerView
@@ -997,7 +1176,7 @@ tools:context=".ui.dialog.PersonDataDialog"
     tools:spanCount="3" />
 ```
 
-* tools 这种命名不止可以应用于 RecyclerView，还可以应用于其他 View 的属性，比如常用的 TextView 和 ImageView
+* 这种命名方式不止可以应用于 **RecyclerView**，还可以应用于其他 **View** 的属性，比如常用的 **TextView** 和 **ImageView**
 
 ```xml
 <TextView
@@ -1011,22 +1190,26 @@ tools:context=".ui.dialog.PersonDataDialog"
     android:layout_height="wrap_content"
     tools:src="@drawable/bg_home_placeholder" />
 ```
-        
-* 如果某个 TextView 显示的字符串是一成不变的，那么可以直接定义在布局文件中，如果是动态变化的，那么应该使用 `tools:text` 预览属性，而不应该使用 `android:text`，其他布局属性也同理。
 
-#### 资源使用约定
+* 如果某个 **TextView** 显示的字符串是一成不变的，那么可以直接定义在布局文件中，如果是动态变化的，那么应该使用 `tools:text` 预览属性，而不应该使用 `android:text`，其他布局属性也同理。
+	
+#### 资源硬编码规范
 
-* 设计图中的 **Color** 和 **Dimens** 值允许直接写死在代码中，但是如果某个色值引用得比较多（例如主题强调色、默认背景色等），需要抽取到 `color.xml` 文件中。
+* String 硬编码规范：如果项目已经适配了多语种，则严禁写死在 Java 代码或者布局文件中，如果没有这块需求的话，也建议将 String 资源定义在 `string.xml` 文件，此项不强制要求，大家根据实际情况而定。
 
-* 对于一些常用并且样式比较统一的控件，例如 **Button**、**EditText** 等，我们对这些控件的样式进行抽取到 `style.xml` 文件中来，避免重复定义。
+* Color 硬编码规范：在没有使用夜间模式的情况下，允许大部分 Color 值直接定义在布局文件中，但是如果某个色值引用得比较多（例如主题强调色、默认背景色等），需要抽取到 `color.xml` 文件中。
 
-* 关于 String 资源写法建议，如果项目没有国际化的需求，可以考虑直接写死代码中，如果项目后续可能有国际化的需求，则需要抽取到 `string.xml` 文件中，大家可以根据实际情况来评估，毕竟写在 `string.xml` 会增加一些工作量。
+* Dimens 硬编码规范：允许写死在 Java 代码或者布局文件中，但是如果使用了[通配符方案](https://github.com/wildma/ScreenAdaptation)对屏幕进行适配，那么则不能直接写死。
+
+* Style 样式规范：对于一些常用并且样式比较统一的控件，例如 **Button**、**EditText** 等，我们对这些控件的样式进行抽取到 `style.xml` 文件中来，避免属性重复定义。
 
 #### 致谢
 
 * [阿里巴巴Android开发手册.pdf](阿里巴巴Android开发手册.pdf)
 
 * [阿里巴巴Java开发手册.pdf](阿里巴巴Java开发手册.pdf)
+
+* [谷歌代码样式指南](http://source.android.com/source/code-style.html)
 
 #### 作者其他开源项目
 
