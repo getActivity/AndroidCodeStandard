@@ -8,7 +8,7 @@
 
 * 这份代码规范文档开始编写的时间是 2020 年 7 月，中间不断地修改和补充，于 2021 年 1 月发布定稿，同年 2 月，纠正和补充了一些代码规范，从 0 到 1，从不成熟到成熟，整个过程耗时 200 多天。原因是我积累了很多开发的好习惯，但是一直没有任何记录，在短时间将这些东西全部输出几乎不可能，所以我前面花了很多时间回忆和总结，这段时间内我做的最多的一件事是，代码写着写着就去写代码规范文档，直到后面发布初稿时，我又投入了大把的时间和精力来做这件事。大家心中可能都有一个疑问，我为什么不用网上写的，直接照抄照搬，又或者直接采用阿里的，这样不是简单轻松多了？关于这个问题，可以跟大家谈谈我的想法，我看过很多关于 Android 代码规范文档，但是我感觉存在一些问题，可以跟大家分享一下：
 
-    1. 没有说服力：是很多代码规范文档只告诉你应该这样写，但是基本没有人提及这样写的好处，那样写不好的地方。他们只会告诉你规则，但是从不告诉你前因后果，这样写出来的代码规范难以服众。
+    1. 说服力低：是很多代码规范文档只告诉你应该这样写，但是基本没有人提及这样写的好处，那样写不好的地方。他们只会告诉你规则，但是从不告诉你前因后果，这样写出来的代码规范难以服众。
 
     2. 不够全面：例如后台接口规范、接口实现规范、异常捕获规范、第三方框架使用规范、代码硬编码规范、资源硬编码规范、多模块规范；这些是我们开发中所避不开的东西，但是现在网上的代码规范文档却很少有人提及。
 
@@ -42,6 +42,8 @@
 
 * [前言](#前言)
 
+* [代码规范原则](#代码规范原则)
+
 * [常规规范](#常规规范)
 
 * [后台接口规范](#后台接口规范)
@@ -60,7 +62,7 @@
 
 * [异常捕获规范](#异常捕获规范)
 
-* [Activity 跳转约定](#activity-跳转约定)
+* [参数传递规范](#参数传递规范)
 
 * [第三方框架使用规范](#第三方框架使用规范)
 
@@ -103,6 +105,16 @@
 * 代码不规范：代码不规范会导致项目可读性变差，具体表现为**难分辨和难理解**，在无形之中加大项目后续维护的成本。
 
 * 经验总结：**编码不规范，同行泪两行**
+
+#### 代码规范原则
+
+* 在讲之前，我们先想一个问题，代码规范的出现是为了什么？不就为了让我们更好地进行团队协作和项目维护吗？没错的，所以代码规范原则应该围绕这两点进行。
+
+    * **特事特办**：代码规范文档只能解决 **99.99%** 场景下的问题，特殊情况应该要特殊处理，违背者需要给出**合理的解释**，建议在代码中直接**用注释注明**，这样可以**减少沟通成本**，否则在一般情况下应当要遵守代码规范文档上的约束。
+
+    * **以人为本**：我们应该衡量不同写法带来的优点和缺点，然后根据当前项目的实际需求做出合适的选择或者变化。规则是人定的，不是**一成不变**的。在制定新的规则或者修改旧的规则之前应当先**参考和分析**谷歌或者知名公司的做法，然后与团队中的各个成员**沟通和协商好**。
+    
+    * **实事求事**：任何代码规范都应该追求在实际开发中发挥的作用或者效果，规则始终是规则，不能单纯为了制定规则而编写代码规范，而是更应该追求写法的实用性，实用性应该从**代码理解的难易程度**、**代码可维护性**、**代码可复用性**、**代码可扩展性**等方面因素综合考虑，其次是考虑**代码的视觉美观性**。
 
 #### 常规规范
 
@@ -527,9 +539,9 @@ Glide.with(this)
 
 * 所以尽量不要通过捕获的方式来处理异常，除非外层真的判断不了，否则应该通过一些逻辑判断来避免进入一些会 **crash** 的代码。
 
-#### Activity 跳转约定
+#### 参数传递规范
 
-* 应当将 Intent 中的 key 常量保存到一个管理类中，又或者定义在目标的 Activity 中
+* 应当将 Intent 中的 key 常量保存到一个管理类中，如果不想单独定义一个 IntentKey 类，也可以直接将 key 值直接定义目标的 Activity 中。
 
 ```java
 public class IntentKey {
@@ -555,7 +567,7 @@ public class IntentKey {
 }
 ```
 
-* 如果跳转的 Activity 需要传递参数，应该在目标的 Activity 中定义静态的 **start** 又或者 **newIntent** 方法
+* 如果跳转的 Activity 需要传递参数，应该在目标的 Activity 中定义静态的 **start** 又或者 **newIntent** 方法。
 
 ```java
 public final class WebActivity extends Activity {
@@ -594,7 +606,124 @@ public final class WebFragment extends Fragment {
 }
 ```
 
-* 如果跳转的 Activity 或者创建的 Fragment 不需要传任何参数，可以不需要定义这些静态方法
+* 如果跳转的 Activity 或者创建的 Fragment 不需要传任何参数，可以不需要定义这些静态方法。
+
+* 另外如果一个界面需要传递的参数过多（5 个以上），建议用一个对象对这些参数进行封装，然后实现 Serializable 或者 Parcelable 接口进行传递，具体写法示例：
+
+```java
+public final class VideoPlayActivity extends Activity {
+
+    /**
+     * 播放参数构建
+     */
+    public static final class Builder implements Parcelable {
+
+        /** 视频源 */
+        private String mVideoSource;
+        /** 视频标题 */
+        private String mVideoTitle;
+        /** 播放进度 */
+        private int mPlayProgress;
+        /** 手势开关 */
+        private boolean mGestureEnabled = true;
+        /** 循环播放 */
+        private boolean mLoopPlay = false;
+        /** 自动播放 */
+        private boolean mAutoPlay = true;
+        /** 播放完关闭 */
+        private boolean mAutoOver = true;
+
+        public Builder() {}
+
+        public Builder setVideoSource(File file) {
+            mVideoSource = file.getPath();
+            if (mVideoTitle == null) {
+                mVideoTitle = file.getName();
+            }
+            return this;
+        }
+
+        public Builder setVideoSource(String url) {
+            mVideoSource = url;
+            return this;
+        }
+
+        private String getVideoSource() {
+            return mVideoSource;
+        }
+
+        public Builder setVideoTitle(String title) {
+            mVideoTitle = title;
+            return this;
+        }
+
+        private String getVideoTitle() {
+            return mVideoTitle;
+        }
+
+        public Builder setPlayProgress(int progress) {
+            mPlayProgress = progress;
+            return this;
+        }
+
+        private int getPlayProgress() {
+            return mPlayProgress;
+        }
+
+        public Builder setGestureEnabled(boolean enabled) {
+            mGestureEnabled = enabled;
+            return this;
+        }
+
+        private boolean isGestureEnabled() {
+            return mGestureEnabled;
+        }
+
+        public Builder setLoopPlay(boolean enabled) {
+            mLoopPlay = enabled;
+            return this;
+        }
+
+        private boolean isLoopPlay() {
+            return mLoopPlay;
+        }
+
+        public Builder setAutoPlay(boolean enabled) {
+            mAutoPlay = enabled;
+            return this;
+        }
+
+        public boolean isAutoPlay() {
+            return mAutoPlay;
+        }
+
+        public Builder setAutoOver(boolean enabled) {
+            mAutoOver = enabled;
+            return this;
+        }
+
+        private boolean isAutoOver() {
+            return mAutoOver;
+        }
+
+        public void start(Context context) {
+            Intent intent = new Intent(context, VideoPlayActivity.class);
+            intent.putExtra(IntentKey.VIDEO, this);
+            if (!(context instanceof Activity)) {
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            }
+            context.startActivity(intent);
+        }
+    }
+}
+```
+
+```java
+new VideoPlayActivity.Builder()
+        .setVideoTitle("速度与激情特别行动")
+        .setVideoSource("http://xxxxx.mp4")
+        .start(getAttachActivity());
+```
 
 #### 第三方框架使用规范
 
@@ -934,7 +1063,7 @@ button_round_selector.xml（通用圆角按钮样式）
 
 #### Color ID 命名规范
 
-* 请以 **模块 + 含义 + color** 来命名，例如：
+* 请以 **模块 + 作用 + color** 来命名，例如：
 
 ```xml
 <color name="logcat_level_verbose_color">#FFBBBBBB</color>
@@ -993,10 +1122,10 @@ button_round_selector.xml（通用圆角按钮样式）
 <color name="orange">#FFFFA500</color>
 ```
 
-* 在实际开发中，我们常常会遇到下面这种命名方式：
+* 在实际开发中，我们常常会遇到类似下面这种命名方式：
 
 ```xml
-<name="color_FF35BF30">#color_FF35BF30</color>
+<name="color_FF35BF30">#FF35BF30</color>
 ```
 
 * 其实这种命名方式是不规范的，因为它对 **Color ID** 的名称定义比较模糊，会容易给别人造成误导；举个例子：假设项目中有 **200** 个地方引用了这个 `color_FF35BF30` 色值，其中有 **150** 地方是你自己引用的，另外 **50** 个地方是别人引用的，但是别人不知道你那个色值是干什么的，看到你有写就直接引用了，突然有一天产品经理心情不好要改这个色值，那么你要从 **200** 地方区分 **150** 个需要修改的地方和 **50** 个不需要修改的地方。
