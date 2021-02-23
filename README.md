@@ -16,6 +16,8 @@
 
 #### 更新日志
 
+* 2021 年 2 月 23 日：[补充代码规范原则、补充参数传递规范](https://github.com/getActivity/AndroidCodeStandard/commit/1a1ad4a7c26ff75e588b689c51ab126fe32c78a1)
+
 * 2021 年 2 月 21 日：[<br>补充多模块规范<br>补充代码硬编码规范<br>补充资源硬编码规范<br>补充 Color ID 命名规范<br>补充写代码规范文档的原因<br>纠正公开成员变量命名方式<br>添加谷歌代码样式指南链接](https://github.com/getActivity/AndroidCodeStandard/commit/be4847c2c476031484bac97dec036228900e2f60)
 
 * 2021 年 2 月 11 日：[补充异常捕获规范标准](https://github.com/getActivity/AndroidCodeStandard/commit/80688b1dc84ccf752d6c33e5e57291fd67ca2eef)
