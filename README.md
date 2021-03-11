@@ -2,6 +2,8 @@
 
 * 码云地址：[Gitee](https://gitee.com/getActivity/AndroidCodeStandard)
 
+* 鸿洋力推：[荐一份 Android 代码规范建议文档](https://mp.weixin.qq.com/s/Zv1zVom69RFrMJ1q8tP8Lw)
+
 * 做开源几年了，被很多人夸过，你的代码写得比较规范，[甚至有人质疑自己代码的写法](https://github.com/getActivity/AndroidProject/issues/55)，但是迟迟没有出一个代码规范，说来惭愧，只是因为我早几年写的代码还不够规范，不敢出来误导大家，而代码规范是后续才慢慢养成的，在这个过程中，我不仅参考了大公司出的代码规范文档，也研究了很多关于谷歌源码的编码规范，同时我也在无时不刻在思考，如何能写出让别人更好理解的代码，自打入行以来，我就在一直在这个问题上面探索。
 
 * 为什么要做成一个开源项目？因为项目会长期更新，大家如果对里面一些规范表示不能理解的或者感觉写得不太对的，又或者有什么想要补充的，随时欢迎你通过 **[issue](https://github.com/getActivity/AndroidCodeStandard/issues/new)** 反馈给我，大家的建议很重要，是我做好这件事的关键，我会认真对待和思考提出的每一个建议。同时我也相信一份好的代码规范经得住大众的反复推敲和不断实践，在这里也欢迎你提出自己的想法和建议。
@@ -93,6 +95,8 @@
 * [预览属性约定](#预览属性约定)
 
 * [资源硬编码规范](#资源硬编码规范)
+
+* [版本命名规范](#版本命名规范)
 
 * [致谢](#致谢)
 
@@ -338,7 +342,7 @@ HomeAdapter.java
 AddressDialog.java
 ```
 
-* 技术模块：请以类的 **作用** 来命名，例如：例如
+* 技术模块：请以类的 **作用** 来命名，例如：
 
 ```text
 CrashHandler.java
@@ -499,6 +503,8 @@ try {
     // android.view.WindowManager$BadTokenException：Unable to add window -- token android.os.BinderProxy is not valid; is your activity running?
     // java.lang.IllegalStateException：View android.widget.TextView has already been added to the window manager.
     e.printStackTrace();
+    // 又或者上报到 Bugly 错误分析中
+    // CrashReport.postCatchedException(e);
 }
 ```
 
@@ -738,7 +744,7 @@ implementation 'com.hjq:xxpermissions:9.8'
 
 * 尽量不要选择功能两套相同的框架，应当引用最合适的一套框架进行开发。
 
-* 使用第三方库必须要依赖指定的版本号，而不能使用 + 号来指定依赖库最新的版本号。
+* 使用第三方库必须要依赖指定的版本号，而不能使用 `latest-version` 或者  `+` 来指定依赖库最新的版本号。
 
 * 使用第三方开源库出现问题或者 Bug 时应及时通知到开源库的作者，如果没有及时回复就根据实际情况对问题进行修复。
 
@@ -763,7 +769,7 @@ live
 shop
 ```
 
-* 模块混淆配置：请不要使用 `proguardFiles` 语句，而是应该使用 `consumerProguardFiles` 语句，因为 `consumerProguardFiles` 语句会将混淆规则和资源代码一同合并到 **aar** 包中，这样做的好处在于：在项目编译时会将 aar 包中的混淆规则合并到主模块中。
+* 模块混淆配置：请不要使用 `proguardFiles` 语句，而是应该使用 `consumerProguardFiles` 语句，因为 `consumerProguardFiles` 语句会将混淆规则和资源代码一同打包到 **aar** 包中，这样做的好处在于：在项目编译时会将 aar 包中的混淆规则合并到主模块中。
 
 ```groovy
 android {
@@ -847,7 +853,7 @@ dependencies {
 apply from : '../config.gradle'
 ```
 
-* 具体要用哪一种，可以根据实际情况而定，如果项目采用的是组件化，则可以考虑使用第一种方式，如果项目采用的是模块化，则可以考虑使用第二种方式。
+* 具体要用哪一种，可以根据实际情况而定，如果项目采用的是组件化，则可以考虑使用第一种方式，如果项目采用的是模块化，则可以考虑使用第二种方式，当然两种一起结合用也是可以的。
 
 #### 代码注释规范
 
@@ -1391,6 +1397,29 @@ tools:context=".ui.dialog.PersonDataDialog"
 * Dimens 硬编码规范：允许写死在 Java 代码或者布局文件中，但是如果使用了[通配符方案](https://github.com/wildma/ScreenAdaptation)对屏幕进行适配，那么则不能直接写死。
 
 * Style 样式规范：对于一些常用并且样式比较统一的控件，例如 **Button**、**EditText** 等，我们对这些控件的样式进行抽取到 `style.xml` 文件中来，避免属性重复定义。
+
+#### 版本命名规范
+
+* 版本名应该由三段整数组成
+
+    * 第一段：代表大版本号，如果出现 UI 大改版，或者项目出现大重构时 +1
+
+    * 第二段：代表需求版本号，一般双周发一次版，每个迭代周期 +1
+    
+    * 第三段：代表 Bug 版本号，发版之后出现 Bug，需要发版修复时 +1
+
+```groovy
+versionName '4.8.0'
+```
+
+* 另外版本码应当和版本名保持一定的关联性，例如：
+
+```groovy
+versionName '4.12.1'
+versionCode 41201
+```
+
+* 这样的好处在于：版本名越高，版本码也会变大，不仅能方便记忆，还能帮助我们更好地管理和升级版本，在一定程度上能避免**高版本名低版本码**的 apk 能被**低版本名高版本码**的 apk 覆盖安装的情况。
 
 #### 致谢
 
