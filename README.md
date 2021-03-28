@@ -18,6 +18,8 @@
 
 #### 更新日志
 
+* 2021 年 3 月 28 日：[新增代码美观性要求](https://github.com/getActivity/AndroidCodeStandard/commit/692ada016c99db72e61fb75e20a7178d385bf669)
+
 * 2021 年 3 月 11 日：[新增版本命名规范](https://github.com/getActivity/AndroidCodeStandard/commit/68f242c839ae040aaf4624fb8243137366b89cc9)
 
 * 2021 年 2 月 23 日：[<br>补充代码规范原则<br>补充参数传递规范](https://github.com/getActivity/AndroidCodeStandard/commit/1a1ad4a7c26ff75e588b689c51ab126fe32c78a1)
