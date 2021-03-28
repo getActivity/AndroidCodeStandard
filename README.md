@@ -2,7 +2,7 @@
 
 * 码云地址：[Gitee](https://gitee.com/getActivity/AndroidCodeStandard)
 
-* 鸿洋力推：[荐一份 Android 代码规范建议文档](https://mp.weixin.qq.com/s/Zv1zVom69RFrMJ1q8tP8Lw)
+* 鸿洋力荐：[荐一份 Android 代码规范建议文档](https://mp.weixin.qq.com/s/Zv1zVom69RFrMJ1q8tP8Lw)
 
 * 做开源几年了，被很多人夸过，你的代码写得比较规范，[甚至有人质疑自己代码的写法](https://github.com/getActivity/AndroidProject/issues/55)，但是迟迟没有出一个代码规范，说来惭愧，只是因为我早几年写的代码还不够规范，不敢出来误导大家，而代码规范是后续才慢慢养成的，在这个过程中，我不仅参考了大公司出的代码规范文档，也研究了很多关于谷歌源码的编码规范，同时我也在无时不刻在思考，如何能写出让别人更好理解的代码，自打入行以来，我就在一直在这个问题上面探索。
 
@@ -20,7 +20,7 @@
 
 * 2021 年 3 月 11 日：[新增版本命名规范](https://github.com/getActivity/AndroidCodeStandard/commit/68f242c839ae040aaf4624fb8243137366b89cc9)
 
-* 2021 年 2 月 23 日：[补充代码规范原则、补充参数传递规范](https://github.com/getActivity/AndroidCodeStandard/commit/1a1ad4a7c26ff75e588b689c51ab126fe32c78a1)
+* 2021 年 2 月 23 日：[<br>补充代码规范原则<br>补充参数传递规范](https://github.com/getActivity/AndroidCodeStandard/commit/1a1ad4a7c26ff75e588b689c51ab126fe32c78a1)
 
 * 2021 年 2 月 21 日：[<br>补充多模块规范<br>补充代码硬编码规范<br>补充资源硬编码规范<br>补充 Color ID 命名规范<br>补充写代码规范文档的原因<br>纠正公开成员变量命名方式<br>添加谷歌代码样式指南链接](https://github.com/getActivity/AndroidCodeStandard/commit/be4847c2c476031484bac97dec036228900e2f60)
 
@@ -70,6 +70,8 @@
 
 * [参数传递规范](#参数传递规范)
 
+* [代码美观性要求](#代码美观性要求)
+
 * [第三方框架使用规范](#第三方框架使用规范)
 
 * [多模块规范](#多模块规范)
@@ -116,7 +118,7 @@
 
 #### 代码规范原则
 
-* 在讲之前，我们先想一个问题，代码规范的出现是为了什么？不就为了让我们更好地进行团队协作和项目维护吗？没错的，所以代码规范原则应该围绕这两点进行。
+* 在讲之前，我们先想一个问题，代码规范的出现是为了什么？不就为了让我们更好地进行团队协作和项目维护吗？没错的，所以代码规范原则应该围绕这两个目标进行。
 
     * **特事特办**：代码规范文档只能解决 **99.99%** 场景下的问题，特殊情况应该要特殊处理，违背者需要给出**合理的解释**，建议在代码中直接**用注释注明**，这样可以**减少沟通成本**，否则在一般情况下应当要遵守代码规范文档上的约束。
 
@@ -735,13 +737,222 @@ new VideoPlayActivity.Builder()
         .start(getAttachActivity());
 ```
 
+#### 代码美观性要求
+
+* 第一个大括号应当统一放在表达式后面，而不应该换行处理，例如：
+
+```java
+// 不规范写法示例
+if (AppConfig.isDebug())
+{
+    ......
+}
+```
+
+```java
+// 规范写法示例
+if (AppConfig.isDebug()) {
+    ......
+}
+```
+
+* 代码之间应当有适当的空格，空格不用多也不能少，恰到好处即可，例如：
+
+```java
+// 不规范写法示例
+public static boolean isAppInstalled(Context context ,String packageName ){
+    try {
+        context.getPackageManager().getApplicationInfo(packageName,0);
+        return   true;
+    }catch( PackageManager.NameNotFoundException e ){
+        e.printStackTrace();
+        return false ;
+    }
+}
+```
+
+```java
+// 规范写法示例
+public static boolean isAppInstalled(Context context, String packageName) {
+    try {
+        context.getPackageManager().getApplicationInfo(packageName, 0);
+        return true;
+    } catch (PackageManager.NameNotFoundException e) {
+        e.printStackTrace();
+        return false;
+    }
+}
+```
+
+* 适当换行有助于提升代码的可读性，在单行代码较长的情况下可以考虑换行，例如：
+
+```java
+// 不规范写法示例
+ScaleAnimation animation = new ScaleAnimation(1.0f, 1.1f, 1.0f, 1.1f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+textView.startAnimation(animation);
+```
+
+```java
+// 规范写法示例
+ScaleAnimation animation = new ScaleAnimation(1.0f, 1.1f, 1.0f, 1.1f,
+        Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+textView.startAnimation(animation);
+```
+
+* 链式写法不能只用一行代码，而是应当遵守一句 API 换一行的策略，例如：
+
+```java
+// 不规范写法示例
+GlideApp.with(this).load(url).circleCrop().into(imageView);
+```
+
+```java
+// 规范写法示例
+GlideApp.with(this)
+        .load(url)
+        .circleCrop()
+        .into(imageView);
+```
+
+* 方法参数的排序，上下文参数应当统一放在最前面，而回调监听应当统一放在最后面，例如：
+
+```java
+public void openSystemFileChooser(Activity activity, FileChooserParams params, ValueCallback<Uri[]> callback) {
+    ......
+}
+```
+
+* 变量和方法的排序，应当根据重要程度、API 类型、执行顺序这几点来摆放，例如：
+
+```java
+// 变量排序示例
+public class BaseDialog {
+
+    public static class Builder<B extends BaseDialog.Builder<?>>
+
+        /** 宽度和高度 */
+        private int mWidth = WindowManager.LayoutParams.WRAP_CONTENT;
+        private int mHeight = WindowManager.LayoutParams.WRAP_CONTENT;
+
+        /** 是否能够被取消 */
+        private boolean mCancelable = true;
+        /** 点击空白是否能够取消  前提是这个对话框可以被取消 */
+        private boolean mCanceledOnTouchOutside = true;
+
+        /** 背景遮盖层开关 */
+        private boolean mBackgroundDimEnabled = true;
+        /** 背景遮盖层透明度 */
+        private float mBackgroundDimAmount = 0.5f;
+
+        /** Dialog 创建监听 */
+        private BaseDialog.OnCreateListener mCreateListener;
+        /** Dialog 显示监听 */
+        private final List<BaseDialog.OnShowListener> mShowListeners = new ArrayList<>();
+        /** Dialog 取消监听 */
+        private final List<BaseDialog.OnCancelListener> mCancelListeners = new ArrayList<>();
+        /** Dialog 销毁监听 */
+        private final List<BaseDialog.OnDismissListener> mDismissListeners = new ArrayList<>();
+        /** Dialog 按键监听 */
+        private BaseDialog.OnKeyListener mKeyListener;
+    }
+}
+```
+
+```java
+// 方法排序示例
+public class BaseDialog {
+
+    public static class Builder<B extends BaseDialog.Builder<?>>
+
+        /**
+         * 设置宽度
+         */
+        public B setWidth(int width) {
+            ......
+        }
+
+        /**
+         * 设置高度
+         */
+        public B setHeight(int height) {
+            ......
+        }
+
+        /**
+         * 是否可以取消
+         */
+        public B setCancelable(boolean cancelable) {
+            ......
+        }
+
+        /**
+         * 是否可以通过点击空白区域取消
+         */
+        public B setCanceledOnTouchOutside(boolean cancel) {
+            ......
+        }
+
+        /**
+         * 设置背景遮盖层开关
+         */
+        public B setBackgroundDimEnabled(boolean enabled) {
+            ......
+        }
+
+        /**
+         * 设置背景遮盖层的透明度（前提条件是背景遮盖层开关必须是为开启状态）
+         */
+        public B setBackgroundDimAmount(float dimAmount) {
+            ......
+        }
+
+        /**
+         * 设置创建监听
+         */
+        public B setOnCreateListener(BaseDialog.OnCreateListener listener) {
+            ......
+        }
+
+        /**
+         * 添加显示监听
+         */
+        public B addOnShowListener(BaseDialog.OnShowListener listener) {
+            ......
+        }
+
+        /**
+         * 添加取消监听
+         */
+        public B addOnCancelListener(BaseDialog.OnCancelListener listener) {
+            ......
+        }
+
+        /**
+         * 添加销毁监听
+         */
+        public B addOnDismissListener(BaseDialog.OnDismissListener listener) {
+            ......
+        }
+
+        /**
+         * 设置按键监听
+         */
+        public B setOnKeyListener(BaseDialog.OnKeyListener listener) {
+            ......
+        }
+    }
+}
+```
+
+* 代码美观性虽然不会干扰到业务的正常进行，但是对一个程序员来讲，它是对技术的一种追求和热爱，同时也是工匠精神的体现。
+
 #### 第三方框架使用规范
 
 * 集成一些第三方框架或者 SDK，必须注明作用和出处，以便出现问题时能够快速核查和反馈。
 
 ```groovy
 // 权限请求框架：https://github.com/getActivity/XXPermissions
-implementation 'com.hjq:xxpermissions:9.8'
+implementation 'com.hjq:xxpermissions:10.6'
 ```
 
 * 尽量不要选择功能两套相同的框架，应当引用最合适的一套框架进行开发。
@@ -1256,7 +1467,7 @@ bottom_out_dialog.xml
     android:textSize="18dp" />
 ```
 
-```
+```xml
 <!-- 规范写法示例 -->
 <TextView
     android:layout_width="wrap_content"
