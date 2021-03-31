@@ -120,7 +120,7 @@
 
 #### 代码规范原则
 
-* 在讲之前，我们先想一个问题，代码规范的出现是为了什么？不就为了让我们更好地进行团队协作和项目维护吗？没错的，所以代码规范原则应该围绕这两个目标进行。
+* 在讲之前，我们先思考一个问题，代码规范的出现是为了什么？不就为了让我们更好地进行团队协作和项目维护吗？没错的，所以代码规范原则应该围绕这两个目标进行。
 
     * **特事特办**：代码规范文档只能解决 **99.99%** 场景下的问题，特殊情况应该要特殊处理，违背者需要给出**合理的解释**，建议在代码中直接**用注释注明**，这样可以**减少沟通成本**，否则在一般情况下应当要遵守代码规范文档上的约束。
 
@@ -136,7 +136,9 @@
 
 * 尽量采用 **switch case** 来判断，如果不能实现则再考虑用 **if else**，因为在多条件下使用 **switch case** 语句判断会更加简洁。
 
-* 不推荐用 **layout_marginLeft**，而应该用 **layout_marginStart**；不推荐用 **layout_marginRight**，而应该用 **layout_marginEnd**，原因有两个，一个是适配 Android 4.4 **反方向特性**（可在开发者选项中开启），第二个是 XML 布局中使用 **layout_marginLeft** 和 **layout_marginRight** 会有代码警告，**padding** 属性也是同理，这里不再赘述。
+* 严禁用 **switch case** 语句来判断资源 id，因为 Gradle 在 5.0 之后的版本，资源 ID 将不会以常量的形式存在，而 **switch case** 语句只能判断常量，所以不能再继续使用 **switch case** 来判断资源 ID 了。
+
+* 不推荐用 **layout_marginLeft**，而应该用 **layout_marginStart**；不推荐用 **layout_marginRight**，而应该用 **layout_marginEnd**，原因有两个，一个是适配 Android 4.4 **反方向特性**（可在开发者选项中开启），第二个是 XML 布局中使用 **layout_marginLeft** 和 **layout_marginRight** 会有代码警告，**padding** 属性也是同理，这里不再赘述。另外有一点需要注意：严禁 **Left、Right** 属性和 **Start、End** 属性同时使用，两者只能二选一。
 
 * 如果在 **layout_marginStart** 和 **layout_marginEnd** 的值相同的情况下，请替换使用 **layout_marginHorizontal**，而 **layout_marginTop** 和 **layout_marginBottom** 也同理，请替换使用 **layout_marginVertical**，能用一句代码能做的事不要写两句，**padding** 属性也是同理，这里不再赘述。
 
@@ -946,11 +948,11 @@ public class BaseDialog {
 }
 ```
 
-* 代码美观性虽然不会干扰到业务的正常进行，但是对一个程序员来讲，它是对技术的一种追求和热爱，同时也是工匠精神的体现。
+* 代码美观性虽然不会干扰到业务的正常进行，但是对一个程序员来讲，是代码品质的一种追求，同时也是工匠精神的体现。
 
 #### 第三方框架使用规范
 
-* 集成一些第三方框架或者 SDK，必须注明作用和出处，以便出现问题时能够快速核查和反馈。
+* 集成一些第三方框架或者 SDK，必须注明框架的作用及出处，以便出现问题时能够快速核查和反馈。
 
 ```groovy
 // 权限请求框架：https://github.com/getActivity/XXPermissions
