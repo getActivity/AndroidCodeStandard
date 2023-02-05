@@ -1,6 +1,6 @@
 # Android 代码规范文档
 
-* 码云地址：[Gitee](https://gitee.com/getActivity/AndroidCodeStandard)
+* 项目地址：[Github](https://github.com/getActivity/AndroidCodeStandard)
 
 * 鸿洋力荐：[荐一份 Android 代码规范建议文档](https://mp.weixin.qq.com/s/Zv1zVom69RFrMJ1q8tP8Lw)
 
@@ -68,6 +68,8 @@
 
 * [接口文件命名规范](#接口文件命名规范)
 
+* [代码嵌套规范](#代码嵌套规范)
+
 * [接口实现规范](#接口实现规范)
 
 * [异常捕获规范](#异常捕获规范)
@@ -104,7 +106,9 @@
 
 * [资源硬编码规范](#资源硬编码规范)
 
-* [版本命名规范](#版本命名规范)
+* [版本名和版本码规范](#版本名和版本码规范)
+
+* [Git 版本管理规范](#git-版本管理规范)
 
 * [致谢](#致谢)
 
@@ -124,7 +128,7 @@
 
 * 在讲之前，我们先思考一个问题，代码规范的出现是为了什么？不就为了让我们更好地进行团队协作和项目维护吗？没错的，所以代码规范原则应该围绕这两个目标进行。
 
-    * **特事特办**：代码规范文档只能解决 **99.99%** 场景下的问题，特殊情况应该要特殊处理，违背者需要给出**合理的解释**，建议在代码中直接**用注释注明**，这样可以**减少沟通成本**，否则在一般情况下应当要遵守代码规范文档上的约束。
+    * **特事特办**：代码规范文档只能解决 **99%** 场景下的问题，特殊情况应该要特殊处理，违背者需要给出**合理的解释**，建议在代码中直接**用注释注明**，这样可以**减少沟通成本**，否则在一般情况下应当要遵守代码规范文档上的约束。
 
     * **以人为本**：我们应该衡量不同写法带来的优点和缺点，然后根据当前项目的实际需求做出合适的选择或者变化。规则是人定的，不是**一成不变**的。在制定新的规则或者修改旧的规则之前应当先**参考和分析**谷歌或者知名公司的做法，然后与团队中的各个成员**沟通和协商好**。
     
@@ -135,6 +139,8 @@
 * 使用 **0px** 代替 **0dp**，这样就可以在获取时避免系统进行换算，提升代码的执行效率。
 
 * 字符串比较，应该用 `"xxx".equals(object)`，而不应该用 `object.equals("xxx")`，因为 **object** 对象可能为空，我们应该把不为空的条件放置在表达式的前面。
+
+* **long** 类型的常量应该以大写英文 **L** 结尾，而不应该用小写英文 **l**，因为小写英文的 **l** 会和数字 **1** 容易造成一些混淆，例如 **1l** 会被看成 **11**，而使用 **1L** 就不会出现这种情况。
 
 * 尽量采用 **switch case** 来判断，如果不能实现则再考虑用 **if else**，因为在多条件下使用 **switch case** 语句判断会更加简洁。
 
@@ -158,24 +164,26 @@
 
 * 如果一个类不需要被继承，请直接用 **final** 进行修饰，如果一个字段在类初始化过程中已经赋值并且没有地方进行二次赋值，也应当用 **final** 修饰，如果一个字段不需要被外部访问，那么需要用 **private** 进行修饰。
 
+* 时间间隔的计算，对于前后时间的获取，不推荐使用 `System.currentTimeMillis()` 来获取，因为用户随时可能会调整手机的日期，这样会导致计算出来的时间间隔不准确，推荐使用 `SystemClock.uptimeMillis()` 来获取，此 API 用于获取本次已开机的毫秒数，用户就算调整了手机的日期也没有任何影响；值得一提的是，**Handler** 类中的 `postDelayed` 方法也是采用这种方式实现。
+
 * 每个小组成员应当安装[阿里巴巴代码约束插件](https://plugins.jetbrains.com/plugin/10046-alibaba-java-coding-guidelines)，并及时地对插件所提示的**代码警告**进行处理或者抑制警告。
 
 * 应用图标应该放在 **mipmap** 目录下，其他图片资源应当放到 **drawable** 目录下，具体原因可以看[谷歌官方文档](https://developer.android.google.cn/guide/topics/resources/providing-resources)对这两个文件夹给出的介绍：
 
-|    目录        | 资源类型                                                     |
-| :---------- | :----------------------------------------------------------- |
-|  `drawable` | 位图文件（`.png`、`.9.png`、`.jpg`、`.gif`）或编译为以下可绘制对象资源子类型的 XML 文件：位图文件九宫格（可调整大小的位图）状态列表形状动画可绘制对象其他可绘制对象请参阅 [Drawable 资源](https://developer.android.google.cn/guide/topics/resources/drawable-resource)。 |
-|  `mipmap`   | 适用于不同启动器图标密度的可绘制对象文件。如需了解有关使用 `mipmap` 文件夹管理启动器图标的详细信息，请参阅[管理项目概览](https://developer.android.google.cn/tools/projects#mipmap)。 |
+|     目录    |                         资源类型                               |
+| :--------: | :-----------------------------------------------------------: |
+| **drawable** | 位图文件（`.png`、`.9.png`、`.jpg`、`.gif`）或编译为以下可绘制对象资源子类型的 XML 文件：位图文件九宫格（可调整大小的位图）状态列表形状动画可绘制对象其他可绘制对象请参阅 [Drawable 资源](https://developer.android.google.cn/guide/topics/resources/drawable-resource)。 |
+|  **mipmap**   | 适用于不同启动器图标密度的可绘制对象文件。如需了解有关使用 `mipmap` 文件夹管理启动器图标的详细信息，请参阅[管理项目概览](https://developer.android.google.cn/tools/projects#mipmap)。 |
 
 #### 后台接口规范
 
 * 后台返回的 **id 值**，不要使用 **int** 或者 **long** 类型来接收，而应该用 **string** 类型来接收，因为我们不需要对这个 **id 值**进行运算，所以我们不需要关心它是什么类型的。
 
-* 后台返回的**金额数值**应该使用 **String** 来接收，而不能用**浮点数**来接收，因为 **float** 或者 **double** 在数值比较大的时候会容易丢失精度，并且还需要自己手动转换出想要保留的小数位，最好的方式是后台返回什么前端就展示什么，而到了运算的时候，则应该用 **BigDecimal** 类来进行转换和计算，当然金额在前端一般展示居多，运算的情况还算是比较少的。
+* 后台返回的**金额数值**应该使用 **String** 来接收，而不能用**浮点数**来接收，因为 **float** 或者 **double** 在数值比较大的情况下会容易丢失精度，并且还需要自己手动转换出想要保留的小数位，最好的方式是后台返回什么前端就展示什么，而到了运算的时候，则应该用 **BigDecimal** 类来进行转换和计算，当然金额在前端一般展示居多，运算的情况还算是比较少的。
 
 * 我们在定义后台返回的 Bean 类时，不应当将一些我们没有使用到的字段添加到代码中，因为这样会消耗性能，因为 Gson 是通过**反射**将后台字段赋值到 Java 字段中，所以我们应当避免一些不必要的字段解析，另外臃余的字段也会给我们排查问题造成一定的阻碍。
 
-* 如果后台给定的字段名不符合代码命名的时候，例如当遇到 `student_name` 这种命名时，我们应当使用 Gson 框架中的 **@SerializedName** 注解进行重命名。
+* 如果后台给定的字段名不符合代码命名的时候，例如当遇到 `student_name` 这种命名时，我们应当使用 Gson 框架中的 **@SerializedName** 注解对字段进行映射。
 
 * 请求的接口参数和返回字段必须要写上注释，除此之外还应该备注对应的后台接口文档地址，以便我们后续能够更好地进行维护和迭代。
 
@@ -183,58 +191,38 @@
 
 * 接口请求成功的提示可以不显示，但请求失败的提示需要显示给到用户，否则会加大排查问题的难度，也极有可能会把问题掩盖掉，从而导致问题遗留到线上去。
 
+* 如果用的 Json 解析框架是 Gson，则建议进行容错处理，秉持不信任后台的原则，因为我们没有办法控制后台返回了什么数据结构，但是我们有办法保证应用不会为这个问题而导致崩溃。
+
 #### 变量命名规范
 
 * **严禁使用中文或者中文拼音**进行重命名
 
-* 使用**驼峰式命名风格**（单词最好控制在三个以内）
+* 遵循 **lowerCamelCase（驼峰式）命名风格**（单词最好控制在三个以内）
 
-* 局部变量或者公开的成员变量应该以作用来命名，例如：
+* 变量应该以作用来命名，例如：
 
 ```java
-public String name;
-public TextView nameView;
-public FrameLayout nameLayout;
+String name;
+TextView nameView;
+FrameLayout nameLayout;
 ```
 
 ```java
 // 命名规范附带技巧（当布局中同个类型的控件只有一个的时候，也可以这样命名）
-public TextView textView;
-public RecyclerView recyclerView;
-```
-
-* 非公开的成员变量必须以小 **m** 开头，例如：
-
-```java
-private String mName;
-private TextView mNameView;
-private FrameLayout mNameLayout;
-```
-
-```java
-// 命名规范附带技巧（当布局中同个类型的控件只有一个的时候，也可以这样命名）
-private TextView mTextView;
-private RecyclerView mRecyclerView;
+TextView textView;
+RecyclerView recyclerView;
 ```
 
 * 布尔值命名规范，无论是局部变量还是成员变量，都不应该携带 **is**，例如：
 
 ```java
 // 不规范写法示例
-private boolean mIsDebug;
 boolean isDebug;
 ```
 
 ```java
 // 规范写法示例
-private boolean mDebug;
 boolean debug;
-```
-        
-* 静态变量则用小 **s** 开头，例如：
-
-```java
-static Handler sHandler;
 ```
 
 * 常量则需要用大写，并且用下划线代替驼峰，例如：
@@ -243,64 +231,9 @@ static Handler sHandler;
 static final String REQUEST_INSTALL_PACKAGES;
 ```
 
-* 有细心的同学可能会发现一个问题，为什么我们最常用的 Glide 和 OkHttp 的源码中，非公开的成员变量为什么没有用小 `m` 开头？但是谷歌的 SDK 源码和 Support 库就有呢？那究竟是用还是不用呢？这个问题其实很好回答，我们可以先从体量上分析，首先谷歌的开发人员和项目数量肯定是最多的，那么谷歌在这块的探索和研究肯定是多于 Glie 和 OkHttp 的，其次是 Glide 和 OkHttp 的源码都有一个特点，很多类都维持在 1k 行代码左右，而谷歌源码很多类都接近 10k 行代码，例如 Activity 的源码在 API 30 上面有 8.8k 行代码，所以谷歌在这块略胜一筹，如果非要二选一，我选择谷歌的代码风格，并不是说 Glide 和 OkHttp 命名风格不好，是因为或许在未来的某一天，可能会有新的图片请求框架和网络请求框架来代替 Glide 和 OkHttp，但是基本不可能会出现有代替 Android SDK 或者 Support 库的一天。
+* 有细心的同学可能会发现一个问题，Android 源码中私有字段都是以 `m` 开头，而静态字段都是以 `s` 开头，其实这种是 AOSP 的源码规范，这样的写法也算规范的，大家可以自行抉择，但是建议组内统一。
 
-* 最后让我们静静地欣赏一下 **Activity** 类中成员变量的命名：
-
-```java
-public class Activity {
-
-    public static final int RESULT_CANCELED    = 0;
-    public static final int RESULT_OK          = -1;
-
-    private Instrumentation mInstrumentation;
-
-    private IBinder mToken;
-    private IBinder mAssistToken;
-
-    private Application mApplication;
-
-    /*package*/ Intent mIntent;
-
-    /*package*/ String mReferrer;
-
-    private ComponentName mComponent;
-
-    /*package*/ ActivityInfo mActivityInfo;
-
-    /*package*/ ActivityThread mMainThread;
-
-    Activity mParent;
-
-    boolean mCalled;
-
-    /*package*/ boolean mResumed;
-
-    /*package*/ boolean mStopped;
-
-    boolean mFinished;
-    boolean mStartedActivity;
-
-    private boolean mDestroyed;
-    private boolean mDoReportFullyDrawn = true;
-    private boolean mRestoredFromBundle;
-
-    private final ArrayList<Application.ActivityLifecycleCallbacks> mActivityLifecycleCallbacks =
-            new ArrayList<Application.ActivityLifecycleCallbacks>();
-
-    private Window mWindow;
-
-    private WindowManager mWindowManager;
-
-    private CharSequence mTitle;
-    private int mTitleColor = 0;
-
-
-    final Handler mHandler = new Handler();
-
-    final FragmentController mFragments = FragmentController.createController(new HostCallbacks());
-}
-```
+* 另外如果是在 Kotlin 类中，字段名则不能以 `m` 或者 `s` 开头，因为这样写是不规范的，因为作者翻阅了 AndroidX 的源码，发现里面写的 Kotlin 代码中的字段已经没有了 `m` 或者 `s` 开头的字段，但是 Java 代码中仍然有保留着这种写法。
 
 #### 包名命名规范
 
@@ -395,6 +328,59 @@ public class Handler {
 ```
 
 * 至于接口写在内部还是外部，具体可以视实际情况而定，如果功能比较庞大，就可以考虑抽取成外部的，只作用在某个类上的，则就可以直接写成内部的。
+
+#### 代码嵌套规范
+
+* 代码嵌套很深一直以来是一个很头疼的问题，其实它也算一种代码不规范写法的表现，那么如何写代码才能降低代码逻辑嵌套呢？
+
+```java
+// 不规范写法示例
+public void test(Object a, Object b, Object c) {
+    if (a != null) {
+        if (b != null) {
+            if (c != null) {
+                System.out.println("所有对象不为空");
+            } else {
+                System.out.println("对象 C 为空");
+            }
+        } else {
+            System.out.println("对象 B 为空");
+        }
+    } else {
+        System.out.println("对象 A 为空");
+    }
+}
+```
+
+```java
+// 规范写法示例
+public void test(Object a, Object b, Object c) {
+    if (a == null) {
+        System.out.println("对象 A 为空");
+        return;
+    }
+
+    if (b == null) {
+        System.out.println("对象 B 为空");
+        return;
+    }
+
+    if (c == null) {
+        System.out.println("对象 C 为空");
+        return;
+    }
+
+    System.out.println("所有对象不为空");
+}
+```
+
+* 先让我们对比一下这两种写法，是不是觉得第一种写法可读性比较差？而第二种写法可读性比较强？
+
+* 我们应该遵循少写 `else` ，多用 `return` 语句的原则，这样就能降低代码之间的相互嵌套，提升代码的可读性。
+
+* 这个时候大家可能有疑问了，循环没有 `return` 语句怎么办？这个问题很简单，大家可以用 `continue` 或者 `break` 来代替，其实都是换汤不换药，这里不再赘述。
+
+* 另外不是说存在嵌套就一定不好，还有一种情况，减少代码嵌套时需要写很多重复代码，这种就需要大家根据实际情况做选择了。
 
 #### 接口实现规范
 
@@ -500,7 +486,7 @@ try {
 } catch (Exception e) {}
 ```
 
-* 如需捕获异常，请用以下方式进行捕获，列出具体的异常类型，并在代码中输出对应的日志。
+* 如需捕获异常，请用以下方式进行捕获，列出具体的异常类型，并在代码中输出对应的堆栈信息。
 
 ```java
 // 捕获这个异常，避免程序崩溃
@@ -559,40 +545,16 @@ Glide.with(this)
 
 #### 参数传递规范
 
-* 应当将 Intent 中的 key 常量保存到一个管理类中，如果不想单独定义一个 IntentKey 类，也可以直接将 key 值直接定义目标的 Activity 中。
-
-```java
-public class IntentKey {
-
-    /** id */
-    public static final String ID = "id";
-    /** token */
-    public static final String TOKEN = "token";
-    /** 订单 */
-    public static final String ORDER = "order";
-    /** 余额 */
-    public static final String BALANCE = "balance";
-    /** 时间 */
-    public static final String TIME = "time";
-    /** URL */
-    public static final String URL = "url";
-    /** 路径 */
-    public static final String PATH = "path";
-    /** 其他 */
-    public static final String OTHER = "other";
-
-    .....
-}
-```
-
 * 如果跳转的 Activity 需要传递参数，应该在目标的 Activity 中定义静态的 **start** 又或者 **newIntent** 方法。
 
 ```java
 public final class WebActivity extends Activity {
 
+    private static final String INTENT_KEY_URL = "url";
+
     public static void start(Context context, String url) {
         Intent intent = new Intent(context, WebActivity.class);
-        intent.putExtra(IntentKey.URL, url);
+        intent.putExtra(INTENT_KEY_URL, url);
         context.startActivity(intent);
     }
 }
@@ -601,9 +563,11 @@ public final class WebActivity extends Activity {
 ```java
 public final class WebActivity extends Activity {
 
+    private static final String INTENT_KEY_URL = "url";
+
     public static Intent newIntent(Context context, String url) {
         Intent intent = new Intent(context, WebActivity.class);
-        intent.putExtra(IntentKey.URL, url);
+        intent.putExtra(INTENT_KEY_URL, url);
         return intent;
     }
 }
@@ -614,10 +578,12 @@ public final class WebActivity extends Activity {
 ```java
 public final class WebFragment extends Fragment {
 
+    private static final String INTENT_KEY_URL = "url";
+
     public static WebFragment newInstance(String url) {
         WebFragment fragment = new WebFragment();
         Bundle bundle = new Bundle();
-        bundle.putString(IntentKey.URL, url);
+        bundle.putString(INTENT_KEY_URL, url);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -626,10 +592,12 @@ public final class WebFragment extends Fragment {
 
 * 如果跳转的 Activity 或者创建的 Fragment 不需要传任何参数，可以不需要定义这些静态方法。
 
-* 另外如果一个界面需要传递的参数过多（5 个以上），建议用一个对象对这些参数进行封装，然后实现 Serializable 或者 Parcelable 接口进行传递，具体写法示例：
+* 另外如果一个界面需要传递的参数过多（一般 5 个以上），建议用一个对象对这些参数进行封装，然后实现 Serializable 或者 Parcelable 接口进行传递，具体写法示例：
 
 ```java
 public final class VideoPlayActivity extends Activity {
+
+    private static final String INTENT_KEY_PARAMETERS = "parameters";
 
     /**
      * 播放参数构建
@@ -726,7 +694,7 @@ public final class VideoPlayActivity extends Activity {
 
         public void start(Context context) {
             Intent intent = new Intent(context, VideoPlayActivity.class);
-            intent.putExtra(IntentKey.VIDEO, this);
+            intent.putExtra(INTENT_KEY_PARAMETERS, this);
             if (!(context instanceof Activity)) {
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             }
@@ -745,7 +713,21 @@ new VideoPlayActivity.Builder()
 
 #### 代码美观性要求
 
-* 第一个大括号应当统一放在表达式后面，而不应该换行处理，例如：
+* if 语句后面应该加上大括号，而不应该将判断和处理的逻辑在同一行做处理，例如：
+
+```java
+// 不规范写法示例
+if (AppConfig.isDebug()) return;
+```
+
+```java
+// 规范写法示例
+if (AppConfig.isDebug()) {
+    return;
+}
+```
+
+* 大括号应当统一放在表达式后面，而不应该换行处理，例如：
 
 ```java
 // 不规范写法示例
@@ -790,7 +772,7 @@ public static boolean isAppInstalled(Context context, String packageName) {
 }
 ```
 
-* 适当换行有助于提升代码的可读性，在单行代码较长的情况下可以考虑换行，例如：
+* 适当换行有助于提升代码的可读性，在单行代码较长的情况下可以考虑适当换行，例如：
 
 ```java
 // 不规范写法示例
@@ -828,7 +810,27 @@ public void openSystemFileChooser(Activity activity, FileChooserParams params, V
 }
 ```
 
-* 变量和方法的排序，应当根据重要程度、API 类型、执行顺序这几点来摆放，例如：
+* 一个类里面的内容，应该按照以下规则来排序，从上往下排序：
+
+    1. 常量
+
+    2. 静态变量
+
+    3. 静态方法
+
+    4. 类字段
+
+    5. 构造函数
+
+    6. 重载方法
+
+    7. 普通方法
+
+    8. 内部类
+
+    9. 接口类
+
+* 另外不同变量和方法的排序，应当根据重要程度、API 类型、执行顺序这几点来摆放，例如：
 
 ```java
 // 变量排序示例
@@ -958,12 +960,12 @@ public class BaseDialog {
 
 ```groovy
 // 权限请求框架：https://github.com/getActivity/XXPermissions
-implementation 'com.hjq:xxpermissions:10.6'
+implementation 'com.github.getActivity:XXPermissions:16.6'
 ```
 
 * 尽量不要选择功能两套相同的框架，应当引用最合适的一套框架进行开发。
 
-* 使用第三方库必须要依赖指定的版本号，而不能使用 `latest-version` 或者  `+` 来指定依赖库最新的版本号。
+* 使用第三方库必须要依赖指定的版本号，而不能使用 `latest.release` 或者  `+` 来指定依赖库最新的版本号。
 
 * 使用第三方开源库出现问题或者 Bug 时应及时通知到开源库的作者，如果没有及时回复就根据实际情况对问题进行修复。
 
@@ -1617,7 +1619,7 @@ tools:context=".ui.dialog.PersonDataDialog"
 
 * Style 样式规范：对于一些常用并且样式比较统一的控件，例如 **Button**、**EditText** 等，我们对这些控件的样式进行抽取到 `style.xml` 文件中来，避免属性重复定义。
 
-#### 版本命名规范
+#### 版本名和版本码规范
 
 * 版本名应该由三段整数组成
 
@@ -1625,54 +1627,100 @@ tools:context=".ui.dialog.PersonDataDialog"
 
     * 第二段：代表需求版本号，一般双周发一次版，每个迭代周期 +1
     
-    * 第三段：代表 Bug 版本号，发版之后出现 Bug，需要发版修复时 +1
+    * 第三段：代表小版本号，发版之后出现 Bug，需要发版修复时 +1
 
-```groovy
+```text
 versionName '4.8.0'
 ```
 
 * 另外版本码应当和版本名保持一定的关联性，例如：
 
-```groovy
+```text
 versionName '4.12.1'
 versionCode 41201
 ```
 
 * 这样的好处在于：版本名越高，版本码也会变大，不仅能方便记忆，还能帮助我们更好地管理和升级版本，在一定程度上能避免**高版本名低版本码**的 apk 能被**低版本名高版本码**的 apk 覆盖安装的情况。
 
+#### Git 版本管理规范
+
+* 提交规范：在提交代码时请进行 CodeReview（可以是自己也可以是别人），并且确保代码是自测通过的才能进行提交。另外有一点需要注意：提交之前不能先 Pull 代码，这样方式可行但是不规范。
+
+* 多分支规范：在多人协作开发中，我们应该用一个分支代表一个需求，这样做的好处是，在开发需求的过程中，一旦需求被砍，需求分支只要不合入主分支中就不会有太大的影响。另外一个需要注意的点就是分支合并的时机，时机应当在测试完毕后合入，由于分支合并有先后顺序，所以可能会导致代码在没有合并之前没有问题，在合并后出现了问题，所以我们应该约定一个封板时间（一般为上线或者灰度前两三天），在此期间对整个迭代的需求进行回归测试，不允许存在 Bug 之外的修改，例如需求变动修改，若非紧急变动，请勿轻易修改，一旦修改了，则应当将上线或者灰度的时间进行顺延，这样可以有效降低线上事故发生的概率。
+
+* 分支管理规范：分支一多会产生一些问题，那就是怎么管理这些分支，这个问题其实要从分支名称下手，由于分支是没有层级概念的，但是在一些版本管理软件上面（例如 `Sourcetree`），可以通过给分支的名称加 `/` 来建立层级，所以我们在给分支命名的时候，要遵循这种格式的命名，那么问题来了如何建立分支的层级？
+
+     * 如果是 `需求主分支`，请以 `版本名` + `/` + `feature-branch` 的格式来命名，例如 `v5.2.0/feature-branch`
+
+     * 如果是 `需求功能点分支`，请以 `版本名` + `/` + `feature` + `需求名称` 的格式来命名，例如 `v5.2.0/feature-push-message`
+
+     * 如果是 `Bug 修复分支`，请以 `版本名` + `/` + `bugfix` + `Bug 名称` 的格式来命名，例如 `v5.2.0/bugfix-launch-crash`
+
+* 它们之间的合并顺序应当为：`需求功能点分支` 或者 `Bug 修复分支` 自测没有问题了合并到 `需求主分支`，下一个版本的 `需求主分支` 应该基于上一个版本的 `需求主分支` 的代码开分支，还有在代码灰度完成，正式上线之后，还应当给某个提交点打版本标签（俗称打版本 tag），标记这个版本的代码在此处提交点发版，方便后续追溯问题。
+
+* 这个时候大家可能有疑问了，上个版本有 Bug，紧急发了修复版本 `5.1.1`，但是 `5.2.0`（基于 `5.1.0`）已经开始迭代了，那么 `5.1.1` 应该在什么时机合入？答：在发完 `5.1.1` 版本后应该将代码及时合入 `5.2.0` 分支，避免后续出现遗留。
+
+* 分支依赖冲突处理：在多分支开发中，总是避免不了一种情况，那就是需求之间存在依赖关系的问题，面对这种问题最好的处理方式是：
+
+     * 如果功能 A 依赖功能 B 的代码，而开发是同步进行的，则在分支 A 上面开发完功能 A 后，再合并一下分支 B 的功能 B 的代码，将分支 A 的功能补充完整再进行提测。
+
+     * 如果功能 A 和功能 B 的功能之间是强依赖关系，那么比较优的解决方案是用同一个分支开发功能 A 和功能 B，当然这只是建议，最终还是要根据实际情况来判断要不要那么做。
+
 #### 致谢
 
-* [阿里巴巴Android开发手册.pdf](阿里巴巴Android开发手册.pdf)
+* [阿里巴巴 Android 开发手册.pdf](阿里巴巴Android开发手册.pdf)
 
-* [阿里巴巴Java开发手册.pdf](阿里巴巴Java开发手册.pdf)
+* [阿里巴巴 Java 开发手册.pdf](阿里巴巴Java开发手册.pdf)
 
-* [谷歌代码样式指南](http://source.android.com/source/code-style.html)
+* [谷歌 Java 风格指南](https://google.github.io/styleguide/javaguide.html)
+
+* [谷歌 AOSP 代码样式指南](http://source.android.com/source/code-style.html)
+
+* [谷歌 Kotlin 代码样式指南](https://developer.android.com/kotlin/style-guide?hl=zh-cn)
 
 #### 作者其他开源项目
 
-* 安卓技术中台：[AndroidProject](https://github.com/getActivity/AndroidProject)
+* 安卓技术中台：[AndroidProject](https://github.com/getActivity/AndroidProject) ![](https://img.shields.io/github/stars/getActivity/AndroidProject.svg) ![](https://img.shields.io/github/forks/getActivity/AndroidProject.svg)
 
-* 网络框架：[EasyHttp](https://github.com/getActivity/EasyHttp)
+* 安卓技术中台 Kt 版：[AndroidProject-Kotlin](https://github.com/getActivity/AndroidProject-Kotlin) ![](https://img.shields.io/github/stars/getActivity/AndroidProject-Kotlin.svg) ![](https://img.shields.io/github/forks/getActivity/AndroidProject-Kotlin.svg)
 
-* 吐司框架：[ToastUtils](https://github.com/getActivity/ToastUtils)
+* 权限框架：[XXPermissions](https://github.com/getActivity/XXPermissions) ![](https://img.shields.io/github/stars/getActivity/XXPermissions.svg) ![](https://img.shields.io/github/forks/getActivity/XXPermissions.svg)
 
-* 权限框架：[XXPermissions](https://github.com/getActivity/XXPermissions)
+* 吐司框架：[ToastUtils](https://github.com/getActivity/ToastUtils) ![](https://img.shields.io/github/stars/getActivity/ToastUtils.svg) ![](https://img.shields.io/github/forks/getActivity/ToastUtils.svg)
 
-* 标题栏框架：[TitleBar](https://github.com/getActivity/TitleBar)
+* 网络框架：[EasyHttp](https://github.com/getActivity/EasyHttp) ![](https://img.shields.io/github/stars/getActivity/EasyHttp.svg) ![](https://img.shields.io/github/forks/getActivity/EasyHttp.svg)
 
-* 悬浮窗框架：[XToast](https://github.com/getActivity/XToast)
+* 标题栏框架：[TitleBar](https://github.com/getActivity/TitleBar) ![](https://img.shields.io/github/stars/getActivity/TitleBar.svg) ![](https://img.shields.io/github/forks/getActivity/TitleBar.svg)
 
-* 国际化框架：[MultiLanguages](https://github.com/getActivity/MultiLanguages)
+* 悬浮窗框架：[XToast](https://github.com/getActivity/XToast) ![](https://img.shields.io/github/stars/getActivity/XToast.svg) ![](https://img.shields.io/github/forks/getActivity/XToast.svg)
 
-* Gson 解析容错：[GsonFactory](https://github.com/getActivity/GsonFactory)
+* Shape 框架：[ShapeView](https://github.com/getActivity/ShapeView) ![](https://img.shields.io/github/stars/getActivity/ShapeView.svg) ![](https://img.shields.io/github/forks/getActivity/ShapeView.svg)
 
-* 日志查看框架：[Logcat](https://github.com/getActivity/Logcat)
+* 语种切换框架：[MultiLanguages](https://github.com/getActivity/MultiLanguages) ![](https://img.shields.io/github/stars/getActivity/MultiLanguages.svg) ![](https://img.shields.io/github/forks/getActivity/MultiLanguages.svg)
+
+* Gson 解析容错：[GsonFactory](https://github.com/getActivity/GsonFactory) ![](https://img.shields.io/github/stars/getActivity/GsonFactory.svg) ![](https://img.shields.io/github/forks/getActivity/GsonFactory.svg)
+
+* 日志查看框架：[Logcat](https://github.com/getActivity/Logcat) ![](https://img.shields.io/github/stars/getActivity/Logcat.svg) ![](https://img.shields.io/github/forks/getActivity/Logcat.svg)
+
+* Android 版本适配：[AndroidVersionAdapter](https://github.com/getActivity/AndroidVersionAdapter) ![](https://img.shields.io/github/stars/getActivity/AndroidVersionAdapter.svg) ![](https://img.shields.io/github/forks/getActivity/AndroidVersionAdapter.svg)
+
+* Android 资源大汇总：[AndroidIndex](https://github.com/getActivity/AndroidIndex) ![](https://img.shields.io/github/stars/getActivity/AndroidIndex.svg) ![](https://img.shields.io/github/forks/getActivity/AndroidIndex.svg)
+
+* Android 开源排行榜：[AndroidGithubBoss](https://github.com/getActivity/AndroidGithubBoss) ![](https://img.shields.io/github/stars/getActivity/AndroidGithubBoss.svg) ![](https://img.shields.io/github/forks/getActivity/AndroidGithubBoss.svg)
+
+* Studio 精品插件：[StudioPlugins](https://github.com/getActivity/StudioPlugins) ![](https://img.shields.io/github/stars/getActivity/StudioPlugins.svg) ![](https://img.shields.io/github/forks/getActivity/StudioPlugins.svg)
+
+* 表情包大集合：[EmojiPackage](https://github.com/getActivity/EmojiPackage) ![](https://img.shields.io/github/stars/getActivity/EmojiPackage.svg) ![](https://img.shields.io/github/forks/getActivity/EmojiPackage.svg)
+
+* 省市区 Json 数据：[ProvinceJson](https://github.com/getActivity/ProvinceJson) ![](https://img.shields.io/github/stars/getActivity/ProvinceJson.svg) ![](https://img.shields.io/github/forks/getActivity/ProvinceJson.svg)
+
+* Markdown 语法文档：[MarkdownDoc](https://github.com/getActivity/MarkdownDoc) ![](https://img.shields.io/github/stars/getActivity/MarkdownDoc.svg) ![](https://img.shields.io/github/forks/getActivity/MarkdownDoc.svg)
 
 #### 微信公众号：Android轮子哥
 
 ![](https://raw.githubusercontent.com/getActivity/Donate/master/picture/official_ccount.png)
 
-#### Android 技术分享 QQ 群：78797078
+#### Android 技术 Q 群：10047167
 
 #### 如果您觉得我的开源库帮你节省了大量的开发时间，请扫描下方的二维码随意打赏，要是能打赏个 10.24 :monkey_face:就太:thumbsup:了。您的支持将鼓励我继续创作:octocat:
 
