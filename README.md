@@ -18,6 +18,8 @@
 
 #### 更新日志
 
+* 2023 年 2 月 26 日：[补充字符串类型转换规范](https://github.com/getActivity/AndroidCodeStandard/commit/71cb472afe561b2d895dda0a839ebf1dbcb6c367)
+
 * 2023 年 2 月 5 日：[<br>修改变量命名规范<br>补充 long 类型写法规范<br>补充时间戳间隔计算规范<br>补充代码美观性要求规范<br>新增《代码嵌套规范》类别<br>新增《Git 版本管理规范》类别](https://github.com/getActivity/AndroidCodeStandard/commit/8f72c683e3731db62f02952e76fafae8896ced4f)
 
 * 2021 年 3 月 31 日：[<br>新增 switch case 语句判断资源 id 的规范<br>补充 Left、Right、Start、End 同时使用规范](https://github.com/getActivity/AndroidCodeStandard/commit/ad6604cecb49325fbd542bf3b89c2327daf931ec)
