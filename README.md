@@ -308,10 +308,10 @@ PickerLayoutManager.java
 ```java
 public class View {
 
-    private View.OnClickListener mListener;
+    private View.OnClickListener listener;
 
     public void setOnClickListener(OnClickListener listener) {
-        mListener = listener;
+        this.listener = listener;
     }
 
     public interface OnClickListener {
@@ -611,91 +611,63 @@ public final class VideoPlayActivity extends Activity {
     public static final class Builder implements Parcelable {
 
         /** 视频源 */
-        private String mVideoSource;
+        private String videoSource;
         /** 视频标题 */
-        private String mVideoTitle;
+        private String videoTitle;
         /** 播放进度 */
-        private int mPlayProgress;
+        private int playProgress;
         /** 手势开关 */
-        private boolean mGestureEnabled = true;
+        private boolean gestureEnabled = true;
         /** 循环播放 */
-        private boolean mLoopPlay = false;
+        private boolean loopPlay = false;
         /** 自动播放 */
-        private boolean mAutoPlay = true;
+        private boolean autoPlay = true;
         /** 播放完关闭 */
-        private boolean mAutoOver = true;
+        private boolean autoOver = true;
 
         public Builder() {}
 
         public Builder setVideoSource(File file) {
-            mVideoSource = file.getPath();
-            if (mVideoTitle == null) {
-                mVideoTitle = file.getName();
+            this.videoSource = file.getPath();
+            if (this.videoTitle == null) {
+                this.videoTitle = file.getName();
             }
             return this;
         }
 
         public Builder setVideoSource(String url) {
-            mVideoSource = url;
+            this.videoSource = url;
             return this;
-        }
-
-        private String getVideoSource() {
-            return mVideoSource;
         }
 
         public Builder setVideoTitle(String title) {
-            mVideoTitle = title;
+            this.videoTitle = title;
             return this;
-        }
-
-        private String getVideoTitle() {
-            return mVideoTitle;
         }
 
         public Builder setPlayProgress(int progress) {
-            mPlayProgress = progress;
+            this.playProgress = progress;
             return this;
-        }
-
-        private int getPlayProgress() {
-            return mPlayProgress;
         }
 
         public Builder setGestureEnabled(boolean enabled) {
-            mGestureEnabled = enabled;
+            this.gestureEnabled = enabled;
             return this;
-        }
-
-        private boolean isGestureEnabled() {
-            return mGestureEnabled;
         }
 
         public Builder setLoopPlay(boolean enabled) {
-            mLoopPlay = enabled;
+            this.loopPlay = enabled;
             return this;
-        }
-
-        private boolean isLoopPlay() {
-            return mLoopPlay;
         }
 
         public Builder setAutoPlay(boolean enabled) {
-            mAutoPlay = enabled;
+            this.autoPlay = enabled;
             return this;
-        }
-
-        public boolean isAutoPlay() {
-            return mAutoPlay;
         }
 
         public Builder setAutoOver(boolean enabled) {
-            mAutoOver = enabled;
+            this.autoOver = enabled;
             return this;
-        }
-
-        private boolean isAutoOver() {
-            return mAutoOver;
         }
 
         public void start(Context context) {
@@ -756,8 +728,8 @@ if (AppConfig.isDebug()) {
 // 不规范写法示例
 public static boolean isAppInstalled(Context context ,String packageName ){
     try {
-        context.getPackageManager().getApplicationInfo(packageName,0);
-        return   true;
+      context.getPackageManager() .getApplicationInfo(packageName,0);
+       return   true;
     }catch( PackageManager.NameNotFoundException e ){
         e.printStackTrace();
         return false ;
@@ -845,29 +817,29 @@ public class BaseDialog {
     public static class Builder<B extends BaseDialog.Builder<?>>
 
         /** 宽度和高度 */
-        private int mWidth = WindowManager.LayoutParams.WRAP_CONTENT;
-        private int mHeight = WindowManager.LayoutParams.WRAP_CONTENT;
+        private int width = WindowManager.LayoutParams.WRAP_CONTENT;
+        private int height = WindowManager.LayoutParams.WRAP_CONTENT;
 
         /** 是否能够被取消 */
-        private boolean mCancelable = true;
+        private boolean cancelable = true;
         /** 点击空白是否能够取消  前提是这个对话框可以被取消 */
-        private boolean mCanceledOnTouchOutside = true;
+        private boolean canceledOnTouchOutside = true;
 
         /** 背景遮盖层开关 */
-        private boolean mBackgroundDimEnabled = true;
+        private boolean backgroundDimEnabled = true;
         /** 背景遮盖层透明度 */
-        private float mBackgroundDimAmount = 0.5f;
+        private float backgroundDimAmount = 0.5f;
 
         /** Dialog 创建监听 */
-        private BaseDialog.OnCreateListener mCreateListener;
+        private BaseDialog.OnCreateListener createListener;
         /** Dialog 显示监听 */
-        private final List<BaseDialog.OnShowListener> mShowListeners = new ArrayList<>();
+        private final List<BaseDialog.OnShowListener> showListeners = new ArrayList<>();
         /** Dialog 取消监听 */
-        private final List<BaseDialog.OnCancelListener> mCancelListeners = new ArrayList<>();
+        private final List<BaseDialog.OnCancelListener> cancelListeners = new ArrayList<>();
         /** Dialog 销毁监听 */
-        private final List<BaseDialog.OnDismissListener> mDismissListeners = new ArrayList<>();
+        private final List<BaseDialog.OnDismissListener> dismissListeners = new ArrayList<>();
         /** Dialog 按键监听 */
-        private BaseDialog.OnKeyListener mKeyListener;
+        private BaseDialog.OnKeyListener keyListener;
     }
 }
 ```
@@ -1120,7 +1092,7 @@ public static XXPermissions with(FragmentActivity activity) {
 private static final String REQUEST_PERMISSIONS = "request_permissions";
 
 /** 权限回调对象 */
-private OnPermissionCallback mCallBack;
+private OnPermissionCallback callBack;
 ```
 
 * 变量注释规范（如果 API 是比较常见并且容易理解可以不用写，如果是复杂并且羞涩难懂则需要写上）
@@ -1406,24 +1378,24 @@ bottom_out_dialog.xml
 
 * View 和 Layout 控件缩写表，这里列举最常见的几个
 
-|   名称  |  缩写 |
-| :-----: | :----: |
-| TextView | tv |
-| EditText | et |
-| Button | btn |
-| ImageView | iv |
-| ImageButton | ib |
-| ListView | lv |
-| RecyclerView | rv |
-| RadioButton | rb |
-| RadioGroup | rg |
-| ProgressBar | pb |
-| CheckBox | cb |
-| TableLayout | tl |
-| ScrollView | sv |
-| LinearLayout | ll |
-| RelativeLayout | rl |
-| FrameLayout | fl |
+|       名称      |  缩写   |
+| :------------: | :----: |
+|     TextView   |   tv   |
+|     EditText   |   et   |
+|      Button    |  btn   |
+|    ImageView   |   iv   |
+|   ImageButton  |   ib   |
+|    ListView    |   lv   |
+|  RecyclerView  |   rv   |
+|   RadioButton  |   rb   |
+|    RadioGroup  |   rg   |
+|   ProgressBar  |   pb   |
+|     CheckBox   |   cb   |
+|   TableLayout  |   tl   |
+|   ScrollView   |   sv   |
+|   LinearLayout |   ll   |
+| RelativeLayout |   rl   |
+|   FrameLayout  |   fl   |
 
 #### Style 命名规范
 
@@ -1692,7 +1664,7 @@ versionCode 41201
 
 * 权限框架：[XXPermissions](https://github.com/getActivity/XXPermissions) ![](https://img.shields.io/github/stars/getActivity/XXPermissions.svg) ![](https://img.shields.io/github/forks/getActivity/XXPermissions.svg)
 
-* 吐司框架：[ToastUtils](https://github.com/getActivity/ToastUtils) ![](https://img.shields.io/github/stars/getActivity/ToastUtils.svg) ![](https://img.shields.io/github/forks/getActivity/ToastUtils.svg)
+* 吐司框架：[Toaster](https://github.com/getActivity/Toaster) ![](https://img.shields.io/github/stars/getActivity/Toaster.svg) ![](https://img.shields.io/github/forks/getActivity/Toaster.svg)
 
 * 网络框架：[EasyHttp](https://github.com/getActivity/EasyHttp) ![](https://img.shields.io/github/stars/getActivity/EasyHttp.svg) ![](https://img.shields.io/github/forks/getActivity/EasyHttp.svg)
 
