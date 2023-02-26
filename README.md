@@ -142,6 +142,8 @@
 
 * 字符串比较，应该用 `"xxx".equals(object)`，而不应该用 `object.equals("xxx")`，因为 **object** 对象可能为空，我们应该把不为空的条件放置在表达式的前面。
 
+* 字符串类型转换，应该用 `String.valueOf(Object object)` 来代替 `object.toString()`，因为 `object` 对象可能会为空， 直接调用 `toString` 方法可能会触发 `NullPointerException`，而 `valueOf` 方法内部有做判空处理。 
+
 * **long** 类型的常量应该以大写英文 **L** 结尾，而不应该用小写英文 **l**，因为小写英文的 **l** 会和数字 **1** 容易造成一些混淆，例如 **1l** 会被看成 **11**，而使用 **1L** 就不会出现这种情况。
 
 * 尽量采用 **switch case** 来判断，如果不能实现则再考虑用 **if else**，因为在多条件下使用 **switch case** 语句判断会更加简洁。
