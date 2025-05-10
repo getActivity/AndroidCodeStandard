@@ -110,6 +110,10 @@
 
 * [资源硬编码规范](#资源硬编码规范)
 
+* [多线程规范](#多线程规范)
+
+* [数据库操作规范](#数据库操作规范)
+
 * [版本名和版本码规范](#版本名和版本码规范)
 
 * [Git 版本管理规范](#git-版本管理规范)
@@ -384,7 +388,74 @@ public void test(Object a, Object b, Object c) {
 
 * 我们应该遵循少写 `else` ，多用 `return` 语句的原则，这样就能降低代码之间的相互嵌套，提升代码的可读性。
 
-* 这个时候大家可能有疑问了，循环没有 `return` 语句怎么办？这个问题很简单，大家可以用 `continue` 或者 `break` 来代替，其实都是换汤不换药，这里不再赘述。
+* 另外在不能用 `return` 的情况下，例如需要一直判断对象不能为空才能进行下一步操作，示例如下：
+
+```java
+// 不规范写法示例
+public void test(Context context) {
+    if (context instanceof Activity) {
+        Window window = ((Activity) context).getWindow();
+        if (window != null) {
+            View decorView = window.getDecorView();
+            if (decorView != null) {
+                WindowInsets rootWindowInsets = decorView.getRootWindowInsets();
+                if (rootWindowInsets != null) {
+                    DisplayCutout displayCutout = rootWindowInsets.getDisplayCutout();
+                    if (displayCutout != null) {
+                        // 安全区域距离屏幕左边的距离
+                        int safeInsetLeft = displayCutout.getSafeInsetLeft();
+                        // 安全区域距离屏幕顶部的距离
+                        int safeInsetTop = displayCutout.getSafeInsetTop();
+                        // 安全区域距离屏幕右部的距离
+                        int safeInsetRight = displayCutout.getSafeInsetRight();
+                        // 安全区域距离屏幕底部的距离
+                        int safeInsetBottom = displayCutout.getSafeInsetBottom();
+                    }
+                }
+            }
+        }
+    }
+
+    ......
+}
+```
+
+```java
+// 规范写法示例
+public void test(Context context) {
+    Window window = null;
+    if (context instanceof Activity) {
+        window = ((Activity) context).getWindow();
+    }
+    View decorView = null;
+    if (window != null) {
+        decorView = window.getDecorView();
+    }
+    WindowInsets rootWindowInsets = null;
+    if (decorView != null) {
+        rootWindowInsets = decorView.getRootWindowInsets();
+    }
+    DisplayCutout displayCutout = null;
+    if (rootWindowInsets != null) {
+        displayCutout = rootWindowInsets.getDisplayCutout();
+    }
+
+    if (displayCutout != null) {
+        // 安全区域距离屏幕左边的距离
+        int safeInsetLeft = displayCutout.getSafeInsetLeft();
+        // 安全区域距离屏幕顶部的距离
+        int safeInsetTop = displayCutout.getSafeInsetTop();
+        // 安全区域距离屏幕右部的距离
+        int safeInsetRight = displayCutout.getSafeInsetRight();
+        // 安全区域距离屏幕底部的距离
+        int safeInsetBottom = displayCutout.getSafeInsetBottom();
+    }
+    
+    ......
+}
+```
+
+* 这个时候大家可能有疑问了，循环语句不能用 `return` 语句怎么办？这个问题很简单，大家可以用 `continue` 或者 `break` 来代替，其实都是换汤不换药，这里不再赘述。
 
 * 另外不是说存在嵌套就一定不好，还有一种情况，减少代码嵌套时需要写很多重复代码，这种就需要大家根据实际情况做选择了。
 
@@ -538,10 +609,11 @@ try {
 * 虽然这种方式可以解决 **crash** 的问题，但是显得**不够严谨**，Glide 抛异常给外层，其实无非就想告诉调用者，调用的时机错了，正确的处理方式不是直接捕获这个异常，而是应该在外层做好逻辑判断，避免会进入出现 **crash** 的代码，正确的处理示例如下：
 
 ```java
-if (isFinishing() || isDestroyed()) {
-   // Glide：You cannot start a load for a destroyed activity
+if (activity.isFinishing() || activity.isDestroyed()) {
+    // Glide：You cannot start a load for a destroyed activity
     return;
 }
+
 Glide.with(this)
         .load(url)
         .into(mImageView);
@@ -1106,7 +1178,7 @@ fragment.setRetainInstance(true);
 
 #### 代码硬编码规范
 
-* 请尽量避免使用硬编码，例如系统的一些常量值，不能直接写死，而是应该通过代码引用，例如：
+* 请尽量避免使用硬编码，例如系统的一些常量值，不能直接写死，而是应该通过代码引用，这样有助于代码阅读和理解，例如：
 
 ```java
 // 不规范写法示例
@@ -1589,13 +1661,35 @@ tools:context=".ui.dialog.PersonDataDialog"
 	
 #### 资源硬编码规范
 
-* String 硬编码规范：如果项目已经适配了多语种，则严禁写死在 Java 代码或者布局文件中，如果没有这块需求的话，也建议将 String 资源定义在 `string.xml` 文件，此项不强制要求，大家根据实际情况而定。
+* String 硬编码规范：如果项目已经适配了多语种，则严禁写死在 Java 代码或者布局文件中，如果没有这块需求的话，也可以将 String 资源定义在 `string.xml` 文件，此项不强制要求，大家根据实际情况而定。
 
 * Color 硬编码规范：在没有使用夜间模式的情况下，允许大部分 Color 值直接定义在布局文件中，但是如果某个色值引用得比较多（例如主题强调色、默认背景色等），需要抽取到 `color.xml` 文件中。
 
 * Dimens 硬编码规范：允许写死在 Java 代码或者布局文件中，但是如果使用了[通配符方案](https://github.com/wildma/ScreenAdaptation)对屏幕进行适配，那么则不能直接写死。
 
 * Style 样式规范：对于一些常用并且样式比较统一的控件，例如 **Button**、**EditText** 等，我们对这些控件的样式进行抽取到 `style.xml` 文件中来，避免属性重复定义。
+
+#### 多线程规范
+
+* 不要在主线程中执行耗时操作。这会导致 UI 卡顿，降低用户体验。建议使用 AsyncTask、Handler、Thread 等方式来实现异步操作。
+
+* 多线程代码必须保证线程安全。需要对共享资源进行同步操作，避免并发访问产生数据竞争问题。常用的同步方式有 synchronized、Lock、ReentrantLock 等。
+
+* 尽量避免死锁问题。不同线程之间存在依赖关系时，需要注意锁的获取顺序，防止出现死锁情况。
+
+* 使用线程池来管理线程数量。过多的线程会占用系统资源，影响应用性能；过少的线程则无法充分利用 CPU，导致任务延迟，合理设置线程池大小可以提高应用的效率和稳定性。
+
+#### 数据库操作规范
+
+* 避免频繁地打开和关闭数据库连接，尽可能复用数据库连接对象。
+
+* 使用事务来保证数据的完整性和一致性。对于批量数据操作或者需要执行多个 SQL 语句的场景，建议使用事务来优化性能。
+
+* 对于查询操作，尽量使用索引来提高查询效率，同时需要注意索引的创建和更新对数据库性能的影响。
+
+* 对于数据存储时涉及到密码、账号等敏感信息，应该使用加密算法进行加密保护。
+
+* 使用 ContentProvider 进行跨应用程序数据共享，并且在使用 ContentProvider 时，需要定义好 URI 和 MIME 类型，避免出现安全漏洞。
 
 #### 版本名和版本码规范
 
@@ -1670,15 +1764,19 @@ versionCode 41201
 
 * 标题栏框架：[TitleBar](https://github.com/getActivity/TitleBar) ![](https://img.shields.io/github/stars/getActivity/TitleBar.svg) ![](https://img.shields.io/github/forks/getActivity/TitleBar.svg)
 
-* 悬浮窗框架：[XToast](https://github.com/getActivity/XToast) ![](https://img.shields.io/github/stars/getActivity/XToast.svg) ![](https://img.shields.io/github/forks/getActivity/XToast.svg)
+* 悬浮窗框架：[EasyWindow](https://github.com/getActivity/EasyWindow) ![](https://img.shields.io/github/stars/getActivity/EasyWindow.svg) ![](https://img.shields.io/github/forks/getActivity/EasyWindow.svg)
 
-* Shape 框架：[ShapeView](https://github.com/getActivity/ShapeView) ![](https://img.shields.io/github/stars/getActivity/ShapeView.svg) ![](https://img.shields.io/github/forks/getActivity/ShapeView.svg)
+* ShapeView 框架：[ShapeView](https://github.com/getActivity/ShapeView) ![](https://img.shields.io/github/stars/getActivity/ShapeView.svg) ![](https://img.shields.io/github/forks/getActivity/ShapeView.svg)
+
+* ShapeDrawable 框架：[ShapeDrawable](https://github.com/getActivity/ShapeDrawable) ![](https://img.shields.io/github/stars/getActivity/ShapeDrawable.svg) ![](https://img.shields.io/github/forks/getActivity/ShapeDrawable.svg)
 
 * 语种切换框架：[MultiLanguages](https://github.com/getActivity/MultiLanguages) ![](https://img.shields.io/github/stars/getActivity/MultiLanguages.svg) ![](https://img.shields.io/github/forks/getActivity/MultiLanguages.svg)
 
 * Gson 解析容错：[GsonFactory](https://github.com/getActivity/GsonFactory) ![](https://img.shields.io/github/stars/getActivity/GsonFactory.svg) ![](https://img.shields.io/github/forks/getActivity/GsonFactory.svg)
 
 * 日志查看框架：[Logcat](https://github.com/getActivity/Logcat) ![](https://img.shields.io/github/stars/getActivity/Logcat.svg) ![](https://img.shields.io/github/forks/getActivity/Logcat.svg)
+
+* 嵌套滚动布局框架：[NestedScrollLayout](https://github.com/getActivity/NestedScrollLayout) ![](https://img.shields.io/github/stars/getActivity/NestedScrollLayout.svg) ![](https://img.shields.io/github/forks/getActivity/NestedScrollLayout.svg)
 
 * Android 版本适配：[AndroidVersionAdapter](https://github.com/getActivity/AndroidVersionAdapter) ![](https://img.shields.io/github/stars/getActivity/AndroidVersionAdapter.svg) ![](https://img.shields.io/github/forks/getActivity/AndroidVersionAdapter.svg)
 
@@ -1700,11 +1798,9 @@ versionCode 41201
 
 #### Android 技术 Q 群：10047167
 
-#### 如果您觉得我的开源库帮你节省了大量的开发时间，请扫描下方的二维码随意打赏，要是能打赏个 10.24 :monkey_face:就太:thumbsup:了。您的支持将鼓励我继续创作:octocat:
+#### 如果您觉得我的开源库帮你节省了大量的开发时间，请扫描下方的二维码随意打赏，要是能打赏个 10.24 :monkey_face:就太:thumbsup:了。您的支持将鼓励我继续创作:octocat:（[点击查看捐赠列表](https://github.com/getActivity/Donate)）
 
 ![](https://raw.githubusercontent.com/getActivity/Donate/master/picture/pay_ali.png) ![](https://raw.githubusercontent.com/getActivity/Donate/master/picture/pay_wechat.png)
-
-#### [点击查看捐赠列表](https://github.com/getActivity/Donate)
 
 ## License
 
